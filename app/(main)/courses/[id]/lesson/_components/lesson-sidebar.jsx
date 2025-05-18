@@ -145,6 +145,9 @@ export const LessonSidebar = async ({ courseId }) => {
   return (
     <div className="flex h-full flex-col border-r bg-white">
       <div className="flex flex-col px-5 py-4">
+        <h1 className="mb-2 truncate text-xl font-bold" title={course.title}>
+          {course.title}
+        </h1>
         <h2 className="text-base font-medium">Tiến độ khóa học</h2>
         <CourseProgress value={Math.round(totalProgress)} />
         <p className="text-xs text-muted-foreground">
