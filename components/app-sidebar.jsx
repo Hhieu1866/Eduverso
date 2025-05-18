@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 
 import {
   Sidebar,
@@ -79,10 +80,20 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="border-r shadow-sm transition-all">
-      <SidebarHeader className="flex h-16 items-center border-b px-6">
-        <Link href="/admin" className="flex items-center gap-3 font-semibold">
-          <List className="h-5 w-5" />
-          <span>Quản trị hệ thống</span>
+      <SidebarHeader className="flex h-14 items-center justify-center border-b p-2">
+        <Link
+          href="/admin"
+          className="flex items-center justify-center gap-3 font-semibold"
+        >
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={38}
+            height={38}
+            className="object-contain"
+            priority
+          />
+          <span className="text-base">Quản trị hệ thống</span>
         </Link>
       </SidebarHeader>
       <SidebarContent>

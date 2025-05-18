@@ -7,12 +7,7 @@ import {
 } from "@/components/dashboard-charts";
 import { MetricsCard } from "@/components/dashboard-metrics";
 import { Separator } from "@/components/ui/separator";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   ArrowUpRight,
@@ -32,12 +27,12 @@ function UserListSkeleton() {
     <div className="space-y-4">
       {Array.from({ length: 5 }).map((_, i) => (
         <div key={i} className="flex items-center gap-4">
-          <div className="h-9 w-9 rounded-full bg-muted/60 animate-pulse" />
+          <div className="h-9 w-9 rounded-full bg-muted/60" />
           <div className="flex-1 space-y-2">
-            <div className="h-4 w-24 bg-muted/60 rounded animate-pulse" />
-            <div className="h-3 w-32 bg-muted/60 rounded animate-pulse" />
+            <div className="h-4 w-24 rounded bg-muted/60" />
+            <div className="h-3 w-32 rounded bg-muted/60" />
           </div>
-          <div className="h-3 w-16 bg-muted/60 rounded animate-pulse" />
+          <div className="h-3 w-16 rounded bg-muted/60" />
         </div>
       ))}
     </div>
@@ -119,7 +114,7 @@ export default function AdminDashboard() {
               {loading ? (
                 <UserListSkeleton />
               ) : latestUsers.length === 0 ? (
-                <div className="text-center py-8">
+                <div className="py-8 text-center">
                   <p className="text-muted-foreground">
                     Chưa có người dùng nào
                   </p>
@@ -128,7 +123,7 @@ export default function AdminDashboard() {
                 <div className="space-y-4">
                   {latestUsers.map((user, i) => (
                     <div key={user.id} className="flex items-center gap-4">
-                      <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden">
+                      <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-primary/10">
                         {user.profilePicture ? (
                           <img
                             src={user.profilePicture}
@@ -206,7 +201,7 @@ export default function AdminDashboard() {
             <div className="space-y-4">
               {Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="flex items-center gap-4">
-                  <div className="h-9 w-9 rounded bg-muted flex items-center justify-center">
+                  <div className="flex h-9 w-9 items-center justify-center rounded bg-muted">
                     <Calendar className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div className="flex-1">
