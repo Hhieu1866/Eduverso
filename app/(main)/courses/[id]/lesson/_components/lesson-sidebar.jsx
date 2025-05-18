@@ -162,7 +162,7 @@ export const LessonSidebar = async ({ courseId }) => {
           type="multiple"
           defaultValue={["quiz", "review", "certificate"]}
         >
-          {updatedModules.map((module) => (
+          {updatedModules.map((module, index) => (
             <AccordionItem
               key={module._id}
               value={module._id.toString()}
@@ -170,7 +170,9 @@ export const LessonSidebar = async ({ courseId }) => {
             >
               <AccordionTrigger className="px-5 py-3 hover:bg-slate-50">
                 <div className="flex items-center gap-2 text-sm font-medium">
-                  <span className="truncate">{module.title}</span>
+                  <span className="truncate">
+                    Chương {index + 1}: {module.title}
+                  </span>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="pb-0">
