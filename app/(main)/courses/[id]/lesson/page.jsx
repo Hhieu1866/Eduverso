@@ -29,7 +29,13 @@ const LessonPage = async ({ params, searchParams }) => {
   deleteCache(reportCacheKey);
 
   const course = await getCourseDetails(id);
-  const allModules = replaceMongoIdInArray(course.modules).toSorted(
+
+  // Lọc ra các module đã publish (active: true)
+  const publishedModules =
+    course?.modules?.filter((module) => module.active === true) || [];
+
+  // Sắp xếp module theo thứ tự
+  const allModules = replaceMongoIdInArray(publishedModules).toSorted(
     (a, b) => a.order - b.order,
   );
 
@@ -48,10 +54,15 @@ const LessonPage = async ({ params, searchParams }) => {
   }
 
   const firstModule = allModules[0];
+
+  // Lọc các lesson đã publish
+  const publishedLessons =
+    firstModule?.lessonIds?.filter((lesson) => lesson.active === true) || [];
+
   const defaultLesson =
-    firstModule?.lessonIds?.length > 0
+    publishedLessons.length > 0
       ? replaceMongoIdInObject(
-          firstModule.lessonIds.toSorted((a, b) => a.order - b.order)[0],
+          publishedLessons.toSorted((a, b) => a.order - b.order)[0],
         )
       : null;
 
@@ -68,33 +79,45 @@ const LessonPage = async ({ params, searchParams }) => {
     );
   }
 
-  const lessonToPay = nameParam
+  // Lấy thông tin bài học yêu cầu
+  const requestedLesson = nameParam
     ? await getLessonBySlug(nameParam)
     : defaultLesson;
+
+  // Kiểm tra xem bài học có được publish không
+  if (!requestedLesson?.active) {
+    // Nếu bài học không được publish, chuyển hướng về trang chi tiết khóa học
+    redirect(`/courses/${id}`);
+  }
+
+  const lessonToPay = requestedLesson;
   const defaultModule = moduleParam ?? (firstModule?.slug || "");
 
   // Get current module
   const currentModule =
     allModules.find((module) => module.slug === defaultModule) || firstModule;
 
-  // Kiểm tra xem bài học này có thể truy cập hay không
-  const lessonId = lessonToPay.id;
-  const moduleId = currentModule.id;
-  const watch = await Watch.findOne({
-    lesson: lessonId,
-    module: moduleId,
-    user: loggedinUser.id,
-  }).lean();
+  // Kiểm tra xem module có được publish không
+  if (!currentModule?.active) {
+    // Nếu module không được publish, chuyển hướng về trang chi tiết khóa học
+    redirect(`/courses/${id}`);
+  }
 
   // Kiểm tra tham số truy cập từ đâu
   const fromComplete = searchParams.fromComplete === "true";
 
   // Sửa logic kiểm tra để không tự động đánh dấu bài là completed
+  const watch = await Watch.findOne({
+    lesson: lessonToPay.id,
+    module: currentModule.id,
+    user: loggedinUser.id,
+  }).lean();
+
   if (!watch) {
     // Nếu chưa có record watch, tạo record started
     await Watch.create({
-      lesson: lessonId,
-      module: moduleId,
+      lesson: lessonToPay.id,
+      module: currentModule.id,
       user: loggedinUser.id,
       state: "started",
       lastTime: 0,

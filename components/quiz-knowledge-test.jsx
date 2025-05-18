@@ -37,21 +37,21 @@ const QuizKnowledgeTest = ({
     if (open) {
       if (isReviewMode && savedResults) {
         // Nếu đang ở chế độ xem lại, tính toán kết quả từ savedResults
-        const correctCount = savedResults.details.filter(
-          (r) => r.isCorrect,
-        ).length;
+        // Kiểm tra an toàn xem details có tồn tại không
+        const details = savedResults.details || [];
+        const correctCount = details.filter((r) => r.isCorrect).length;
         const percentage = Math.round(
-          (correctCount / savedResults.totalQuestions) * 100,
+          (correctCount / (savedResults.totalQuestions || 1)) * 100,
         );
         const isPassed = percentage >= 90;
 
         // Thiết lập lại kết quả để hiển thị
         setQuizResults({
-          totalQuestions: savedResults.totalQuestions,
+          totalQuestions: savedResults.totalQuestions || 0,
           correctCount,
           percentage,
           isPassed,
-          details: savedResults.details,
+          details: details,
         });
 
         // Hiển thị ngay màn hình kết quả
@@ -325,7 +325,7 @@ const QuizKnowledgeTest = ({
           >
             {isSubmitting ? (
               <div className="flex items-center gap-2">
-                <div className="animate-faster-spin h-4 w-4 rounded-full border-2 border-white border-t-transparent" />
+                <div className="h-4 w-4 animate-faster-spin rounded-full border-2 border-white border-t-transparent" />
                 <span>Đang xử lý...</span>
               </div>
             ) : (

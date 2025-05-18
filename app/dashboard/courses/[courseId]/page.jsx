@@ -14,7 +14,7 @@ import { TitleForm } from "./_components/title-form";
 import { CourseActions } from "./_components/course-action";
 import AlertBanner from "@/components/alert-banner";
 import { QuizSetForm } from "./_components/quiz-set-form";
-import { getCourseDetails } from "@/queries/courses";
+import { getCourseDetailsForInstructor } from "@/queries/courses";
 import { SubTitleForm } from "./_components/subtitle-form";
 import { getCategories } from "@/queries/categories";
 import { replaceMongoIdInArray } from "@/lib/convertData";
@@ -22,7 +22,7 @@ import { ObjectId } from "mongoose";
 import { getAllQuizSets } from "@/queries/quizzes";
 
 const EditCourse = async ({ params: { courseId } }) => {
-  const course = await getCourseDetails(courseId);
+  const course = await getCourseDetailsForInstructor(courseId);
   const categories = await getCategories();
 
   const mappedCategories = categories.map((c) => {
@@ -81,7 +81,7 @@ const EditCourse = async ({ params: { courseId } }) => {
         <div className="flex items-center justify-end">
           <CourseActions courseId={courseId} isActive={course?.active} />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={LayoutDashboard} />
@@ -127,7 +127,7 @@ const EditCourse = async ({ params: { courseId } }) => {
           </div>
           <div className="space-y-6">
             <div>
-              <div className="flex items-center gap-x-2 mb-6">
+              <div className="mb-6 flex items-center gap-x-2">
                 <IconBadge icon={ListChecks} />
                 <h2 className="text-xl">Course Modules</h2>
               </div>

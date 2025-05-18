@@ -15,6 +15,15 @@ import { Circle } from "lucide-react";
 import { getQuizSetById } from "@/queries/quizzes";
 import { QuizCardActions } from "./_components/quiz-card-action";
 
+function shuffleArray(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 const EditQuizSet = async ({ params: { quizSetId } }) => {
   const quizSet = await getQuizSetById(quizSetId);
 
@@ -22,12 +31,14 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
     return {
       id: quiz._id.toString(),
       title: quiz.title,
-      options: quiz.options.map((option) => {
-        return {
-          label: option.text,
-          isTrue: option.is_correct,
-        };
-      }),
+      options: shuffleArray(
+        quiz.options.map((option) => {
+          return {
+            label: option.text,
+            isTrue: option.is_correct,
+          };
+        }),
+      ),
     };
   });
   // console.log(quizzes);
@@ -50,15 +61,15 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
             quizId={quizSet?.id}
           />
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2  gap-6 mt-16">
+        <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Quiz List */}
           <div className="max-lg:order-2">
-            <h2 className="text-xl mb-6">Quiz List</h2>
+            <h2 className="mb-6 text-xl">Quiz List</h2>
             {quizzes.length === 0 && (
               <AlertBanner
                 label="No Quiz are in the set, add some using the form above."
                 variant="warning"
-                className="rounded mb-6"
+                className="mb-6 rounded"
               />
             )}
 
@@ -67,21 +78,21 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
                 return (
                   <div
                     key={quiz.id}
-                    className=" bg-gray-50 shadow-md p-4 lg:p-6 rounded-md border"
+                    className="rounded-md border bg-gray-50 p-4 shadow-md lg:p-6"
                   >
                     <h2 className="mb-3">{quiz.title}</h2>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       {quiz.options.map((option) => {
                         return (
                           <div
                             className={cn(
-                              "py-1.5 rounded-sm  text-sm flex items-center gap-1 text-gray-600",
+                              "flex items-center gap-1 rounded-sm py-1.5 text-sm text-gray-600",
                             )}
                             key={option.label}
                           >
                             {option.isTrue ? (
-                              <CircleCheck className="size-4 text-emerald-500 " />
+                              <CircleCheck className="size-4 text-emerald-500" />
                             ) : (
                               <Circle className="size-4" />
                             )}
@@ -91,7 +102,7 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
                         );
                       })}
                     </div>
-                    <div className="flex items-center justify-end gap-2 mt-6">
+                    <div className="mt-6 flex items-center justify-end gap-2">
                       <QuizCardActions quiz={quiz} quizSetId={quizSetId} />
                     </div>
                   </div>

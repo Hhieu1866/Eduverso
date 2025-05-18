@@ -11,13 +11,13 @@ import Link from "next/link";
 import { ModuleTitleForm } from "./_components/module-title-form";
 import { LessonForm } from "./_components/lesson-form";
 import { CourseActions } from "../../_components/course-action";
-import { getModule } from "@/queries/modules";
+import { getModuleForInstructor } from "@/queries/modules";
 import { replaceMongoIdInArray } from "@/lib/convertData";
 import { ObjectId } from "mongoose";
 import { ModuleActions } from "./_components/module-action";
 
 const Module = async ({ params: { courseId, moduleId } }) => {
-  const module = await getModule(moduleId);
+  const module = await getModuleForInstructor(moduleId);
   const sanitizedModule = sanitizeData(module);
 
   //console.log(module);
@@ -57,9 +57,9 @@ const Module = async ({ params: { courseId, moduleId } }) => {
           <div className="w-full">
             <Link
               href={`/dashboard/courses/${courseId}`}
-              className="flex items-center text-sm hover:opacity-75 transition mb-6"
+              className="mb-6 flex items-center text-sm transition hover:opacity-75"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Back to course setup
             </Link>
             <div className="flex items-center justify-end">
@@ -67,7 +67,7 @@ const Module = async ({ params: { courseId, moduleId } }) => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-4">
             <div>
               <div className="flex items-center gap-x-2">

@@ -17,6 +17,7 @@ export async function getModule(moduleId) {
       .populate({
         path: "lessonIds",
         model: Lesson,
+        match: { active: true },
       })
       .lean();
     return replaceMongoIdInObject(module);
@@ -28,6 +29,20 @@ export async function getModule(moduleId) {
 export async function getModuleBySlug(moduleSlug) {
   try {
     const module = await Module.findOne({ slug: moduleSlug }).lean();
+    return replaceMongoIdInObject(module);
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function getModuleForInstructor(moduleId) {
+  try {
+    const module = await Module.findById(moduleId)
+      .populate({
+        path: "lessonIds",
+        model: Lesson,
+      })
+      .lean();
     return replaceMongoIdInObject(module);
   } catch (error) {
     throw new Error(error);

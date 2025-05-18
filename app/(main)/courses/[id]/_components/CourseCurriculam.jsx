@@ -18,9 +18,22 @@ import {
 import CourseModuleList from "./module/CourseModuleList";
 
 const CourseCurriculam = ({ course }) => {
-  // Tính tổng thời lượng của khóa học (nếu có)
+  // Đảm bảo chỉ hiển thị modules và lessons đã được publish
+  const publishedModules =
+    course?.modules?.filter((module) => module.active === true) || [];
+
+  // Lọc chỉ lấy các lesson đã publish trong mỗi module
+  publishedModules.forEach((module) => {
+    if (module.lessonIds && Array.isArray(module.lessonIds)) {
+      module.lessonIds = module.lessonIds.filter(
+        (lesson) => lesson.active === true,
+      );
+    }
+  });
+
+  // Tính tổng thời lượng của khóa học (chỉ từ các bài đã publish)
   const totalDuration =
-    course?.modules
+    publishedModules
       ?.map((item) => {
         return item.lessonIds.reduce(function (acc, obj) {
           return acc + (obj.duration || 0);
@@ -30,9 +43,9 @@ const CourseCurriculam = ({ course }) => {
         return acc + obj;
       }, 0) || 0;
 
-  // Tính tổng số bài học
+  // Tính tổng số bài học (chỉ từ các bài đã publish)
   const totalLessons =
-    course?.modules?.reduce((total, module) => {
+    publishedModules?.reduce((total, module) => {
       return total + (module.lessonIds?.length || 0);
     }, 0) || 0;
 
@@ -43,7 +56,7 @@ const CourseCurriculam = ({ course }) => {
           <div className="flex flex-col items-center rounded-lg bg-white p-4 shadow-sm">
             <BookCheck className="mb-2 h-8 w-8 text-primary" />
             <div className="flex items-center gap-1 text-base">
-              <span className="font-bold">{course?.modules?.length || 0}</span>
+              <span className="font-bold">{publishedModules?.length || 0}</span>
               <span className="text-gray-600">Chương</span>
             </div>
           </div>
@@ -70,10 +83,10 @@ const CourseCurriculam = ({ course }) => {
 
       <Accordion
         type="multiple"
-        defaultValue={course?.modules?.map((_, i) => `item-${i + 1}`) || []}
+        defaultValue={publishedModules?.map((_, i) => `item-${i + 1}`) || []}
         className="w-full"
       >
-        {course?.modules?.map((module, index) => (
+        {publishedModules?.map((module, index) => (
           <AccordionItem key={module.id || index} value={`item-${index + 1}`}>
             <AccordionTrigger className="mb-px bg-gray-50 px-4 py-4 hover:bg-gray-100 hover:no-underline data-[state=open]:rounded-b-none">
               <div className="flex w-full flex-col gap-2 text-left md:flex-row md:items-center">

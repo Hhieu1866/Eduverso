@@ -176,6 +176,56 @@ const Quiz = ({ courseId, quizSet, isTaken, assessmentData }) => {
 
   // Hàm xử lý khi người dùng muốn xem lại kết quả
   const handleReviewResults = () => {
+    // Đảm bảo có dữ liệu savedResults trước khi mở modal xem lại kết quả
+    if (!savedResults) {
+      // Nếu chưa có kết quả đã lưu, tạo dữ liệu từ quizResults hiện tại
+      const details = [];
+
+      // Kiểm tra quizResults.assessments tồn tại trước khi xử lý
+      if (quizResults && Array.isArray(quizResults.assessments)) {
+        quizResults.assessments.forEach((assessment) => {
+          if (assessment && assessment.quizId) {
+            // Tìm phương án đúng
+            const correctOption =
+              assessment.options?.find((opt) => opt.isCorrect)?.option || "";
+            // Tìm phương án được chọn
+            const selectedOption =
+              assessment.options?.find((opt) => opt.isSelected)?.option || "";
+
+            // Tìm thông tin câu hỏi từ danh sách quizzes
+            const quizInfo = quizzes.find(
+              (q) => q.id === assessment.quizId.toString(),
+            );
+
+            details.push({
+              quizId: assessment.quizId.toString(),
+              title: quizInfo?.title || "Câu hỏi",
+              selectedAnswer: selectedOption,
+              correctAnswer: correctOption,
+              isCorrect:
+                assessment.options?.some(
+                  (opt) => opt.isCorrect && opt.isSelected,
+                ) || false,
+            });
+          }
+        });
+      }
+
+      // Đảm bảo tạo savedResults với cấu trúc đầy đủ
+      setSavedResults({
+        details: details,
+        totalQuestions: quizzes.length,
+        score: quizResults?.score || 0,
+      });
+
+      console.log("Đã tạo savedResults mới:", {
+        details,
+        totalQuestions: quizzes.length,
+        score: quizResults?.score || 0,
+      });
+    }
+
+    // Đánh dấu đang ở chế độ xem lại và mở modal
     setIsReviewMode(true);
     setOpen(true);
   };

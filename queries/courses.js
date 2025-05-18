@@ -101,6 +101,57 @@ export async function getCourseDetails(id) {
     .populate({
       path: "modules",
       model: Module,
+      match: { active: true },
+      populate: {
+        path: "lessonIds",
+        model: Lesson,
+        match: { active: true },
+      },
+    })
+    .populate({
+      path: "quizSet",
+      model: Quizset,
+      match: { active: true },
+      populate: {
+        path: "quizIds",
+        model: Quiz,
+      },
+    })
+    .lean();
+
+  // Lấy số lượng học viên đã đăng ký
+  const enrollmentCount = await Enrollment.countDocuments({ course: id });
+
+  // Thêm thông tin số lượng học viên vào đối tượng course
+  const courseWithEnrollmentCount = {
+    ...course,
+    enrollmentCount: enrollmentCount,
+  };
+
+  return replaceMongoIdInObject(courseWithEnrollmentCount);
+}
+
+export async function getCourseDetailsForInstructor(id) {
+  const course = await Course.findById(id)
+    .populate({
+      path: "category",
+      model: Category,
+    })
+    .populate({
+      path: "instructor",
+      model: User,
+    })
+    .populate({
+      path: "testimonials",
+      model: Testimonial,
+      populate: {
+        path: "user",
+        model: User,
+      },
+    })
+    .populate({
+      path: "modules",
+      model: Module,
       populate: {
         path: "lessonIds",
         model: Lesson,
