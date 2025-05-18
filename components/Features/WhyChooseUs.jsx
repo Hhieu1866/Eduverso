@@ -322,13 +322,13 @@ export default function WhyChooseUs() {
       className="w-full bg-white py-12 dark:bg-gray-950 md:py-24 lg:py-32"
       id="testimonials"
     >
-      <div className="container px-4 md:px-6">
+      <div className="container">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <Badge variant="secondary" className="text-base">
               Tính năng nổi bật
             </Badge>
-            <h2 className="text-colors-navy text-3xl font-bold tracking-tighter sm:text-5xl">
+            <h2 className="text-3xl font-bold tracking-tighter text-colors-navy sm:text-5xl">
               Tại sao chọn Eduverse?
             </h2>
             {/* <p className="max-w-[900px] text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">

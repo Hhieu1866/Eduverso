@@ -377,3 +377,13 @@
   background-repeat: no-repeat;
   animation: shimmer 1.5s infinite linear forwards;
 }
+
+@keyframes spin-fast {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-fast {
+  animation: spin-fast 0.5s linear infinite;
+}

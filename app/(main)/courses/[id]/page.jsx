@@ -21,10 +21,11 @@ const SingleCoursePage = async ({ params: { id } }) => {
   }
 
   return (
-    <>
+    <div className="flex flex-col">
       <CourseDetailsIntro course={course} />
 
       <CourseDetails course={course} />
+
       {course?.testimonials && (
         <Testimonials
           testimonials={replaceMongoIdInArray(course?.testimonials)}
@@ -40,7 +41,7 @@ const SingleCoursePage = async ({ params: { id } }) => {
           <RelatedCourses relatedCourses={relatedCourses} />
         </div>
       )}
-    </>
+    </div>
   );
 };
 export default SingleCoursePage;

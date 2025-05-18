@@ -39,7 +39,7 @@ const CourseDetailsIntro = async ({ course }) => {
   return (
     <div className="bg-gradient-to-b from-cyan-50 to-white">
       <section className="pb-16 pt-8">
-        <div className="container mx-auto px-4">
+        <div className="container">
           <div className="flex flex-col gap-8 lg:flex-row">
             {/* Cột thông tin khóa học */}
             <div className="flex-1">

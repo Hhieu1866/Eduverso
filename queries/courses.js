@@ -266,7 +266,7 @@ export async function getRelatedCourses(currentCourseId, categoryId) {
       _id: { $ne: currentCourseObjectId }, // Exclude current course
       active: true,
     })
-      .select("title thumbnail price")
+      .select("title thumbnail thumbnailUrl price")
       .lean();
     return relatedCourses;
   } catch (error) {

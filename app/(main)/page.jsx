@@ -31,7 +31,7 @@ const HomePage = async () => {
           <span className="rounded-2xl border bg-muted px-4 py-1.5 text-sm font-medium shadow-lg">
             Chào mừng bạn đến với Eduverse
           </span>
-          <h1 className="font-heading text-colors-navy whitespace-nowrap text-3xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="font-heading whitespace-nowrap text-3xl font-bold text-colors-navy sm:text-5xl md:text-6xl lg:text-7xl">
             Bắt đầu lộ trình học tập mới với <br /> Eduverse
           </h1>
           <p className="max-w-full overflow-auto text-ellipsis whitespace-nowrap leading-normal text-muted-foreground sm:text-xl sm:leading-8">
@@ -102,7 +102,7 @@ const HomePage = async () => {
       <Support />
 
       <section className="w-full bg-primary py-8 text-primary-foreground md:py-20 lg:py-28">
-        <div className="container px-4 md:px-6">
+        <div className="container">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl lg:text-5xl">

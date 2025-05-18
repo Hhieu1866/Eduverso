@@ -20,7 +20,7 @@ const Testimonials = ({ testimonials }) => {
           opts={{
             align: "start",
           }}
-          className="max-2xl:w-[90%] w-full mx-auto"
+          className="mx-auto w-full max-2xl:w-[90%]"
         >
           <CarouselPrevious />
           <CarouselNext />
@@ -31,7 +31,7 @@ const Testimonials = ({ testimonials }) => {
                 className="md:basis-1/2 lg:basis-1/3"
               >
                 <div className="sm:break-inside-avoid">
-                  <blockquote className="rounded-lg bg-gray-50 p-6  sm:p-8 shadow-sm">
+                  <blockquote className="rounded-lg bg-gray-50 p-6 shadow-sm sm:p-8">
                     <div className="flex items-center gap-4">
                       <Image
                         alt="Profile"
@@ -50,9 +50,7 @@ const Testimonials = ({ testimonials }) => {
                         </div>
                       </div>
                     </div>
-                    <p className="mt-4 text-gray-700">
-                      {testimonial?.content}
-                    </p>
+                    <p className="mt-4 text-gray-700">{testimonial?.content}</p>
                   </blockquote>
                 </div>
               </CarouselItem>

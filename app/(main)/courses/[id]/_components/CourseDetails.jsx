@@ -12,7 +12,7 @@ const CourseDetails = ({ course }) => {
 
   return (
     <section className="bg-white py-12">
-      <div className="container mx-auto px-4">
+      <div className="container">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
             {/* Tabs Navigation */}
