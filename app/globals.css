@@ -1,0 +1,379 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 174 100% 29%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 174 45% 94%;
+    --secondary-foreground: 174 100% 25%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    --chart-1: 12 76% 61%;
+
+    --chart-2: 173 58% 39%;
+
+    --chart-3: 197 37% 24%;
+
+    --chart-4: 43 74% 66%;
+
+    --chart-5: 27 87% 67%;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+
+    --ring: 212.7 26.8% 83.9%;
+
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ============================
+   COMMON LIST STYLING (ul, ol)
+   ============================ */
+
+/* --- UL: danh sách chấm tròn --- */
+.ql-editor ul,
+.content-view ul,
+.prose ul {
+  list-style-type: disc !important;
+  padding-left: 2rem !important;
+  margin: 0.5rem 0 !important;
+}
+
+.ql-editor ul li,
+.content-view ul li,
+.prose ul li {
+  position: relative !important;
+  list-style-type: disc !important;
+  padding-left: 0 !important;
+  margin-bottom: 0.3rem !important;
+}
+
+/* Ghi đè style cho bullets */
+.content-view ul li::before {
+  display: none !important;
+}
+
+.content-view li[data-list="bullet"] {
+  list-style-type: disc !important;
+}
+
+/* --- OL: danh sách số thứ tự --- */
+.ql-editor ol,
+.content-view ol,
+.prose ol {
+  list-style-type: decimal !important;
+  padding-left: 1.25rem !important;
+  margin: 0.5rem 0 !important;
+}
+
+.ql-editor ol li,
+.content-view ol li,
+.prose ol li {
+  margin-left: 0 !important;
+  padding-left: 0.3rem !important;
+  margin-bottom: 0.3rem !important;
+}
+
+/* ============================
+   CLEAN-UP CÁC PSEUDO CỦA QUILL
+   ============================ */
+.ql-editor li[data-list="bullet"]::before,
+.ql-snow .ql-editor li[data-list="bullet"]::before,
+.ql-snow .ql-editor ul li::before {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Thêm style mới cho content-view */
+.content-view ul {
+  list-style-type: disc !important;
+}
+
+.content-view ul li {
+  display: list-item !important;
+  list-style-type: disc !important;
+  padding-left: 0 !important;
+}
+
+.content-view ul > li::before {
+  display: none !important;
+}
+
+.ql-editor .ql-bullet,
+.ql-editor li[data-list="bullet"],
+.content-view .ql-bullet,
+.content-view li[data-list="bullet"] {
+  padding-left: 0 !important;
+  text-indent: 0 !important;
+  list-style-type: disc !important;
+}
+
+/* Đảm bảo list-style-type được ưu tiên */
+.content-view ul,
+.content-view ul li {
+  list-style-type: disc !important;
+}
+
+/* ============================
+   STYLE BỔ SUNG CHO HEADINGS
+   ============================ */
+.ql-editor h1,
+.content-view h1,
+.prose h1 {
+  font-size: 2rem !important;
+  margin: 1rem 0 0.5rem 0 !important;
+  font-weight: 600 !important;
+}
+
+.ql-editor h2,
+.content-view h2,
+.prose h2 {
+  font-size: 1.6rem !important;
+  margin: 1rem 0 0.5rem 0 !important;
+  font-weight: 600 !important;
+}
+
+.ql-editor h3,
+.content-view h3,
+.prose h3 {
+  font-size: 1.4rem !important;
+  margin: 1rem 0 0.5rem 0 !important;
+  font-weight: 600 !important;
+}
+
+.ql-editor h4,
+.content-view h4,
+.prose h4 {
+  font-size: 1.2rem !important;
+  margin: 1rem 0 0.5rem 0 !important;
+  font-weight: 600 !important;
+}
+
+/* ============================
+   PARAGRAPH & SPACING
+   ============================ */
+.ql-editor p,
+.content-view p,
+.prose p {
+  margin-bottom: 0.75rem !important;
+}
+
+.content-view p:last-child,
+.prose p:last-child {
+  margin-bottom: 0 !important;
+}
+
+.ql-editor,
+.content-view,
+.prose {
+  line-height: 1.5 !important;
+  font-size: 1rem !important;
+  max-width: none !important;
+}
+
+/* ============================
+   INDENT CẤP 1 (nếu có)
+   ============================ */
+.ql-editor ul.ql-indent-1,
+.ql-editor ol.ql-indent-1,
+.content-view ul.ql-indent-1,
+.content-view ol.ql-indent-1 {
+  padding-left: 2.5rem !important;
+}
+
+/* ============================
+   LIST MARKER (nếu dùng marker)
+   ============================ */
+.prose li::marker {
+  font-weight: 400 !important;
+}
+
+.prose ul li::marker {
+  color: currentColor !important;
+}
+
+.prose li {
+  margin-top: 0.2em !important;
+  margin-bottom: 0.2em !important;
+}
+
+:root {
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) infinite linear;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+/* Các animation mới cho nút hoàn thành bài học */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-pulse-green {
+  animation: pulse 1.5s infinite;
+}
+
+/* Hiệu ứng shimmer cho nút đang xử lý */
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.shimmer {
+  background-image: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+  background-size: 800px 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 1.5s infinite linear forwards;
+}
