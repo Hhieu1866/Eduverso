@@ -102,20 +102,20 @@ export const ModulesForm = ({ initialData, courseId }) => {
   };
 
   return (
-    <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
+    <div className="relative mt-6 rounded-md border bg-slate-100 p-4">
       {isUpdating && (
-        <div className="absolute h-full w-full bg-gray-500/20 top-0 right-0 rounded-md flex items-center justify-center">
-          <Loader2 className="animate-spin h-6 w-6 text-sky-700" />
+        <div className="absolute right-0 top-0 flex h-full w-full items-center justify-center rounded-md bg-gray-500/20">
+          <Loader2 className="h-6 w-6 animate-spin text-sky-700" />
         </div>
       )}
-      <div className="font-medium flex items-center justify-between">
+      <div className="flex items-center justify-between font-medium">
         Course Modules
         <Button variant="ghost" onClick={toggleCreating}>
           {isCreating ? (
             <>Cancel</>
           ) : (
             <>
-              <PlusCircle className="h-4 w-4 mr-2" />
+              <PlusCircle className="mr-2 h-4 w-4" />
               Add a module
             </>
           )}
@@ -126,7 +126,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -153,8 +153,8 @@ export const ModulesForm = ({ initialData, courseId }) => {
       {!isCreating && (
         <div
           className={cn(
-            "text-sm mt-2",
-            !modules?.length && "text-slate-500 italic",
+            "mt-2 text-sm",
+            !modules?.length && "italic text-slate-500",
           )}
         >
           {!modules?.length && "No module"}
@@ -166,7 +166,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
         </div>
       )}
       {!isCreating && (
-        <p className="text-xs text-muted-foreground mt-4">
+        <p className="mt-4 text-xs text-muted-foreground">
           Drag & Drop to reorder the modules
         </p>
       )}

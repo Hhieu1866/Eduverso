@@ -115,3 +115,71 @@ export async function PATCH(request, { params }) {
     );
   }
 }
+
+// Xóa khóa học theo ID
+export async function DELETE(request, { params }) {
+  try {
+    // Lấy ID khóa học từ params
+    const { id: courseId } = params;
+
+    // Kiểm tra courseId có tồn tại và hợp lệ
+    if (!courseId) {
+      return NextResponse.json(
+        { error: "ID khóa học không được cung cấp" },
+        { status: 400 },
+      );
+    }
+
+    // Kiểm tra xem ID có phải là một MongoDB ObjectId hợp lệ không
+    if (!mongoose.Types.ObjectId.isValid(courseId)) {
+      return NextResponse.json(
+        { error: "ID khóa học không hợp lệ" },
+        { status: 400 },
+      );
+    }
+
+    // Kiểm tra xác thực và quyền admin
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json(
+        { error: "Không được phép truy cập" },
+        { status: 401 },
+      );
+    }
+
+    // Kết nối đến MongoDB
+    await dbConnect();
+
+    // Kiểm tra role của người dùng gửi request
+    const adminUser = await User.findOne({ email: session.user.email });
+    if (adminUser?.role !== "admin") {
+      return NextResponse.json(
+        { error: "Không có quyền admin" },
+        { status: 403 },
+      );
+    }
+
+    // Kiểm tra khóa học có tồn tại không
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return NextResponse.json(
+        { error: "Không tìm thấy khóa học" },
+        { status: 404 },
+      );
+    }
+
+    // Xóa khóa học
+    await Course.findByIdAndDelete(courseId);
+
+    // Trả về kết quả
+    return NextResponse.json({
+      message: "Đã xóa khóa học thành công",
+    });
+  } catch (error) {
+    console.error("Lỗi khi xóa khóa học:", error);
+    return NextResponse.json(
+      { error: "Lỗi server khi xóa khóa học" },
+      { status: 500 },
+    );
+  }
+}

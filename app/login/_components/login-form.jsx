@@ -141,7 +141,7 @@ export function LoginForm() {
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <span className="flex items-center gap-2">
-                  <Loader2 className="animate-faster-spin h-4 w-4" />
+                  <Loader2 className="h-4 w-4 animate-faster-spin" />
                   Đang xử lý...
                 </span>
               ) : (

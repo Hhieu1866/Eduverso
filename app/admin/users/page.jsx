@@ -792,7 +792,7 @@ export default function UsersPage() {
               disabled={loading}
             >
               {loading ? (
-                <Loader2 className="h-3 w-3 animate-spin" />
+                <Loader2 className="animate-spin-fast h-3 w-3" />
               ) : (
                 <RefreshCw className="h-3 w-3" />
               )}
@@ -828,7 +828,7 @@ export default function UsersPage() {
                   <TableRow key="loading-row">
                     <TableCell colSpan={5} className="h-24 text-center">
                       <div className="flex items-center justify-center gap-2">
-                        <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                        <Loader2 className="animate-spin-fast h-5 w-5 text-primary" />
                         <span>Đang tải dữ liệu...</span>
                       </div>
                     </TableCell>

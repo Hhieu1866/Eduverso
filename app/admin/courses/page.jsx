@@ -9,6 +9,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
 import {
   Select,
@@ -42,6 +43,10 @@ import {
   Filter,
   ThumbsUp,
   ThumbsDown,
+  Loader2,
+  RefreshCw,
+  UserIcon,
+  Trash2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -72,6 +77,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function AdminCoursesPage() {
   const [courses, setCourses] = useState([]);
@@ -86,6 +101,7 @@ export default function AdminCoursesPage() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [rejectionReason, setRejectionReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   // Danh sách trạng thái khóa học
   const courseStatuses = [
@@ -269,107 +285,235 @@ export default function AdminCoursesPage() {
     );
   }, []);
 
+  // Thêm hàm làm mới
+  const handleRefresh = useCallback(async () => {
+    setLoading(true);
+    const toastId = toast.loading("Đang làm mới danh sách...");
+    try {
+      await fetchCourses(1, "", "all");
+      toast.dismiss(toastId);
+      toast.success("Đã làm mới danh sách khoá học");
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error("Không thể làm mới danh sách: " + error.message);
+    }
+  }, [fetchCourses]);
+
+  const handleDeleteDialog = (course) => {
+    setSelectedCourse(course);
+    setIsDeleteOpen(true);
+  };
+
+  const handleDeleteCourse = async () => {
+    if (!selectedCourse) return;
+
+    // Đóng dialog ngay lập tức
+    setIsDeleteOpen(false);
+
+    // Đánh dấu đang xử lý
+    setIsSubmitting(true);
+
+    // Hiển thị thông báo đang xử lý
+    const toastId = toast.loading("Đang xóa khoá học...");
+
+    try {
+      // Cập nhật UI ngay lập tức - xóa khoá học khỏi danh sách trước khi hoàn tất API call
+      setCourses((prevCourses) =>
+        prevCourses.filter((course) => course.id !== selectedCourse.id),
+      );
+      setTotalItems((prev) => Math.max(0, prev - 1));
+
+      // Tiến hành gọi API xóa trên server
+      await axios.delete(`/api/admin/courses/${selectedCourse.id}`);
+
+      // Sau khi xóa thành công, hiển thị thông báo
+      toast.dismiss(toastId);
+      toast.success("Xóa khoá học thành công");
+    } catch (error) {
+      console.error("Lỗi khi xóa khoá học:", error);
+      toast.dismiss(toastId);
+      toast.error(
+        "Lỗi khi xóa khoá học: " +
+          (error.response?.data?.error || error.message),
+      );
+
+      // Tải lại danh sách từ server để đảm bảo dữ liệu đồng bộ
+      fetchCourses();
+    } finally {
+      // Đặt lại trạng thái xử lý
+      setIsSubmitting(false);
+
+      // Ngắt tham chiếu đến khoá học đã xóa
+      setSelectedCourse(null);
+    }
+  };
+
   return (
-    <div className="p-6">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      {/* Header trang */}
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8">
+        <div>
+          <h1 className="mb-1 text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+            Quản lý khoá học
+          </h1>
+          <p className="text-sm text-muted-foreground md:text-base">
+            Xem và duyệt {totalItems} khoá học do giảng viên tạo
+          </p>
+        </div>
+        {/* Nút hành động chính (có thể thêm sau nếu cần) */}
+      </div>
+
+      {/* Thanh filter & search */}
+      <div className="flex flex-col items-center gap-3 sm:flex-row">
+        <div className="relative w-full sm:flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Tìm kiếm khoá học..."
+            className="h-11 w-full pl-9"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setPage(1);
+                fetchCourses(1, e.target.value, statusFilter);
+              }
+            }}
+          />
+        </div>
+        <Select value={statusFilter} onValueChange={handleStatusFilterChange}>
+          <SelectTrigger className="h-11 w-[180px]">
+            <SelectValue placeholder="Lọc theo trạng thái" />
+          </SelectTrigger>
+          <SelectContent>
+            {courseStatuses.map((status) => (
+              <SelectItem key={status.value} value={status.value}>
+                <div className="flex items-center">
+                  {status.icon && <status.icon className="mr-2 h-4 w-4" />}
+                  {status.label}
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Card Table */}
+      <Card className="overflow-hidden border shadow-sm">
+        <CardHeader className="flex flex-row items-center justify-between border-b bg-muted/20 px-4 py-3">
+          <div className="flex items-center gap-2">
+            <UserIcon className="h-4 w-4 text-muted-foreground" />
             <div>
-              <CardTitle>Quản lý khóa học</CardTitle>
+              <CardTitle className="text-base font-medium">
+                Danh sách khoá học
+              </CardTitle>
               <CardDescription>
-                Xem và duyệt các khóa học do giảng viên tạo
+                {courses.length > 0
+                  ? `Hiển thị ${courses.length} trên tổng số ${totalItems} khoá học`
+                  : "Không có dữ liệu khoá học"}
               </CardDescription>
             </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          {/* Filters row */}
-          <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            {/* Search input */}
-            <div className="relative w-full sm:max-w-xs">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Tìm kiếm khóa học..."
-                className="pl-8"
-                value={search}
-                onChange={handleSearch}
-              />
-            </div>
-            {/* Status filter */}
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-muted-foreground" />
-              <Select
-                value={statusFilter}
-                onValueChange={handleStatusFilterChange}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Lọc theo trạng thái" />
-                </SelectTrigger>
-                <SelectContent>
-                  {courseStatuses.map((status) => (
-                    <SelectItem key={status.value} value={status.value}>
-                      <div className="flex items-center">
-                        {status.icon && (
-                          <status.icon className="mr-2 h-4 w-4" />
-                        )}
-                        {status.label}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 gap-1 text-xs"
+              onClick={handleRefresh}
+              disabled={loading}
+            >
+              {loading ? (
+                <Loader2 className="animate-spin-fast h-3 w-3" />
+              ) : (
+                <RefreshCw className="h-3 w-3" />
+              )}
+              <span>Làm mới</span>
+            </Button>
           </div>
-
-          {/* Table */}
-          {loading ? (
-            <div className="flex items-center justify-center py-10">
-              <Spinner size="lg" />
-            </div>
-          ) : courses.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 text-center">
-              <AlertTriangle className="mb-2 h-10 w-10 text-muted-foreground" />
-              <h3 className="text-lg font-medium">
-                Không tìm thấy khóa học nào
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Thử thay đổi bộ lọc hoặc tìm kiếm với từ khóa khác
-              </p>
-            </div>
-          ) : (
-            <div className="overflow-hidden rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Khóa học</TableHead>
-                    <TableHead>Giảng viên</TableHead>
-                    <TableHead>Trạng thái</TableHead>
-                    <TableHead>Ngày cập nhật</TableHead>
-                    <TableHead className="text-right">Thao tác</TableHead>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <Table className="w-full">
+              <TableHeader>
+                <TableRow className="border-b bg-muted/30 hover:bg-transparent">
+                  <TableHead className="w-[220px] py-2.5 pl-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Khoá học
+                  </TableHead>
+                  <TableHead className="w-[20%] py-2.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Giảng viên
+                  </TableHead>
+                  <TableHead className="w-[120px] py-2.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Trạng thái
+                  </TableHead>
+                  <TableHead className="w-[130px] py-2.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Ngày cập nhật
+                  </TableHead>
+                  <TableHead className="w-[70px] py-2.5 pr-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Thao tác
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
+                  <TableRow key="loading-row">
+                    <TableCell colSpan={5} className="h-24 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <Loader2 className="animate-spin-fast h-5 w-5 text-primary" />
+                        <span>Đang tải dữ liệu...</span>
+                      </div>
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {courses.map((course) => (
-                    <TableRow key={course.id}>
-                      <TableCell className="font-medium">
-                        <div className="flex items-center space-x-3">
-                          {course.thumbnailUrl ? (
-                            <img
-                              src={course.thumbnailUrl}
-                              alt={course.title}
-                              className="h-10 w-10 rounded-md object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-secondary">
+                ) : courses.length === 0 ? (
+                  <TableRow key="empty-row">
+                    <TableCell colSpan={5} className="h-24 text-center">
+                      <div className="flex flex-col items-center justify-center gap-2 p-6 text-muted-foreground">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                          <FileEdit className="h-6 w-6 stroke-1" />
+                        </div>
+                        <p className="font-medium">Không tìm thấy khoá học</p>
+                        <p className="max-w-md text-center text-sm">
+                          Không có khoá học nào phù hợp với bộ lọc hiện tại. Thử
+                          thay đổi từ khoá tìm kiếm hoặc bộ lọc.
+                        </p>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setSearch("");
+                            setStatusFilter("all");
+                            setPage(1);
+                            fetchCourses(1, "", "all");
+                          }}
+                          className="mt-2 text-primary"
+                        >
+                          Xoá bộ lọc và hiển thị tất cả
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  courses.map((course) => (
+                    <TableRow
+                      key={course.id}
+                      className="group cursor-pointer transition-colors hover:bg-muted/30"
+                    >
+                      <TableCell className="py-2.5 pl-3">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-primary/20 bg-primary/10 text-primary ring-4 ring-transparent transition-all duration-200 group-hover:ring-primary/5">
+                            {course.thumbnailUrl ? (
+                              <img
+                                src={course.thumbnailUrl}
+                                alt={course.title}
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
                               <FileEdit className="h-5 w-5 text-muted-foreground" />
-                            </div>
-                          )}
-                          <div className="max-w-[200px]">
-                            <div className="truncate font-medium">
+                            )}
+                          </div>
+                          <div>
+                            <div className="max-w-[160px] truncate text-sm font-medium">
                               {course.title}
                             </div>
-                            <div className="truncate text-xs text-muted-foreground">
+                            <div className="max-w-[160px] truncate text-xs text-muted-foreground">
                               {course.category
                                 ? course.category.title
                                 : "Chưa phân loại"}
@@ -377,40 +521,38 @@ export default function AdminCoursesPage() {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="py-2.5 text-sm font-medium">
                         {formatInstructorName(course.instructor)}
                       </TableCell>
-                      <TableCell>{getStatusBadge(course.status)}</TableCell>
-                      <TableCell>
+                      <TableCell className="py-2.5">
+                        {getStatusBadge(course.status)}
+                      </TableCell>
+                      <TableCell className="py-2.5 text-sm text-muted-foreground">
                         {course.modifiedOn
                           ? format(new Date(course.modifiedOn), "dd/MM/yyyy", {
                               locale: vi,
                             })
                           : "Không rõ"}
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="pr-3 text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 rounded-full opacity-70 transition-opacity hover:bg-muted group-hover:opacity-100"
+                            >
+                              <span className="sr-only">Thao tác</span>
                               <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Menu</span>
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
+                          <DropdownMenuContent align="end" className="w-48">
                             <DropdownMenuItem
                               onClick={() => handleViewCourse(course)}
+                              className="cursor-pointer"
                             >
                               <Eye className="mr-2 h-4 w-4" />
-                              Xem chi tiết
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <Link
-                                href={`/dashboard/courses/${course.id}`}
-                                target="_blank"
-                              >
-                                <FileEdit className="mr-2 h-4 w-4" />
-                                Xem trang chỉnh sửa
-                              </Link>
+                              <span>Xem chi tiết</span>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             {course.status === "pending" && (
@@ -420,83 +562,95 @@ export default function AdminCoursesPage() {
                                   className="text-green-600"
                                 >
                                   <CheckCheck className="mr-2 h-4 w-4" />
-                                  Duyệt khóa học
+                                  Duyệt khoá học
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                   onClick={() => handleRejectCourse(course)}
                                   className="text-red-600"
                                 >
                                   <X className="mr-2 h-4 w-4" />
-                                  Từ chối khóa học
+                                  Từ chối khoá học
                                 </DropdownMenuItem>
                               </>
                             )}
+                            <DropdownMenuItem
+                              onClick={() => handleDeleteDialog(course)}
+                              className="cursor-pointer text-destructive focus:text-destructive"
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              <span>Xóa</span>
+                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
-
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
           {/* Pagination */}
-          {!loading && courses.length > 0 && (
-            <div className="mt-4 flex items-center justify-between">
-              <p className="text-sm text-muted-foreground">
-                Hiển thị <strong>{courses.length}</strong> trên tổng số{" "}
-                <strong>{totalItems}</strong> khóa học
-              </p>
-              {totalPages > 1 && (
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      <PaginationPrevious
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          if (page > 1) handlePageChange(page - 1);
-                        }}
-                        aria-disabled={page === 1}
-                        className={
-                          page === 1 ? "pointer-events-none opacity-50" : ""
-                        }
-                      />
-                    </PaginationItem>
-                    {[...Array(totalPages)].map((_, i) => (
-                      <PaginationItem key={i + 1}>
+          {totalPages > 1 && (
+            <CardFooter className="flex justify-center border-t px-6 py-5">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => page > 1 && handlePageChange(page - 1)}
+                      className={
+                        page <= 1
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer transition-opacity duration-200"
+                      }
+                    />
+                  </PaginationItem>
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    const pageNumber = i + 1;
+                    return (
+                      <PaginationItem key={i}>
                         <PaginationLink
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handlePageChange(i + 1);
-                          }}
-                          isActive={page === i + 1}
+                          onClick={() => handlePageChange(pageNumber)}
+                          isActive={page === pageNumber}
+                          className="cursor-pointer transition-colors hover:bg-muted"
                         >
-                          {i + 1}
+                          {pageNumber}
                         </PaginationLink>
                       </PaginationItem>
-                    ))}
-                    <PaginationItem>
-                      <PaginationNext
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          if (page < totalPages) handlePageChange(page + 1);
-                        }}
-                        aria-disabled={page === totalPages}
-                        className={
-                          page === totalPages
-                            ? "pointer-events-none opacity-50"
-                            : ""
-                        }
-                      />
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              )}
-            </div>
+                    );
+                  })}
+                  {totalPages > 5 && (
+                    <>
+                      <PaginationItem>
+                        <div className="flex h-9 w-9 items-center justify-center">
+                          ...
+                        </div>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink
+                          onClick={() => handlePageChange(totalPages)}
+                          isActive={page === totalPages}
+                          className="cursor-pointer transition-colors hover:bg-muted"
+                        >
+                          {totalPages}
+                        </PaginationLink>
+                      </PaginationItem>
+                    </>
+                  )}
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() =>
+                        page < totalPages && handlePageChange(page + 1)
+                      }
+                      className={
+                        page >= totalPages
+                          ? "pointer-events-none opacity-50"
+                          : "cursor-pointer transition-opacity duration-200"
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </CardFooter>
           )}
         </CardContent>
       </Card>
@@ -589,7 +743,7 @@ export default function AdminCoursesPage() {
                           />
                         ) : (
                           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-                            <User className="h-6 w-6 text-primary" />
+                            <UserIcon className="h-6 w-6 text-primary" />
                           </div>
                         )}
                         <div>
@@ -805,6 +959,51 @@ export default function AdminCoursesPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Dialog xác nhận xóa khoá học */}
+      {selectedCourse && (
+        <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+          <AlertDialogContent className="max-w-md">
+            <AlertDialogHeader className="border-b pb-4">
+              <AlertDialogTitle className="flex items-center gap-2 text-xl">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                </div>
+                Xác nhận xóa khoá học
+              </AlertDialogTitle>
+              <AlertDialogDescription className="pt-2">
+                Bạn có chắc chắn muốn xóa khoá học{" "}
+                <span className="font-medium">{selectedCourse.title}</span>?
+              </AlertDialogDescription>
+              <div className="mt-3 rounded-md border border-destructive/20 bg-destructive/10 p-3 text-sm text-destructive">
+                <AlertTriangle className="mr-2 inline-block h-4 w-4" />
+                Hành động này không thể hoàn tác và sẽ xóa tất cả dữ liệu liên
+                quan đến khoá học này.
+              </div>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="mt-2 flex justify-between gap-2 border-t px-2 pt-4">
+              <AlertDialogCancel className="relative">Hủy</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteCourse}
+                className="relative gap-2 bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="animate-spin-fast h-4 w-4" />
+                    Đang xóa...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="h-4 w-4" />
+                    Xóa khoá học
+                  </>
+                )}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   );
 }

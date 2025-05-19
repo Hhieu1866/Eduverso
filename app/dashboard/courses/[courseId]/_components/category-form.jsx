@@ -44,10 +44,7 @@ export const CategoryForm = ({ initialData, courseId, options }) => {
     }
   }, [options]);
 
-  const toggleEdit = useCallback(
-    () => setIsEditing((current) => !current),
-    [],
-  );
+  const toggleEdit = useCallback(() => setIsEditing((current) => !current), []);
 
   const toggleCreateNew = useCallback(() => {
     setIsCreatingNew((current) => !current);
@@ -173,15 +170,15 @@ export const CategoryForm = ({ initialData, courseId, options }) => {
   );
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+    <div className="mt-6 rounded-md border bg-gray-50 p-4">
+      <div className="flex items-center justify-between font-medium">
         Course Category
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
+              <Pencil className="mr-2 h-4 w-4" />
               Edit Category
             </>
           )}
@@ -190,8 +187,8 @@ export const CategoryForm = ({ initialData, courseId, options }) => {
       {!isEditing && (
         <p
           className={cn(
-            "text-sm mt-2",
-            !initialData.value && "text-slate-500 italic",
+            "mt-2 text-sm",
+            !initialData.value && "italic text-slate-500",
           )}
         >
           {selectedOption?.label || "No category"}
@@ -202,7 +199,7 @@ export const CategoryForm = ({ initialData, courseId, options }) => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-4 mt-4"
+              className="mt-4 space-y-4"
             >
               <FormField
                 control={form.control}
@@ -229,7 +226,7 @@ export const CategoryForm = ({ initialData, courseId, options }) => {
                     onClick={toggleCreateNew}
                     className="ml-auto"
                   >
-                    <PlusCircle className="h-4 w-4 mr-2" />
+                    <PlusCircle className="mr-2 h-4 w-4" />
                     Thêm danh mục mới
                   </Button>
                 )}
@@ -239,7 +236,7 @@ export const CategoryForm = ({ initialData, courseId, options }) => {
 
           {isCreatingNew && (
             <div className="mt-4 border-t pt-4">
-              <h3 className="text-sm font-medium mb-2">Tạo danh mục mới</h3>
+              <h3 className="mb-2 text-sm font-medium">Tạo danh mục mới</h3>
               <Form {...newCategoryForm}>
                 <form
                   onSubmit={newCategoryForm.handleSubmit(onCreateCategory)}
@@ -268,7 +265,7 @@ export const CategoryForm = ({ initialData, courseId, options }) => {
                       size="sm"
                     >
                       {isCreating && (
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       )}
                       Tạo danh mục
                     </Button>
