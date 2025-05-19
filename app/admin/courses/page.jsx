@@ -140,10 +140,22 @@ export default function AdminCoursesPage() {
           setTimeout(resolve, 300),
         );
 
+        // Cấu hình retry cho request này
+        const requestConfig = {
+          params,
+          retry: 3,
+          retryDelay: 1000,
+        };
+
         const [response] = await Promise.all([
-          axios.get("/api/admin/courses", { params }),
+          axios.get("/api/admin/courses", requestConfig),
           shouldShowFullLoading ? timeoutPromise : Promise.resolve(),
         ]);
+
+        // Kiểm tra đảm bảo response hợp lệ
+        if (!response || !response.courses) {
+          throw new Error("Dữ liệu trả về không hợp lệ");
+        }
 
         // Cập nhật state
         setCourses(response.courses || []);
@@ -151,7 +163,32 @@ export default function AdminCoursesPage() {
         setTotalItems(response.total || 0);
       } catch (error) {
         console.error("Error fetching courses:", error);
-        toast.error("Không thể tải danh sách khóa học");
+
+        // Hiển thị thông báo lỗi chi tiết hơn
+        let errorMessage = "Không thể tải danh sách khóa học";
+
+        if (error.response) {
+          // Lỗi từ server với response
+          errorMessage += `: ${error.response.data?.error || `Lỗi ${error.response.status}`}`;
+        } else if (error.code === "ERR_NETWORK") {
+          // Lỗi kết nối mạng
+          errorMessage =
+            "Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng của bạn.";
+        } else if (error.code === "ECONNABORTED") {
+          // Lỗi timeout
+          errorMessage =
+            "Yêu cầu bị hủy do quá thời gian. Vui lòng thử lại sau.";
+        } else if (error.message) {
+          // Các lỗi khác có thông báo
+          errorMessage += `: ${error.message}`;
+        }
+
+        toast.error(errorMessage);
+
+        // Đặt courses rỗng nếu có lỗi để hiển thị trạng thái trống
+        setCourses([]);
+        setTotalPages(1);
+        setTotalItems(0);
       } finally {
         setLoading(false);
       }
@@ -305,28 +342,28 @@ export default function AdminCoursesPage() {
   };
 
   const handleDeleteCourse = async () => {
-    if (!selectedCourse) return;
+    if (!selectedCourse || isSubmitting) return;
 
-    // Đóng dialog ngay lập tức
-    setIsDeleteOpen(false);
-
-    // Đánh dấu đang xử lý
     setIsSubmitting(true);
-
-    // Hiển thị thông báo đang xử lý
     const toastId = toast.loading("Đang xóa khoá học...");
 
     try {
-      // Cập nhật UI ngay lập tức - xóa khoá học khỏi danh sách trước khi hoàn tất API call
+      // Lưu ID khoá học trước khi xóa để cập nhật UI sau đó
+      const courseId = selectedCourse.id;
+
+      // Đóng dialog trước để tránh giao diện bị đơ
+      setIsDeleteOpen(false);
+
+      // Tiến hành gọi API xóa trên server
+      await axios.delete(`/api/admin/courses/${courseId}`);
+
+      // Cập nhật UI sau khi xóa thành công
       setCourses((prevCourses) =>
-        prevCourses.filter((course) => course.id !== selectedCourse.id),
+        prevCourses.filter((course) => course.id !== courseId),
       );
       setTotalItems((prev) => Math.max(0, prev - 1));
 
-      // Tiến hành gọi API xóa trên server
-      await axios.delete(`/api/admin/courses/${selectedCourse.id}`);
-
-      // Sau khi xóa thành công, hiển thị thông báo
+      // Hiển thị thông báo thành công
       toast.dismiss(toastId);
       toast.success("Xóa khoá học thành công");
     } catch (error) {
@@ -338,12 +375,10 @@ export default function AdminCoursesPage() {
       );
 
       // Tải lại danh sách từ server để đảm bảo dữ liệu đồng bộ
-      fetchCourses();
+      fetchCourses(page, search, statusFilter);
     } finally {
-      // Đặt lại trạng thái xử lý
+      // Đặt lại trạng thái xử lý và tham chiếu khoá học
       setIsSubmitting(false);
-
-      // Ngắt tham chiếu đến khoá học đã xóa
       setSelectedCourse(null);
     }
   };

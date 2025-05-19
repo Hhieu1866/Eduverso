@@ -1,5 +1,11 @@
 import { dbConnect } from "@/service/mongo";
 import { Course } from "@/model/course-model";
+import { Category } from "@/model/category-model";
+import { User } from "@/model/user-model";
+import { Module } from "@/model/module.model";
+import { Lesson } from "@/model/lesson.model";
+import { Quizset } from "@/model/quizset-model";
+import { Quiz } from "@/model/quizzes-model";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { replaceMongoIdInArray } from "@/lib/convertData";
