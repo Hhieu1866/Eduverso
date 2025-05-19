@@ -79,7 +79,12 @@ const EditCourse = async ({ params: { courseId } }) => {
 
       <div className="p-6">
         <div className="flex items-center justify-end">
-          <CourseActions courseId={courseId} isActive={course?.active} />
+          <CourseActions
+            courseId={courseId}
+            isActive={course?.active}
+            status={course?.status}
+            rejectionReason={course?.rejectionReason}
+          />
         </div>
         <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>

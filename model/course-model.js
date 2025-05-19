@@ -31,6 +31,15 @@ const courseSchema = new Schema({
     default: false,
     type: Boolean,
   },
+  status: {
+    type: String,
+    enum: ["draft", "pending", "approved", "rejected"],
+    default: "draft",
+  },
+  rejectionReason: {
+    type: String,
+    default: "",
+  },
   category: { type: Schema.ObjectId, ref: "Category" },
 
   instructor: { type: Schema.ObjectId, ref: "User" },

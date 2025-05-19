@@ -18,7 +18,8 @@ import { Enrollment } from "@/model/enrollment-model";
 export async function getCourseList(filters = {}) {
   try {
     // Xây dựng query filter
-    const query = { active: true };
+    // Chỉ lấy các khóa học đã được duyệt (approved) và active
+    const query = { active: true, status: "approved" };
 
     // Lọc theo danh mục
     if (filters.categories && filters.categories.length > 0) {
@@ -288,7 +289,11 @@ export async function create(courseData) {
 
 export async function getCoursesByCategory(categoryId) {
   try {
-    const courses = await Course.find({ category: categoryId })
+    const courses = await Course.find({
+      category: categoryId,
+      active: true,
+      status: "approved",
+    })
       .populate("category")
       .lean();
     return courses;
@@ -316,6 +321,7 @@ export async function getRelatedCourses(currentCourseId, categoryId) {
       category: categoryObjectId,
       _id: { $ne: currentCourseObjectId }, // Exclude current course
       active: true,
+      status: "approved",
     })
       .select("title thumbnail thumbnailUrl price")
       .lean();
