@@ -83,23 +83,9 @@ export default function AdminSidebar({ collapsed, setCollapsed }) {
   return (
     <Sidebar
       variant="inset"
-      className="border-r border-border/40 bg-sidebar-background shadow-sm transition-all duration-300"
+      className="bg-sidebar-background border-r border-border/40 shadow-sm transition-all duration-300"
       collapsed={collapsed}
     >
-      {/* Logo & Brand */}
-      <div className="flex h-16 items-center border-b border-border/40 px-4">
-        <div className="flex items-center gap-3 transition-all duration-300">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary shadow-md">
-            <GalleryVerticalEnd className="h-5 w-5 text-primary-foreground" />
-          </div>
-          {!collapsed && (
-            <span className="text-xl font-semibold tracking-tight transition-opacity">
-              Easy Admin
-            </span>
-          )}
-        </div>
-      </div>
-
       {/* Menu Items */}
       <SidebarScrollArea className="h-[calc(100vh-8rem)] pt-2">
         <SidebarSection>
@@ -146,7 +132,7 @@ export default function AdminSidebar({ collapsed, setCollapsed }) {
                       className={cn(
                         "flex h-10 w-full items-center gap-3 rounded-md px-3 transition-all duration-200",
                         isActive
-                          ? "bg-primary/10 text-primary font-medium"
+                          ? "bg-primary/10 font-medium text-primary"
                           : "text-muted-foreground hover:bg-accent hover:text-foreground",
                       )}
                     >
@@ -204,7 +190,7 @@ export default function AdminSidebar({ collapsed, setCollapsed }) {
           <Button
             variant="outline"
             size="sm"
-            className="mb-2 w-full gap-2 text-destructive hover:bg-destructive/10 justify-start"
+            className="mb-2 w-full justify-start gap-2 text-destructive hover:bg-destructive/10"
             onClick={handleSignOut}
           >
             <LogOut className="h-4 w-4" />

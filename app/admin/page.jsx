@@ -76,7 +76,7 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <Button variant="outline" size="sm">
             <Download className="mr-2 h-4 w-4" />
             Xuất báo cáo
@@ -85,9 +85,10 @@ export default function AdminDashboard() {
             <Plus className="mr-2 h-4 w-4" />
             Thêm mới
           </Button>
-        </div>
+        </div> */}
       </div>
-      <Separator />
+
+      {/* <Separator /> */}
 
       <StatsCards />
 

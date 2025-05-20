@@ -18,16 +18,20 @@ export default function AdminClientLayout({ children, user }) {
   }, []);
 
   return (
-    <SidebarProvider collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed}>
+    <SidebarProvider
+      collapsed={sidebarCollapsed}
+      setCollapsed={setSidebarCollapsed}
+    >
       <div className="flex h-screen bg-background">
-        <AdminSidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
-        <SidebarInset className="flex flex-col flex-1">
+        <AdminSidebar
+          collapsed={sidebarCollapsed}
+          setCollapsed={setSidebarCollapsed}
+        />
+        <SidebarInset className="flex flex-1 flex-col">
           <AdminHeader user={user} />
-          <main className="flex-1 overflow-auto p-6">
-            {children}
-          </main>
+          <main className="flex-1 overflow-auto p-6">{children}</main>
         </SidebarInset>
       </div>
     </SidebarProvider>
   );
-} 
+}

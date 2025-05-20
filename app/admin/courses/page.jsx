@@ -344,28 +344,35 @@ export default function AdminCoursesPage() {
   const handleDeleteCourse = async () => {
     if (!selectedCourse || isSubmitting) return;
 
+    const courseId = selectedCourse.id;
+    if (!courseId) {
+      toast.error("Không thể xác định khóa học để xóa");
+      return;
+    }
+
+    // Đóng dialog ngay lập tức
+    setIsDeleteOpen(false);
+
+    // Đánh dấu đang xử lý
     setIsSubmitting(true);
     const toastId = toast.loading("Đang xóa khoá học...");
 
+    // Lưu trữ state hiện tại để có thể rollback nếu API lỗi (tùy chọn, nếu cần phức tạp hơn)
+    // const previousCourses = [...courses];
+    // const previousTotalItems = totalItems;
+
+    // Cập nhật UI ngay lập tức (Optimistic Update)
+    setCourses((prevCourses) =>
+      prevCourses.filter((course) => course.id !== courseId),
+    );
+    setTotalItems((prev) => Math.max(0, prev - 1));
+
     try {
-      // Lưu ID khoá học trước khi xóa để cập nhật UI sau đó
-      const courseId = selectedCourse.id;
-
-      // Đóng dialog trước để tránh giao diện bị đơ
-      setIsDeleteOpen(false);
-
-      // Tiến hành gọi API xóa trên server
       await axios.delete(`/api/admin/courses/${courseId}`);
 
-      // Cập nhật UI sau khi xóa thành công
-      setCourses((prevCourses) =>
-        prevCourses.filter((course) => course.id !== courseId),
-      );
-      setTotalItems((prev) => Math.max(0, prev - 1));
-
-      // Hiển thị thông báo thành công
       toast.dismiss(toastId);
       toast.success("Xóa khoá học thành công");
+      // selectedCourse sẽ được set là null trong finally
     } catch (error) {
       console.error("Lỗi khi xóa khoá học:", error);
       toast.dismiss(toastId);
@@ -374,12 +381,12 @@ export default function AdminCoursesPage() {
           (error.response?.data?.error || error.message),
       );
 
-      // Tải lại danh sách từ server để đảm bảo dữ liệu đồng bộ
+      // Rollback UI hoặc fetch lại toàn bộ nếu API lỗi
+      // Hiện tại đang fetch lại toàn bộ:
       fetchCourses(page, search, statusFilter);
     } finally {
-      // Đặt lại trạng thái xử lý và tham chiếu khoá học
       setIsSubmitting(false);
-      setSelectedCourse(null);
+      setSelectedCourse(null); // Đảm bảo selectedCourse được reset
     }
   };
 

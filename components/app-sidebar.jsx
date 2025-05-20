@@ -80,7 +80,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="border-r shadow-sm transition-all">
-      <SidebarHeader className="flex h-14 items-center justify-center border-b p-2">
+      <SidebarHeader className="flex h-16 items-center justify-center border-b p-2">
         <Link
           href="/admin"
           className="flex items-center justify-center gap-3 font-semibold"
@@ -144,40 +144,25 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild className="p-2">
-                  <button
-                    onClick={() => {
-                      signOut({ redirect: false }).then(() => {
-                        router.push("/login");
-                      });
-                    }}
-                    className="flex w-full items-center gap-4 text-red-500"
-                  >
-                    <LogOut className="h-5 w-5" />
-                    <span>Đăng xuất</span>
-                  </button>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {/* <SidebarMenuItem>
+                <SidebarMenuButton asChild className="p-2"></SidebarMenuButton>
+              </SidebarMenuItem> */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="flex items-center gap-3">
-          <Avatar>
-            <AvatarImage src="/placeholders/user.png" alt="Avatar" />
-            <AvatarFallback className="bg-primary text-primary-foreground">
-              <User className="h-4 w-4" />
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium">Admin</span>
-            <span className="text-xs text-muted-foreground">
-              admin@email.com
-            </span>
-          </div>
-        </div>
+        <button
+          onClick={() => {
+            signOut({ redirect: false }).then(() => {
+              router.push("/login");
+            });
+          }}
+          className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-red-500 transition hover:bg-red-50"
+        >
+          <LogOut className="size-5" />
+          <span className="font-semibold">Đăng xuất</span>
+        </button>
       </SidebarFooter>
     </Sidebar>
   );

@@ -2,52 +2,53 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 // Chuỗi kết nối MongoDB (thay thế bằng chuỗi kết nối của bạn)
-const MONGODB_URI = "mongodb+srv://hoanghieu7a3:wdhGeWqbNKWJLISw@hieuhoang.ft7111u.mongodb.net/lms?retryWrites=true&w=majority&appName=hieuhoang";
+const MONGODB_URI =
+  "mongodb+srv://hoanghieu7a3:wdhGeWqbNKWJLISw@hieuhoang.ft7111u.mongodb.net/lms?retryWrites=true&w=majority&appName=hieuhoang";
 
 // Định nghĩa schema User trong file này để tránh vấn đề import
 const userSchema = new mongoose.Schema({
   firstName: {
     required: true,
-    type: String
+    type: String,
   },
   lastName: {
     required: true,
-    type: String
+    type: String,
   },
   password: {
     required: true,
-    type: String
+    type: String,
   },
   email: {
     required: true,
-    type: String
+    type: String,
   },
   role: {
     required: true,
-    type: String
+    type: String,
   },
   phone: {
     required: false,
-    type: String
+    type: String,
   },
   bio: {
     required: false,
     type: String,
-    default: ""
+    default: "",
   },
   socialMedia: {
     required: false,
-    type: Object
+    type: Object,
   },
   profilePicture: {
     required: false,
-    type: String
+    type: String,
   },
   designation: {
     required: false,
     type: String,
-    default: ""
-  }
+    default: "",
+  },
 });
 
 // Kết nối đến MongoDB
@@ -62,7 +63,7 @@ async function dbConnect() {
 
 async function main() {
   console.log("Bắt đầu seeding database...");
-  
+
   // Kết nối đến MongoDB
   await dbConnect();
 
@@ -83,14 +84,14 @@ async function main() {
     socialMedia: {
       facebook: "https://facebook.com/admin.example",
       twitter: "https://twitter.com/admin_example",
-      linkedin: "https://linkedin.com/in/admin-example"
-    }
+      linkedin: "https://linkedin.com/in/admin-example",
+    },
   };
 
   // Kiểm tra và tạo tài khoản admin
   const hashedPassword = await bcrypt.hash(adminData.password, 10);
   const existingAdmin = await User.findOne({ email: adminData.email });
-  
+
   if (!existingAdmin) {
     const admin = await User.create({
       email: adminData.email,
@@ -102,10 +103,12 @@ async function main() {
       bio: adminData.bio,
       profilePicture: adminData.profilePicture,
       designation: adminData.designation,
-      socialMedia: adminData.socialMedia
+      socialMedia: adminData.socialMedia,
     });
-    
-    console.log(`Đã tạo tài khoản admin: ${admin.email} (${admin.firstName} ${admin.lastName})`);
+
+    console.log(
+      `Đã tạo tài khoản admin: ${admin.email} (${admin.firstName} ${admin.lastName})`,
+    );
   } else {
     console.log(`Tài khoản admin ${adminData.email} đã tồn tại, bỏ qua.`);
   }
@@ -122,4 +125,4 @@ main()
     console.log("Đóng kết nối MongoDB...");
     mongoose.disconnect();
     process.exit(0);
-  }); 
+  });
