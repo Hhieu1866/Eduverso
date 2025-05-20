@@ -33,7 +33,7 @@ const support = () => {
 
               <a
                 href="#"
-                className="w-40 rounded-lg bg-secondary px-6 py-3 text-center font-semibold text-primary shadow transition hover:bg-colors-secondaryHover"
+                className="w-40 rounded-lg border border-primary bg-secondary px-6 py-3 text-center font-semibold text-primary shadow transition hover:bg-colors-secondaryHover"
               >
                 Gọi hỗ trợ
               </a>

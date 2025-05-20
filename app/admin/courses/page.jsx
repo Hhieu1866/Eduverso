@@ -540,7 +540,7 @@ export default function AdminCoursesPage() {
                     >
                       <TableCell className="py-2.5 pl-3">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-primary/20 bg-primary/10 text-primary ring-4 ring-transparent transition-all duration-200 group-hover:ring-primary/5">
+                          <div className="flex h-12 w-20 items-center justify-center overflow-hidden rounded-lg border border-primary/20 bg-primary/10 text-primary ring-4 ring-transparent transition-all duration-200 group-hover:ring-primary/5">
                             {course.thumbnailUrl ? (
                               <img
                                 src={course.thumbnailUrl}
