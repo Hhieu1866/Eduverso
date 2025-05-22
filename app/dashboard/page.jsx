@@ -7,7 +7,10 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { formatPrice } from "@/lib/formatPrice";
-import { getInstructorDashboardData } from "@/lib/dashboard-helper";
+import {
+  getInstructorDashboardData,
+  REVIEW_DATA,
+} from "@/lib/dashboard-helper";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import Link from "next/link";
@@ -31,11 +34,14 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 const DashboardPage = async () => {
   // Lấy dữ liệu dashboard cho instructor
   let stats = null;
+  let recentReviews = [];
   try {
     stats = await getInstructorDashboardData();
+    recentReviews = (await getInstructorDashboardData(REVIEW_DATA)).slice(0, 3);
   } catch (e) {
     console.error("Lỗi khi lấy dữ liệu dashboard:", e);
     stats = null;
+    recentReviews = [];
   }
 
   // Xử lý các biến thống kê
@@ -50,9 +56,6 @@ const DashboardPage = async () => {
   const recentCourses = Array.isArray(stats?.courses)
     ? stats.courses.slice(0, 4)
     : [];
-  const recentReviews = Array.isArray(stats?.reviews)
-    ? stats.reviews.slice(0, 3)
-    : [];
 
   // Tính toán tỷ lệ hoàn thành nếu có dữ liệu
   let completionRate = 0;
@@ -64,6 +67,8 @@ const DashboardPage = async () => {
       (completedEnrollments / stats.enrollments.length) * 100,
     );
   }
+
+  console.log("recentReviews", recentReviews);
 
   return (
     <div className="space-y-6 p-6">
@@ -286,25 +291,20 @@ const DashboardPage = async () => {
                         dateStr = "";
                       }
                     }
-                    const avatarUrl = review.user?.profilePicture;
-                    const fullName =
-                      `${review.user?.firstName || "U"} ${review.user?.lastName || ""}`.trim();
+                    const avatarUrl = review.studentAvatar;
+                    const fullName = review.studentName || "U";
                     return (
                       <div
                         key={index}
-                        className="flex items-center gap-3 rounded-lg bg-orange-50/90 p-3"
+                        className="flex items-center gap-3 rounded-lg bg-secondary p-3"
                       >
                         <div className="flex-shrink-0">
-                          <Avatar>
+                          <Avatar className="h-12 w-12">
                             {avatarUrl ? (
                               <AvatarImage src={avatarUrl} alt={fullName} />
                             ) : null}
-                            <AvatarFallback className="bg-gray-200 font-normal uppercase text-colors-navy">
-                              {(
-                                review.user?.firstName?.charAt(0) ||
-                                review.user?.email?.charAt(0) ||
-                                "U"
-                              ).toUpperCase()}
+                            <AvatarFallback className="bg-gray-200 text-xl font-medium uppercase text-black">
+                              {(fullName.charAt(0) || "U").toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
                         </div>
