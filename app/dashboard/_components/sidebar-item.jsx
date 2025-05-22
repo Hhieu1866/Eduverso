@@ -1,8 +1,13 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const SidebarItem = ({ icon: Icon, label, href }) => {
   const pathname = usePathname();
@@ -15,28 +20,38 @@ export const SidebarItem = ({ icon: Icon, label, href }) => {
   };
 
   return (
-    <button
-      onClick={onClick}
-      type="button"
-      className={cn(
-        "flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20",
-        isActive &&
-          "text-emerald-600 bg-emerald-200/20 hover:bg-emerald-200/20 hover:text-emerald-600"
-      )}
-    >
-      <div className="flex items-center gap-x-2 py-4">
-        <Icon
-          size={22}
-          className={cn("text-slate-500", isActive && "text-emerald-600")}
-        />
-        {label}
-      </div>
-      <div
-        className={cn(
-          "ml-auto opacity-0 border-2 border-emerald-600 h-full transition-all",
-          isActive && "opacity-100"
-        )}
-      />
-    </button>
+    <TooltipProvider delayDuration={300}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={onClick}
+            type="button"
+            className={cn(
+              "group relative mb-1 flex w-full items-center gap-x-3 overflow-hidden rounded-lg px-4 py-3 text-sm font-medium text-slate-500 transition-all duration-200 hover:text-slate-700",
+              isActive
+                ? "bg-primary/10 font-semibold text-primary shadow-sm"
+                : "hover:bg-slate-100",
+            )}
+          >
+            <Icon
+              size={20}
+              className={cn(
+                "text-slate-400 transition-colors duration-200",
+                isActive ? "text-primary" : "group-hover:text-slate-700",
+              )}
+            />
+
+            <span>{label}</span>
+
+            {isActive && (
+              <span className="absolute inset-y-0 left-0 w-1 rounded-r-full bg-primary" />
+            )}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="text-xs">
+          {label}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };

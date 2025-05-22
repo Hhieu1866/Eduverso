@@ -1,71 +1,105 @@
 "use client";
 
-import { BarChart, LogOut } from "lucide-react";
-
-import { BookOpen } from "lucide-react";
+import {
+  LayoutDashboard,
+  BookOpen,
+  PlusCircle,
+  Radio,
+  Book,
+  Settings,
+  Users,
+  BarChart3,
+  FileText,
+  HelpCircle,
+} from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
-import { BookA } from "lucide-react";
-import { Radio } from "lucide-react";
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
-const routes = [
+// Các route được tổ chức theo nhóm
+const routeGroups = [
   {
-    icon: BarChart,
-    label: "Analytics",
-    href: "/dashboard",
+    groupName: "Quản lý nội dung",
+    routes: [
+      {
+        icon: LayoutDashboard,
+        label: "Dashboard",
+        href: "/dashboard",
+      },
+      {
+        icon: BookOpen,
+        label: "Khóa học",
+        href: "/dashboard/courses",
+      },
+      {
+        icon: PlusCircle,
+        label: "Thêm khóa học",
+        href: "/dashboard/courses/add",
+      },
+      {
+        icon: Radio,
+        label: "Buổi học trực tuyến",
+        href: "/dashboard/lives",
+      },
+      {
+        icon: Book,
+        label: "Bộ câu hỏi",
+        href: "/dashboard/quiz-sets",
+      },
+    ],
   },
-  {
-    icon: BookOpen,
-    label: "Courses",
-    href: "/dashboard/courses",
-  },
-  {
-    icon: BookOpen,
-    label: "Add Course",
-    href: "/dashboard/courses/add",
-  },
-  {
-    icon: Radio,
-    label: "Lives",
-    href: "/dashboard/lives",
-  },
-  {
-    icon: BookA,
-    label: "Quizes",
-    href: "/dashboard/quiz-sets",
-  },
+  // {
+  //   groupName: "Thống kê",
+  //   routes: [
+  //     {
+  //       icon: BarChart3,
+  //       label: "Báo cáo",
+  //       href: "/dashboard/reports",
+  //     },
+  //     {
+  //       icon: Users,
+  //       label: "Học viên",
+  //       href: "/dashboard/students",
+  //     },
+  //   ],
+  // },
+  // {
+  //   groupName: "Hệ thống",
+  //   routes: [
+  //     {
+  //       icon: Settings,
+  //       label: "Cài đặt",
+  //       href: "/dashboard/settings",
+  //     },
+  //     {
+  //       icon: HelpCircle,
+  //       label: "Trợ giúp",
+  //       href: "/dashboard/help",
+  //     },
+  //   ],
+  // },
 ];
 
 export const SidebarRoutes = () => {
-  const router = useRouter();
-
-  // const handleSignOut = async () => {
-  //   await signOut({ redirect: false });
-  //   router.push("/login");
-  // };
-
   return (
-    <div className="flex w-full flex-col">
-      {routes.map((route) => (
-        <SidebarItem
-          key={route.href}
-          icon={route.icon}
-          label={route.label}
-          href={route.href}
-        />
+    <div className="flex flex-col">
+      {routeGroups.map((group, groupIndex) => (
+        <div key={groupIndex} className="mb-6">
+          {group.groupName && (
+            <h3 className="mb-2 px-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              {group.groupName}
+            </h3>
+          )}
+          <div className="space-y-1">
+            {group.routes.map((route) => (
+              <SidebarItem
+                key={route.href}
+                icon={route.icon}
+                label={route.label}
+                href={route.href}
+              />
+            ))}
+          </div>
+        </div>
       ))}
-
-      {/* Nút đăng xuất */}
-      {/* <div className="mt-auto pt-4 border-t">
-        <button
-          onClick={handleSignOut}
-          className="flex items-center w-full p-3 text-sm text-muted-foreground font-medium hover:text-primary hover:bg-primary/10 transition"
-        >
-          <LogOut className="h-5 w-5 mr-3 text-muted-foreground" />
-          Đăng xuất
-        </button>
-      </div> */}
     </div>
   );
 };
