@@ -231,7 +231,7 @@ const ReviewItem = ({ review }) => {
   const fullName = review.studentName || "U";
 
   return (
-    <div className="flex items-center gap-3 rounded-lg bg-secondary p-3">
+    <div className="flex items-center gap-4 rounded-lg bg-secondary p-3">
       <div className="flex-shrink-0">
         <Avatar className="h-12 w-12">
           {avatarUrl ? <AvatarImage src={avatarUrl} alt={fullName} /> : null}
@@ -240,16 +240,12 @@ const ReviewItem = ({ review }) => {
           </AvatarFallback>
         </Avatar>
       </div>
-      <div className="min-w-0 flex-1">
-        <div className="mb-0.5 flex items-center gap-2">
-          <span className="text-base font-semibold text-gray-900">
-            {fullName || "Người dùng"}
-          </span>
-        </div>
-        <div className="mb-1 line-clamp-2 text-sm text-gray-700">
+      <div className="min-w-0 flex-1 space-y-2">
+        <p className="font-semibold text-colors-navy">Người dùng</p>
+        <div className="line-clamp-2 text-sm text-gray-700">
           {review.content || review.comment || "Không có nội dung đánh giá"}
         </div>
-        <div className="mt-1 flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <div className="flex items-center">
             {Array(5)
               .fill(0)
