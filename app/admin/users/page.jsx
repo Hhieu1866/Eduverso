@@ -87,6 +87,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Label } from "@/components/ui/label";
 import React from "react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -547,16 +548,22 @@ export default function UsersPage() {
         >
           <TableCell className="py-2.5 pl-3">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-primary/20 bg-primary/10 text-primary ring-4 ring-transparent transition-all duration-200 group-hover:ring-primary/5">
-                {user.profilePicture ? (
-                  <img
-                    src={user.profilePicture}
-                    alt={`${user.firstName} ${user.lastName}`}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <User className="h-4 w-4" />
-                )}
+              <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full">
+                <Avatar className="h-9 w-9">
+                  {user.profilePicture ? (
+                    <AvatarImage
+                      src={user.profilePicture}
+                      alt={`${user.firstName} ${user.lastName}`}
+                    />
+                  ) : null}
+                  <AvatarFallback className="bg-gray-200 font-bold uppercase text-colors-navy">
+                    {(
+                      (user.firstName?.charAt(0) ||
+                        user.email?.charAt(0) ||
+                        "U") + ""
+                    ).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
               </div>
               <div>
                 <div className="text-sm font-medium">
@@ -715,7 +722,7 @@ export default function UsersPage() {
       {/* Page header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-8">
         <div>
-          <h1 className="mb-1 text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          <h1 className="mb-1 text-2xl font-bold tracking-tight text-colors-navy text-foreground md:text-3xl">
             Quản lý người dùng
           </h1>
           <p className="text-sm text-muted-foreground md:text-base">
@@ -772,7 +779,7 @@ export default function UsersPage() {
           <div className="flex items-center gap-2">
             <UserCog className="h-4 w-4 text-muted-foreground" />
             <div>
-              <CardTitle className="text-base font-medium">
+              <CardTitle className="text-base font-medium text-colors-navy">
                 Danh sách người dùng
               </CardTitle>
               <CardDescription>
@@ -955,16 +962,22 @@ export default function UsersPage() {
             <div className="max-h-[70vh] space-y-6 overflow-y-auto px-2 py-6">
               {/* Avatar và thông tin cơ bản */}
               <div className="flex flex-col items-center gap-3 border-b pb-6">
-                <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-2 border-primary/20 bg-primary/10 text-primary shadow-sm">
-                  {currentUser.profilePicture ? (
-                    <img
-                      src={currentUser.profilePicture}
-                      alt={`${currentUser.firstName} ${currentUser.lastName}`}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <User className="h-10 w-10" />
-                  )}
+                <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full">
+                  <Avatar className="h-24 w-24">
+                    {currentUser.profilePicture ? (
+                      <AvatarImage
+                        src={currentUser.profilePicture}
+                        alt={`${currentUser.firstName} ${currentUser.lastName}`}
+                      />
+                    ) : null}
+                    <AvatarFallback className="bg-gray-200 text-3xl font-bold uppercase text-black">
+                      {(
+                        (currentUser.firstName?.charAt(0) ||
+                          currentUser.email?.charAt(0) ||
+                          "U") + ""
+                      ).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
                 <div className="text-center">
                   <h3 className="text-lg font-semibold">

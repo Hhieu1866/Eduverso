@@ -347,21 +347,16 @@ export default function AdminCoursesPage() {
     const courseId = selectedCourse.id;
     if (!courseId) {
       toast.error("Không thể xác định khóa học để xóa");
+      setIsSubmitting(false);
       return;
     }
 
-    // Đóng dialog ngay lập tức
     setIsDeleteOpen(false);
+    setSelectedCourse(null);
 
-    // Đánh dấu đang xử lý
     setIsSubmitting(true);
     const toastId = toast.loading("Đang xóa khoá học...");
 
-    // Lưu trữ state hiện tại để có thể rollback nếu API lỗi (tùy chọn, nếu cần phức tạp hơn)
-    // const previousCourses = [...courses];
-    // const previousTotalItems = totalItems;
-
-    // Cập nhật UI ngay lập tức (Optimistic Update)
     setCourses((prevCourses) =>
       prevCourses.filter((course) => course.id !== courseId),
     );
@@ -369,26 +364,45 @@ export default function AdminCoursesPage() {
 
     try {
       await axios.delete(`/api/admin/courses/${courseId}`);
-
       toast.dismiss(toastId);
       toast.success("Xóa khoá học thành công");
-      // selectedCourse sẽ được set là null trong finally
     } catch (error) {
-      console.error("Lỗi khi xóa khoá học:", error);
       toast.dismiss(toastId);
       toast.error(
         "Lỗi khi xóa khoá học: " +
           (error.response?.data?.error || error.message),
       );
+      console.error("Lỗi khi xóa khoá học:", error);
 
-      // Rollback UI hoặc fetch lại toàn bộ nếu API lỗi
-      // Hiện tại đang fetch lại toàn bộ:
       fetchCourses(page, search, statusFilter);
     } finally {
       setIsSubmitting(false);
-      setSelectedCourse(null); // Đảm bảo selectedCourse được reset
     }
   };
+
+  // Hàm đóng dialog chi tiết
+  const closeDetailDialog = () => {
+    setIsDetailOpen(false);
+  };
+  // Hàm đóng dialog xóa
+  const closeDeleteDialog = () => {
+    setIsDeleteOpen(false);
+  };
+  // Hàm đóng dialog từ chối
+  const closeRejectDialog = () => {
+    setIsRejectDialogOpen(false);
+  };
+
+  // Xử lý focus khi đóng Dialog
+  useEffect(() => {
+    // Cleanup focus khi component unmount hoặc dialog đóng
+    return () => {
+      // Đảm bảo không có element nào bị focus sau khi dialog đóng
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    };
+  }, [isDetailOpen, isRejectDialogOpen, isDeleteOpen]);
 
   return (
     <div className="space-y-6">
@@ -698,30 +712,48 @@ export default function AdminCoursesPage() {
       </Card>
 
       {/* Course Detail Dialog */}
-      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+      <Dialog
+        open={isDetailOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            // Đảm bảo blur focus trước khi đóng dialog
+            if (document.activeElement instanceof HTMLElement) {
+              document.activeElement.blur();
+            }
+            setIsDetailOpen(false);
+            setTimeout(() => setSelectedCourse(null), 200);
+          } else {
+            setIsDetailOpen(open);
+          }
+        }}
+      >
         <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl">
+              {selectedCourse?.title || "Chi tiết khóa học"}
+            </DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">
+              Xem thông tin chi tiết về khóa học và thực hiện các thao tác quản
+              lý.
+            </DialogDescription>
+          </DialogHeader>
           {selectedCourse && (
             <>
-              <DialogHeader>
-                <DialogTitle className="text-xl">
-                  {selectedCourse.title}
-                </DialogTitle>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  {getStatusBadge(selectedCourse.status)}
-                  <span>
-                    Ngày cập nhật:{" "}
-                    {selectedCourse.modifiedOn
-                      ? format(
-                          new Date(selectedCourse.modifiedOn),
-                          "dd/MM/yyyy HH:mm",
-                          {
-                            locale: vi,
-                          },
-                        )
-                      : "Không rõ"}
-                  </span>
-                </div>
-              </DialogHeader>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                {getStatusBadge(selectedCourse.status)}
+                <span>
+                  Ngày cập nhật:{" "}
+                  {selectedCourse.modifiedOn
+                    ? format(
+                        new Date(selectedCourse.modifiedOn),
+                        "dd/MM/yyyy HH:mm",
+                        {
+                          locale: vi,
+                        },
+                      )
+                    : "Không rõ"}
+                </span>
+              </div>
 
               <div className="space-y-4">
                 {/* Thumbnail */}
@@ -915,7 +947,9 @@ export default function AdminCoursesPage() {
                       variant="destructive"
                       onClick={() => {
                         setIsDetailOpen(false);
-                        handleRejectCourse(selectedCourse);
+                        setTimeout(() => {
+                          handleRejectCourse(selectedCourse);
+                        }, 100);
                       }}
                     >
                       <ThumbsDown className="mr-2 h-4 w-4" />
@@ -935,10 +969,7 @@ export default function AdminCoursesPage() {
                     </Button>
                   </>
                 )}
-                <Button
-                  variant="outline"
-                  onClick={() => setIsDetailOpen(false)}
-                >
+                <Button variant="outline" onClick={closeDetailDialog}>
                   Đóng
                 </Button>
               </DialogFooter>
@@ -948,7 +979,21 @@ export default function AdminCoursesPage() {
       </Dialog>
 
       {/* Reject Dialog */}
-      <Dialog open={isRejectDialogOpen} onOpenChange={setIsRejectDialogOpen}>
+      <Dialog
+        open={isRejectDialogOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            // Đảm bảo blur focus trước khi đóng dialog
+            if (document.activeElement instanceof HTMLElement) {
+              document.activeElement.blur();
+            }
+            setIsRejectDialogOpen(false);
+            setTimeout(() => setSelectedCourse(null), 200);
+          } else {
+            setIsRejectDialogOpen(open);
+          }
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Từ chối khóa học</DialogTitle>
@@ -981,7 +1026,7 @@ export default function AdminCoursesPage() {
           <DialogFooter>
             <Button
               variant="outline"
-              onClick={() => setIsRejectDialogOpen(false)}
+              onClick={closeRejectDialog}
               disabled={isSubmitting}
             >
               Hủy
@@ -1004,7 +1049,21 @@ export default function AdminCoursesPage() {
 
       {/* Dialog xác nhận xóa khoá học */}
       {selectedCourse && (
-        <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+        <AlertDialog
+          open={isDeleteOpen}
+          onOpenChange={(open) => {
+            if (!open) {
+              // Đảm bảo blur focus trước khi đóng dialog
+              if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+              }
+              setIsDeleteOpen(false);
+              setTimeout(() => setSelectedCourse(null), 200);
+            } else {
+              setIsDeleteOpen(open);
+            }
+          }}
+        >
           <AlertDialogContent className="max-w-md">
             <AlertDialogHeader className="border-b pb-4">
               <AlertDialogTitle className="flex items-center gap-2 text-xl">
@@ -1024,7 +1083,12 @@ export default function AdminCoursesPage() {
               </div>
             </AlertDialogHeader>
             <AlertDialogFooter className="mt-2 flex justify-between gap-2 border-t px-2 pt-4">
-              <AlertDialogCancel className="relative">Hủy</AlertDialogCancel>
+              <AlertDialogCancel
+                className="relative"
+                onClick={closeDeleteDialog}
+              >
+                Hủy
+              </AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleDeleteCourse}
                 className="relative gap-2 bg-destructive text-destructive-foreground hover:bg-destructive/90"
