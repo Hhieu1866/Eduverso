@@ -262,6 +262,9 @@ export async function getCourseDetailsByInstructor(instructorId, expand) {
       courses: allCourses?.flat(),
       enrollments: enrollments?.flat(),
       reviews: totalTestimonials,
+      fullInsName,
+      Designation,
+      insImage,
     };
   }
 

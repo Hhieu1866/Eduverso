@@ -292,12 +292,12 @@ const DashboardPage = async () => {
   return (
     <div className="space-y-6 p-6">
       <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-            Dashboard Giảng Viên
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold tracking-tight text-colors-navy md:text-3xl">
+            Dashboard giảng viên
           </h1>
-          <p className="text-muted-foreground">
-            Chào mừng trở lại, {stats?.fullInsName || "Giảng viên"}. Đây là tổng
+          <p className="text-lg text-muted-foreground">
+            Chào mừng trở lại, {stats?.fullInsName || "giảng viên"}. Đây là tổng
             quan về hoạt động của bạn.
           </p>
         </div>
