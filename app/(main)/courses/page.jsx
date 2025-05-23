@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 const CourseListLoading = () => (
   <div className="flex items-center justify-center py-20 lg:col-span-3">
     <div className="text-center">
-      <Loader2 className="mx-auto h-12 w-12 animate-spin text-primary" />
+      <Loader2 className="mx-auto h-12 w-12 animate-faster-spin text-primary" />
       <p className="mt-4 text-gray-600">Đang tải khóa học...</p>
     </div>
   </div>
