@@ -11,7 +11,7 @@ import {
   hasStartedLearning,
 } from "@/queries/enrollments";
 import { getImageUrl, shouldDisplayImage } from "@/lib/imageUtils";
-import { GraduationCap, Clock, Users, Calendar } from "lucide-react";
+import { GraduationCap, Clock, Users, Calendar, File } from "lucide-react";
 import { formatMyDate } from "@/lib/date";
 
 const CourseDetailsIntro = async ({ course }) => {
@@ -151,16 +151,22 @@ const CourseDetailsIntro = async ({ course }) => {
 
                   <div className="mb-6 space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                      <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
                         <GraduationCap className="h-4 w-4 text-primary" />
                       </div>
                       <span>{course?.modules?.length || 0} bài học</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                      <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
                         <Clock className="h-4 w-4 text-primary" />
                       </div>
                       <span>Chứng chỉ hoàn thành</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                        <File className="h-4 w-4 text-primary" />
+                      </div>
+                      <span>Tài liệu kèm theo</span>
                     </div>
                   </div>
 

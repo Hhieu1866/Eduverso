@@ -35,43 +35,6 @@ const CourseDetails = ({ course }) => {
                   />
                 </div>
 
-                <div className="mb-8">
-                  <h2 className="mb-4 text-2xl font-bold">
-                    Bạn sẽ học được gì
-                  </h2>
-                  <div className="grid grid-cols-1 gap-x-8 gap-y-4 md:grid-cols-2">
-                    {course?.learning?.map((item, index) => (
-                      <div key={index} className="flex items-start gap-3">
-                        <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
-                        <span>{item}</span>
-                      </div>
-                    )) || (
-                      <>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
-                          <span>
-                            Hiểu rõ về quy trình QA/QC trong phát triển phần mềm
-                          </span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
-                          <span>Sử dụng các công cụ tự động hóa kiểm thử</span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
-                          <span>Thiết kế và thực hiện các test case</span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                          <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
-                          <span>
-                            Phát hiện và báo cáo lỗi một cách chuyên nghiệp
-                          </span>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-
                 <CourseOverview course={course} />
               </TabsContent>
 
