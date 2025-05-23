@@ -10,13 +10,13 @@ const support = () => {
             <p className="mt-5 font-poppins text-3xl font-bold leading-tight text-gray-900 sm:text-4xl sm:leading-tight lg:leading-tight">
               <span className="relative inline-flex sm:inline">
                 <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] opacity-30 blur-lg filter"></span>
-                <span className="relative">
+                <span className="relative text-colors-navy">
                   Cần hỗ trợ, liên hệ với chúng tôi!
                 </span>
               </span>
             </p>
 
-            <p className="mb-8 mt-8 leading-relaxed text-black">
+            <p className="mb-8 mt-8 leading-relaxed text-colors-navy">
               Là người sáng lập Eduverse và cũng là người truyền cảm hứng, chia
               sẻ kiến thức đến các bạn. Mục tiêu của chúng tôi là giúp các bạn,
               dù mới bắt đầu hay đã có kinh nghiệm, nâng cao kỹ năng, cải thiện

@@ -22,11 +22,11 @@ import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().min(1, {
-    message: "Title is required",
+    message: "Tiêu đề là bắt buộc",
   }),
 });
 
-export const TitleForm = ({ initialData = {},quizSetId }) => {
+export const TitleForm = ({ initialData = {}, quizSetId }) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -41,36 +41,36 @@ export const TitleForm = ({ initialData = {},quizSetId }) => {
 
   const onSubmit = async (values) => {
     try {
-      await updateQuizSet(quizSetId,values)
-      toast.success("Quize Tittle Updated");
+      await updateQuizSet(quizSetId, values);
+      toast.success("Đã cập nhật tiêu đề bài kiểm tra");
       toggleEdit();
       router.refresh();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi");
     }
   };
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        Quiz set title
+    <div className="mt-6 rounded-md border bg-gray-50 p-4">
+      <div className="flex items-center justify-between font-medium">
+        Tiêu đề bài kiểm tra
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
-            <>Cancel</>
+            <>Hủy</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Title
+              <Pencil className="mr-2 h-4 w-4" />
+              Chỉnh sửa tiêu đề
             </>
           )}
         </Button>
       </div>
-      {!isEditing && <p className="text-sm mt-2">{initialData.title}</p>}
+      {!isEditing && <p className="mt-2 text-sm">{initialData.title}</p>}
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -80,7 +80,7 @@ export const TitleForm = ({ initialData = {},quizSetId }) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development'"
+                      placeholder="Ví dụ: 'Phát triển web nâng cao'"
                       {...field}
                     />
                   </FormControl>
@@ -90,7 +90,7 @@ export const TitleForm = ({ initialData = {},quizSetId }) => {
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
-                Save
+                Lưu
               </Button>
             </div>
           </form>

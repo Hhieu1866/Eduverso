@@ -83,7 +83,7 @@ const formSchema = z.object({
 
 export const AddQuizForm = ({ quizSetId }) => {
   const router = useRouter();
- 
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     mode: "all",
@@ -114,57 +114,61 @@ export const AddQuizForm = ({ quizSetId }) => {
 
   const onSubmit = async (values) => {
     try {
-     // console.log({ values });
-    const correctness = [values.optionA.isTrue, values.optionB.isTrue,values.optionC.isTrue,values.optionD.isTrue];
+      // console.log({ values });
+      const correctness = [
+        values.optionA.isTrue,
+        values.optionB.isTrue,
+        values.optionC.isTrue,
+        values.optionD.isTrue,
+      ];
 
-    const correctMarked = correctness.filter(c => c);
-    const isOneCorrecrMarked = (correctMarked.length === 1);
+      const correctMarked = correctness.filter((c) => c);
+      const isOneCorrecrMarked = correctMarked.length === 1;
 
-    if (isOneCorrecrMarked) {
-      await addQuizToQuizSet(quizSetId,values);
-      form.reset({
-        title: "",
-        description: "",
-        optionA: {
-          label: "",
-          isTrue: false,
-        },
-        optionB: {
-          label: "",
-          isTrue: false,
-        },
-        optionC: {
-          label: "",
-          isTrue: false,
-        },
-        optionD: {
-          label: "",
-          isTrue: false,
-        },
-      });
-      toast.success("Quiz Added Successfully")
-     // toggleEdit();
-      router.refresh(); 
-    } else {
-      toast.error("You must make only one correct answer")
-    }
-       
+      if (isOneCorrecrMarked) {
+        await addQuizToQuizSet(quizSetId, values);
+        form.reset({
+          title: "",
+          description: "",
+          optionA: {
+            label: "",
+            isTrue: false,
+          },
+          optionB: {
+            label: "",
+            isTrue: false,
+          },
+          optionC: {
+            label: "",
+            isTrue: false,
+          },
+          optionD: {
+            label: "",
+            isTrue: false,
+          },
+        });
+        toast.success("Đã thêm câu hỏi thành công");
+        // toggleEdit();
+        router.refresh();
+      } else {
+        toast.error("Bạn phải chọn một và chỉ một đáp án đúng");
+      }
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi");
     }
   };
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        Add New Quiz
+    <div className="mt-6 rounded-md border bg-gray-50 p-4">
+      <div className="flex items-center justify-between font-medium">
+        Thêm câu hỏi mới
       </div>
 
       {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             {/* quiz title */}
             <FormField
@@ -172,11 +176,11 @@ export const AddQuizForm = ({ quizSetId }) => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quiz Title</FormLabel>
+                  <FormLabel>Tiêu đề câu hỏi</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="Enter quiz question"
+                      placeholder="Nhập câu hỏi"
                       {...field}
                     />
                   </FormControl>
@@ -190,11 +194,11 @@ export const AddQuizForm = ({ quizSetId }) => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quiz Description</FormLabel>
+                  <FormLabel>Mô tả câu hỏi</FormLabel>
                   <FormControl>
                     <Textarea
                       disabled={isSubmitting}
-                      placeholder="Enter quiz description"
+                      placeholder="Nhập mô tả câu hỏi"
                       {...field}
                     />
                   </FormControl>

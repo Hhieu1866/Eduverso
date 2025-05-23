@@ -29,9 +29,9 @@ import { doCreateQuizSet } from "@/app/actions/quiz";
 
 const formSchema = z.object({
   title: z.string().min(1, {
-    message: "Title is required!",
+    message: "Tiêu đề là bắt buộc!",
   }),
-}); 
+});
 
 const AddQuizSetForm = () => {
   const router = useRouter();
@@ -49,18 +49,18 @@ const AddQuizSetForm = () => {
     try {
       const quizSetId = await doCreateQuizSet(values);
       router.push(`/dashboard/quiz-sets/${quizSetId}`);
-      toast.success("Quiz Set Created");
+      toast.success("Đã tạo bộ câu hỏi");
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi");
     }
   };
   return (
-    <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
-      <div className="max-w-full w-[536px]">
+    <div className="mx-auto flex h-full max-w-5xl p-6 md:items-center md:justify-center">
+      <div className="w-[536px] max-w-full">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 mt-8"
+            className="mt-8 space-y-8"
           >
             {/* title */}
             <FormField
@@ -68,11 +68,11 @@ const AddQuizSetForm = () => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quiz Set Title</FormLabel>
+                  <FormLabel>Tiêu đề bộ câu hỏi</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g 'Reactive Accelerator'"
+                      placeholder="Ví dụ: 'Kiểm tra kiến thức nâng cao'"
                       {...field}
                     />
                   </FormControl>
@@ -84,11 +84,11 @@ const AddQuizSetForm = () => {
             <div className="flex items-center gap-x-2">
               <Link href="/dashboard/quiz-sets">
                 <Button variant="outline" type="button">
-                  Cancel
+                  Hủy
                 </Button>
               </Link>
               <Button type="submit" disabled={!isValid || isSubmitting}>
-                Continue
+                Tiếp tục
               </Button>
             </div>
           </form>

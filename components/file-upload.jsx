@@ -7,7 +7,15 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
-export function UploadDropzone({ onUpload, isUploading = false }) {
+export function UploadDropzone({
+  onUpload,
+  isUploading = false,
+  fileTypes = "image/*",
+  maxSize = 2,
+  label = "Tải lên ảnh",
+  description = "SVG, PNG, JPG hoặc GIF (tối đa 2MB)",
+  accept = "image/*",
+}) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [draggedFiles, setDraggedFiles] = useState([]);
@@ -53,56 +61,45 @@ export function UploadDropzone({ onUpload, isUploading = false }) {
 
   return (
     <div
-      className={`
-        relative 
-        border-2 
-        border-dashed 
-        rounded-md 
-        p-10 
-        transition-colors
-        ${isDragOver ? "border-primary" : "border-muted-foreground/25"}
-        ${isUploading ? "bg-muted pointer-events-none" : ""}
-      `}
+      className={`relative rounded-md border-2 border-dashed p-10 transition-colors ${isDragOver ? "border-primary" : "border-muted-foreground/25"} ${isUploading ? "pointer-events-none bg-muted" : ""} `}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
       <div className="flex flex-col items-center justify-center gap-1">
-        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-muted mb-2">
+        <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-muted">
           <FileUp className="h-5 w-5 text-muted-foreground" />
         </div>
 
         {isUploading ? (
           <div className="flex flex-col items-center">
-            <p className="text-sm text-muted-foreground mb-2">
-              Đang tải ảnh lên...
+            <p className="mb-2 text-sm text-muted-foreground">
+              Đang tải tệp lên...
             </p>
-            <div className="animate-pulse w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
+            <div className="h-8 w-8 animate-faster-spin rounded-full border-4 border-primary border-t-transparent"></div>
           </div>
         ) : (
           <>
-            <p className="text-sm text-muted-foreground mb-2">
-              Click to upload or drag and drop
+            <p className="mb-2 text-sm text-muted-foreground">
+              Nhấn để tải lên hoặc kéo thả tệp vào đây
             </p>
-            <p className="text-xs text-muted-foreground">
-              SVG, PNG, JPG or GIF (max 2MB)
-            </p>
+            <p className="text-xs text-muted-foreground">{description}</p>
             <input
               id="file"
               name="file"
               type="file"
-              accept="image/*"
+              accept={accept}
               className="hidden"
               onChange={handleUpload}
             />
             <button
-              className="mt-4 px-5 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md cursor-pointer transition"
+              className="mt-4 cursor-pointer rounded-md bg-primary px-5 py-2 text-primary-foreground transition hover:bg-primary/90"
               onClick={() => document.getElementById("file").click()}
             >
-              <span className="text-xs flex items-center gap-2">
+              <span className="flex items-center gap-2 text-xs">
                 <Upload className="h-4 w-4" />
-                Upload Image
+                {label}
               </span>
             </button>
           </>

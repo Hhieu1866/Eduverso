@@ -107,23 +107,34 @@ const MainNav = ({ items, children }) => {
 
             <DropdownMenuContent align="end" className="mt-4 w-56">
               <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link href="/account">Profile</Link>
+                <Link href="/account" className="text-colors-navy">
+                  Profile
+                </Link>
               </DropdownMenuItem>
 
               {loggedInUser?.role === "instructor" && (
                 <DropdownMenuItem className="cursor-pointer" asChild>
                   <Link href="/dashboard">
                     {" "}
-                    <strong>Instructor Dashboard</strong>{" "}
+                    <strong className="text-colors-navy">
+                      Instructor Dashboard
+                    </strong>{" "}
                   </Link>
                 </DropdownMenuItem>
               )}
 
               <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link href="/account/enrolled-courses">My Courses</Link>
+                <Link
+                  href="/account/enrolled-courses"
+                  className="text-colors-navy"
+                >
+                  My Courses
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link href="">Testimonials & Certificates</Link>
+                <Link href="" className="text-colors-navy">
+                  Testimonials & Certificates
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" asChild>
                 <Link
@@ -134,6 +145,7 @@ const MainNav = ({ items, children }) => {
                       router.push("/login");
                     });
                   }}
+                  className="text-red-700"
                 >
                   Logout
                 </Link>

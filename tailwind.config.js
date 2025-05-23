@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -81,6 +83,7 @@ module.exports = {
       fontFamily: {
         inter: "var(--font-inter)",
         poppins: "var(--font-poppins)",
+        sans: ["Open Sans", ...defaultTheme.fontFamily.sans],
       },
       borderRadius: {
         lg: "var(--radius)",

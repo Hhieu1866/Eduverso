@@ -73,12 +73,12 @@ export const ModulesForm = ({ initialData, courseId }) => {
           title: values.title,
         },
       ]);
-      toast.success("Module created");
+      toast.success("Đã tạo module mới");
       form.reset();
       toggleCreating();
       router.refresh();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi");
     }
   };
 
@@ -88,10 +88,10 @@ export const ModulesForm = ({ initialData, courseId }) => {
       reOrderModules(updateData);
       setIsUpdating(true);
 
-      toast.success("Chapters reordered");
+      toast.success("Đã sắp xếp lại thứ tự module");
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi");
     } finally {
       setIsUpdating(false);
     }
@@ -109,14 +109,14 @@ export const ModulesForm = ({ initialData, courseId }) => {
         </div>
       )}
       <div className="flex items-center justify-between font-medium">
-        Course Modules
+        Danh sách module
         <Button variant="ghost" onClick={toggleCreating}>
           {isCreating ? (
-            <>Cancel</>
+            <>Hủy</>
           ) : (
             <>
               <PlusCircle className="mr-2 h-4 w-4" />
-              Add a module
+              Thêm module
             </>
           )}
         </Button>
@@ -136,7 +136,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Introduction to the course...'"
+                      placeholder="Ví dụ: 'Giới thiệu về khóa học...'"
                       {...field}
                     />
                   </FormControl>
@@ -145,7 +145,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
               )}
             />
             <Button disabled={!isValid || isSubmitting} type="submit">
-              Create
+              Tạo mới
             </Button>
           </form>
         </Form>
@@ -157,7 +157,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
             !modules?.length && "italic text-slate-500",
           )}
         >
-          {!modules?.length && "No module"}
+          {!modules?.length && "Chưa có module nào"}
           <ModuleList
             onEdit={onEdit}
             onReorder={onReorder}
@@ -167,7 +167,7 @@ export const ModulesForm = ({ initialData, courseId }) => {
       )}
       {!isCreating && (
         <p className="mt-4 text-xs text-muted-foreground">
-          Drag & Drop to reorder the modules
+          Kéo thả để sắp xếp lại thứ tự module
         </p>
       )}
     </div>

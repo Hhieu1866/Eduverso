@@ -46,6 +46,15 @@ const lessonSchema = new Schema({
     required: true,
     type: Number,
   },
+  documents: [
+    {
+      name: { type: String, required: false },
+      fileUrl: { type: String, required: false },
+      fileType: { type: String, required: false },
+      fileSize: { type: Number, required: false },
+      uploadedAt: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 // Sửa lại cách khởi tạo model để tránh lỗi

@@ -76,20 +76,20 @@ const AddLive = () => {
   const onSubmit = async (values) => {
     try {
       router.push(`/dashboard/lives`);
-      toast.success("Live created");
+      toast.success("Đã tạo buổi học trực tuyến");
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi");
     }
     console.log(values);
   };
   return (
     <section className="py-8">
-      <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
-        <div className="max-w-full w-[536px]">
+      <div className="mx-auto flex h-full max-w-5xl p-6 md:items-center md:justify-center">
+        <div className="w-[536px] max-w-full">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-8 mt-8"
+              className="mt-8 space-y-8"
             >
               {/* title */}
               <FormField
@@ -97,11 +97,11 @@ const AddLive = () => {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Live Title</FormLabel>
+                    <FormLabel>Tiêu đề buổi học trực tuyến</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isSubmitting}
-                        placeholder="e.g 'Reactive Accelerator'"
+                        placeholder="Ví dụ: 'Hướng dẫn React nâng cao'"
                         {...field}
                       />
                     </FormControl>
@@ -115,7 +115,7 @@ const AddLive = () => {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Thumbnail</FormLabel>
+                    <FormLabel>Ảnh đại diện</FormLabel>
                     <FormControl>
                       <UploadDropzone />
                     </FormControl>
@@ -130,7 +130,7 @@ const AddLive = () => {
                 name="date"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Date</FormLabel>
+                    <FormLabel>Ngày</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -138,13 +138,13 @@ const AddLive = () => {
                             variant={"outline"}
                             className={cn(
                               "pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
+                              !field.value && "text-muted-foreground",
                             )}
                           >
                             {field.value ? (
                               format(field.value, "PPP")
                             ) : (
-                              <span>Pick a date</span>
+                              <span>Chọn ngày</span>
                             )}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
@@ -160,7 +160,7 @@ const AddLive = () => {
                       </PopoverContent>
                     </Popover>
                     <FormDescription>
-                      Your date of birth is used to calculate your age.
+                      Chọn ngày diễn ra buổi học trực tuyến.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -172,12 +172,12 @@ const AddLive = () => {
                 name="time"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Time</FormLabel>
+                    <FormLabel>Thời gian</FormLabel>
                     <FormControl>
                       <Input
                         className="block"
                         disabled={isSubmitting}
-                        placeholder="Select time"
+                        placeholder="Chọn thời gian"
                         {...field}
                         type="time"
                       />
@@ -192,12 +192,12 @@ const AddLive = () => {
                 name="url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Video URL</FormLabel>
+                    <FormLabel>Đường dẫn video</FormLabel>
                     <FormControl>
                       <Input
                         className="block"
                         disabled={isSubmitting}
-                        placeholder="Video URL"
+                        placeholder="Nhập đường dẫn video"
                         {...field}
                         type="url"
                       />
@@ -211,16 +211,16 @@ const AddLive = () => {
                 name="quizSet"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Quiz Set</FormLabel>
+                    <FormLabel>Bộ câu hỏi</FormLabel>
                     <FormControl>
                       <Combobox
                         options={[
                           {
-                            label: "Reactive Accelerator Quizes",
+                            label: "Bộ câu hỏi: React nâng cao",
                             value: "1",
                           },
                           {
-                            label: "Think In A Redux Way Quizes",
+                            label: "Bộ câu hỏi: Tư duy Redux",
                             value: "2",
                           },
                         ]}
@@ -237,16 +237,16 @@ const AddLive = () => {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Live Description</FormLabel>
+                    <FormLabel>Mô tả buổi học trực tuyến</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Live overview"
+                        placeholder="Tổng quan buổi học"
                         className="resize-none"
                         {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      Write a brief description of your live
+                      Viết mô tả ngắn gọn về buổi học trực tuyến của bạn
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -255,11 +255,11 @@ const AddLive = () => {
               <div className="flex items-center gap-x-2">
                 <Link href="/dashboard/lives">
                   <Button variant="outline" type="button">
-                    Cancel
+                    Hủy
                   </Button>
                 </Link>
                 <Button type="submit" disabled={isSubmitting}>
-                  Continue
+                  Tiếp tục
                 </Button>
               </div>
             </form>

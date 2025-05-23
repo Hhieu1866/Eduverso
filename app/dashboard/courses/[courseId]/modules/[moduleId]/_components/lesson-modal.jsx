@@ -12,6 +12,7 @@ import { Eye } from "lucide-react";
 import { Video } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 import { FileText } from "lucide-react";
+import { File } from "lucide-react";
 import Link from "next/link";
 import { LessonTitleForm } from "./lesson-title-form";
 import { LessonDescriptionForm } from "./lesson-description-form";
@@ -19,6 +20,7 @@ import { LessonAccessForm } from "./lesson-access-form";
 import { VideoUrlForm } from "./video-url-form";
 import { TextContentForm } from "./text-content-form";
 import { ContentTypeForm } from "./content-type-form";
+import { DocumentUploadForm } from "./document-upload-form";
 import { CourseActions } from "../../../_components/course-action";
 import { LessonActions } from "./lesson-action";
 import { useState, useEffect } from "react";
@@ -29,13 +31,40 @@ export const LessonModal = ({ open, setOpen, courseId, lesson, moduleId }) => {
     lesson?.content_type || "video",
   );
   const router = useRouter();
+  const [currentLesson, setCurrentLesson] = useState(lesson);
 
   // Cập nhật state khi props lesson thay đổi
   useEffect(() => {
     if (lesson) {
       setContentType(lesson.content_type || "video");
+      setCurrentLesson(lesson);
     }
   }, [lesson]);
+
+  // Fetch dữ liệu mới nhất khi modal mở
+  useEffect(() => {
+    if (open && lesson?.id) {
+      const fetchLessonData = async () => {
+        try {
+          const response = await fetch(
+            `/api/courses/${courseId}/lessons/${lesson.id}`,
+          );
+          if (response.ok) {
+            const updatedLesson = await response.json();
+            setCurrentLesson({
+              ...updatedLesson,
+              id: updatedLesson._id || updatedLesson.id,
+              documents: updatedLesson.documents || [],
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching lesson data:", error);
+        }
+      };
+
+      fetchLessonData();
+    }
+  }, [open, lesson?.id, courseId]);
 
   // Hàm cập nhật contentType từ ContentTypeForm
   const handleContentTypeChange = (newContentType) => {
@@ -56,7 +85,7 @@ export const LessonModal = ({ open, setOpen, courseId, lesson, moduleId }) => {
     <Dialog open={open} onOpenChange={handleClose}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
       <DialogContent
-        className="sm:max-w-[1200px] w-[96%] overflow-y-auto max-h-[90vh]"
+        className="max-h-[90vh] w-[96%] overflow-y-auto sm:max-w-[1200px]"
         onInteractOutside={(e) => {
           e.preventDefault();
         }}
@@ -73,21 +102,21 @@ export const LessonModal = ({ open, setOpen, courseId, lesson, moduleId }) => {
             <div className="w-full">
               <Link
                 href={`/dashboard/courses/${courseId}`}
-                className="flex items-center text-sm hover:opacity-75 transition mb-6"
+                className="mb-6 flex items-center text-sm transition hover:opacity-75"
               >
-                <ArrowLeft className="h-4 w-4 mr-2" />
+                <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to course setup
               </Link>
               <div className="flex items-center justify-end">
                 <LessonActions
-                  lesson={lesson}
+                  lesson={currentLesson}
                   moduleId={moduleId}
                   onDelete={postDelete}
                 />
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+          <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="space-y-4">
               <div>
                 <div className="flex items-center gap-x-2">
@@ -95,14 +124,14 @@ export const LessonModal = ({ open, setOpen, courseId, lesson, moduleId }) => {
                   <h2 className="text-xl">Customize Your chapter</h2>
                 </div>
                 <LessonTitleForm
-                  initialData={{ title: lesson?.title }}
+                  initialData={{ title: currentLesson?.title }}
                   courseId={courseId}
-                  lessonId={lesson?.id}
+                  lessonId={currentLesson?.id}
                 />
                 <LessonDescriptionForm
-                  initialData={{ description: lesson?.description }}
+                  initialData={{ description: currentLesson?.description }}
                   courseId={courseId}
-                  lessonId={lesson?.id}
+                  lessonId={currentLesson?.id}
                 />
               </div>
               <div>
@@ -111,14 +140,26 @@ export const LessonModal = ({ open, setOpen, courseId, lesson, moduleId }) => {
                   <h2 className="text-xl">Access Settings</h2>
                 </div>
                 <LessonAccessForm
-                  initialData={{ isFree: lesson?.access !== "private" }}
+                  initialData={{ isFree: currentLesson?.access !== "private" }}
                   courseId={courseId}
-                  lessonId={lesson?.id}
+                  lessonId={currentLesson?.id}
+                />
+              </div>
+              <div>
+                <div className="flex items-center gap-x-2">
+                  <IconBadge icon={File} />
+                  <h2 className="text-xl">Tài liệu bài học</h2>
+                </div>
+                <DocumentUploadForm
+                  initialData={{ documents: currentLesson?.documents }}
+                  courseId={courseId}
+                  moduleId={moduleId}
+                  lessonId={currentLesson?.id}
                 />
               </div>
             </div>
             <div>
-              <div className="flex items-center gap-x-2 mb-4">
+              <div className="mb-4 flex items-center gap-x-2">
                 <IconBadge icon={Video} />
                 <h2 className="text-xl">Nội dung bài học</h2>
               </div>
@@ -126,28 +167,28 @@ export const LessonModal = ({ open, setOpen, courseId, lesson, moduleId }) => {
               <ContentTypeForm
                 initialData={{ content_type: contentType }}
                 courseId={courseId}
-                lessonId={lesson?.id}
+                lessonId={currentLesson?.id}
                 onContentTypeChange={handleContentTypeChange}
               />
 
               {(contentType === "video" || !contentType) && (
                 <VideoUrlForm
                   initialData={{
-                    url: lesson?.video_url,
-                    duration: lesson?.duration,
+                    url: currentLesson?.video_url,
+                    duration: currentLesson?.duration,
                   }}
                   courseId={courseId}
-                  lessonId={lesson?.id}
+                  lessonId={currentLesson?.id}
                 />
               )}
 
               {contentType === "text" && (
                 <TextContentForm
                   initialData={{
-                    text_content: lesson?.text_content,
+                    text_content: currentLesson?.text_content,
                   }}
                   courseId={courseId}
-                  lessonId={lesson?.id}
+                  lessonId={currentLesson?.id}
                 />
               )}
             </div>

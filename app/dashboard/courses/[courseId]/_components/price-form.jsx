@@ -42,26 +42,26 @@ export const PriceForm = ({ initialData, courseId }) => {
 
   const onSubmit = async (values) => {
     try {
-      await updateCourse(courseId,values)
-      toast.success("Course updated");
+      await updateCourse(courseId, values);
+      toast.success("Đã cập nhật giá khóa học");
       toggleEdit();
       router.refresh();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi");
     }
   };
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        Course Price
+    <div className="mt-6 rounded-md border bg-gray-50 p-4">
+      <div className="flex items-center justify-between font-medium">
+        Giá khóa học
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
-            <>Cancel</>
+            <>Hủy</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Price
+              <Pencil className="mr-2 h-4 w-4" />
+              Chỉnh sửa giá
             </>
           )}
         </Button>
@@ -69,18 +69,18 @@ export const PriceForm = ({ initialData, courseId }) => {
       {!isEditing && (
         <p
           className={cn(
-            "text-sm mt-2",
-            !initialData.price && "text-slate-500 italic"
+            "mt-2 text-sm",
+            !initialData.price && "italic text-slate-500",
           )}
         >
-          {initialData.price ? formatPrice(initialData.price) : "No price"}
+          {initialData.price ? formatPrice(initialData.price) : "Chưa có giá"}
         </p>
       )}
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -92,7 +92,7 @@ export const PriceForm = ({ initialData, courseId }) => {
                       type="number"
                       step="0.01"
                       disabled={isSubmitting}
-                      placeholder="Set a price for your course"
+                      placeholder="Nhập giá cho khóa học"
                       {...field}
                     />
                   </FormControl>
@@ -102,7 +102,7 @@ export const PriceForm = ({ initialData, courseId }) => {
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
-                Save
+                Lưu
               </Button>
             </div>
           </form>

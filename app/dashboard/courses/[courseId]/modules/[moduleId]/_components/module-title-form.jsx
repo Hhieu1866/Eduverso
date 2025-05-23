@@ -10,7 +10,7 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormMessage, 
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Pencil } from "lucide-react";
@@ -39,37 +39,37 @@ export const ModuleTitleForm = ({ initialData, courseId, chapterId }) => {
 
   const onSubmit = async (values) => {
     try {
-      values["slug"] = getSlug(values.title)
-      await updateModule(chapterId,values);
-      toast.success("Module title updated");
+      values["slug"] = getSlug(values.title);
+      await updateModule(chapterId, values);
+      toast.success("Đã cập nhật tiêu đề module");
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi");
     }
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        Module title
+    <div className="mt-6 rounded-md border bg-slate-100 p-4">
+      <div className="flex items-center justify-between font-medium">
+        Tiêu đề module
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
-            <>Cancel</>
+            <>Hủy</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Title
+              <Pencil className="mr-2 h-4 w-4" />
+              Chỉnh sửa tiêu đề
             </>
           )}
         </Button>
       </div>
-      {!isEditing && <p className="text-sm mt-2">{initialData?.title}</p>}
+      {!isEditing && <p className="mt-2 text-sm">{initialData?.title}</p>}
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -79,7 +79,7 @@ export const ModuleTitleForm = ({ initialData, courseId, chapterId }) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Introduction to the course'"
+                      placeholder="Ví dụ: 'Giới thiệu về khóa học'"
                       {...field}
                     />
                   </FormControl>
@@ -89,7 +89,7 @@ export const ModuleTitleForm = ({ initialData, courseId, chapterId }) => {
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
-                Save
+                Lưu
               </Button>
             </div>
           </form>

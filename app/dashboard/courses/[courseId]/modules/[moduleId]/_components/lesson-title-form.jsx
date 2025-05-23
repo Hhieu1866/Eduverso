@@ -7,7 +7,7 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
-  FormControl, 
+  FormControl,
   FormField,
   FormItem,
   FormMessage,
@@ -42,39 +42,37 @@ export const LessonTitleForm = ({ initialData, courseId, lessonId }) => {
   const onSubmit = async (values) => {
     try {
       values["slug"] = getSlug(values.title);
-      await updateLesson(lessonId,values);
+      await updateLesson(lessonId, values);
       setTitle(values.title);
-      toast.success("Lesson updated");
+      toast.success("Đã cập nhật tiêu đề bài học");
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi");
     }
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        Lesson title
+    <div className="mt-6 rounded-md border bg-slate-100 p-4">
+      <div className="flex items-center justify-between font-medium">
+        Tiêu đề bài học
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
-            <>Cancel</>
+            <>Hủy</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Title
+              <Pencil className="mr-2 h-4 w-4" />
+              Chỉnh sửa tiêu đề
             </>
           )}
         </Button>
       </div>
-      {!isEditing && (
-        <p className="text-sm mt-2">{title}</p>
-      )}
+      {!isEditing && <p className="mt-2 text-sm">{title}</p>}
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -84,7 +82,7 @@ export const LessonTitleForm = ({ initialData, courseId, lessonId }) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Introduction to the course'"
+                      placeholder="Ví dụ: 'Giới thiệu về khóa học'"
                       {...field}
                     />
                   </FormControl>
@@ -94,7 +92,7 @@ export const LessonTitleForm = ({ initialData, courseId, lessonId }) => {
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
-                Save
+                Lưu
               </Button>
             </div>
           </form>

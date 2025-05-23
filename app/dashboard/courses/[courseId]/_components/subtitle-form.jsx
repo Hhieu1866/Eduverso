@@ -5,7 +5,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { 
+import {
   Form,
   FormControl,
   FormField,
@@ -18,11 +18,11 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { updateCourse } from "@/app/actions/course";
-import { toast } from 'sonner';
+import { toast } from "sonner";
 
 const formSchema = z.object({
-    subtitle: z.string().min(1, {
-    message: "Title is required",
+  subtitle: z.string().min(1, {
+    message: "Phụ đề là bắt buộc",
   }),
 });
 
@@ -40,37 +40,37 @@ export const SubTitleForm = ({ initialData = {}, courseId }) => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
-    try { 
-      await updateCourse(courseId,values)
+    try {
+      await updateCourse(courseId, values);
       toggleEdit();
       router.refresh();
-      toast.success("Course SubTittle has been updated");
+      toast.success("Đã cập nhật phụ đề khóa học");
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi");
     }
   };
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        Course Subtitle
+    <div className="mt-6 rounded-md border bg-gray-50 p-4">
+      <div className="flex items-center justify-between font-medium">
+        Phụ đề khóa học
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
-            <>Cancel</>
+            <>Hủy</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit SubTitle
+              <Pencil className="mr-2 h-4 w-4" />
+              Chỉnh sửa phụ đề
             </>
           )}
         </Button>
       </div>
-      {!isEditing && <p className="text-sm mt-2">{initialData.subtitle}</p>}
+      {!isEditing && <p className="mt-2 text-sm">{initialData.subtitle}</p>}
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -80,7 +80,7 @@ export const SubTitleForm = ({ initialData = {}, courseId }) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development'"
+                      placeholder="Ví dụ: 'Lập trình web nâng cao'"
                       {...field}
                     />
                   </FormControl>
@@ -90,7 +90,7 @@ export const SubTitleForm = ({ initialData = {}, courseId }) => {
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
-                Save
+                Lưu
               </Button>
             </div>
           </form>

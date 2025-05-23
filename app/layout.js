@@ -28,12 +28,8 @@ export default async function RootLayout({ children }) {
   //console.log(conn)
 
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          `${geistSans.variable} ${geistMono.variable} antialiased, poppins.className`,
-        )}
-      >
+    <html lang="vi">
+      <body className="font-sans">
         {children}
         <Toaster
           richColors

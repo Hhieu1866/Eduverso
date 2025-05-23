@@ -29,10 +29,10 @@ import { createCourse } from "@/app/actions/course";
 
 const formSchema = z.object({
   title: z.string().min(1, {
-    message: "Title is required!",
+    message: "Tiêu đề là bắt buộc!",
   }),
   description: z.string().min(1, {
-    message: "Description is required!",
+    message: "Mô tả là bắt buộc!",
   }),
 });
 
@@ -47,27 +47,26 @@ const AddCourse = () => {
     },
   });
 
-
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values) => {
     try {
       const course = await createCourse(values);
       router.push(`/dashboard/courses/${course?._id}`);
-      toast.success("Course created");
+      toast.success("Đã tạo khóa học mới");
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Đã xảy ra lỗi, vui lòng thử lại");
     }
     console.log(values);
   };
 
   return (
-    <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
-      <div className="max-w-full w-[536px]">
+    <div className="mx-auto flex h-full max-w-5xl p-6 md:items-center md:justify-center">
+      <div className="w-[536px] max-w-full">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 mt-8"
+            className="mt-8 space-y-8"
           >
             {/* title */}
             <FormField
@@ -75,11 +74,11 @@ const AddCourse = () => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course Title</FormLabel>
+                  <FormLabel>Tiêu đề khóa học</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g 'Reactive Accelerator'"
+                      placeholder="Ví dụ: 'Lập trình React từ A-Z'"
                       {...field}
                     />
                   </FormControl>
@@ -93,16 +92,16 @@ const AddCourse = () => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course Description</FormLabel>
+                  <FormLabel>Mô tả khóa học</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Course overview"
+                      placeholder="Tổng quan về khóa học"
                       className="resize-none"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Write a brief description of your course
+                    Viết mô tả ngắn gọn, súc tích về khóa học của bạn
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -111,11 +110,11 @@ const AddCourse = () => {
             <div className="flex items-center gap-x-2">
               <Link href="/dashboard/courses">
                 <Button variant="outline" type="button">
-                  Cancel
+                  Hủy
                 </Button>
               </Link>
               <Button type="submit" disabled={!isValid || isSubmitting}>
-                Continue
+                Tiếp tục
               </Button>
             </div>
           </form>

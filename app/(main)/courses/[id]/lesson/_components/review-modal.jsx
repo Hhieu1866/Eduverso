@@ -85,21 +85,21 @@ export const ReviewModal = ({ courseId, loginid, open, setOpen }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        className="overflow-y-auto max-h-[90vh]"
+        className="max-h-[90vh] overflow-y-auto"
         onInteractOutside={(e) => {
           if (isSubmitting) {
             e.preventDefault();
           }
         }}
       >
-        <DialogTitle>Submit Your Review</DialogTitle>
+        <DialogTitle>Gửi đánh giá của bạn</DialogTitle>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 mt-8"
+            className="mt-8 space-y-8"
           >
             {errorMessage && (
-              <div className="bg-red-100 text-red-800 p-3 rounded-md mb-4">
+              <div className="mb-4 rounded-md bg-red-100 p-3 text-red-800">
                 {errorMessage}
               </div>
             )}
@@ -110,11 +110,11 @@ export const ReviewModal = ({ courseId, loginid, open, setOpen }) => {
               name="rating"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course Rating</FormLabel>
+                  <FormLabel>Đánh giá khóa học</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g 5"
+                      placeholder="ví dụ: 5"
                       {...field}
                       type="number"
                       min={1}
@@ -131,16 +131,16 @@ export const ReviewModal = ({ courseId, loginid, open, setOpen }) => {
               name="review"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your Review</FormLabel>
+                  <FormLabel>Nội dung đánh giá</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Course review"
+                      placeholder="Đánh giá khóa học"
                       className="resize-none"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Write a brief overview about the course
+                    Viết đánh giá ngắn gọn về khóa học
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -153,10 +153,10 @@ export const ReviewModal = ({ courseId, loginid, open, setOpen }) => {
                 onClick={() => setOpen(false)}
                 disabled={isSubmitting}
               >
-                Cancel
+                Hủy
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Đang gửi..." : "Submit"}
+                {isSubmitting ? "Đang gửi..." : "Gửi đánh giá"}
               </Button>
             </div>
           </form>

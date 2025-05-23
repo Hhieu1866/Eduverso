@@ -94,10 +94,36 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
     }
   };
 
-  const onEdit = (id) => {
-    const foundLesson = lessons.find((lesson) => lesson.id === id);
-    setLessonToEdit(foundLesson);
-    setIsEditing(true);
+  const onEdit = async (id) => {
+    try {
+      // Fetch lesson mới nhất từ server trước khi mở modal
+      const response = await fetch(`/api/courses/${courseId}/lessons/${id}`);
+      if (response.ok) {
+        const updatedLesson = await response.json();
+        setLessonToEdit({
+          ...updatedLesson,
+          id: updatedLesson._id || updatedLesson.id,
+          documents: updatedLesson.documents || [],
+        });
+      } else {
+        // Fallback nếu API không tồn tại hoặc lỗi
+        const foundLesson = lessons.find((lesson) => lesson.id === id);
+        setLessonToEdit({
+          ...foundLesson,
+          documents: foundLesson?.documents || [],
+        });
+      }
+      setIsEditing(true);
+    } catch (error) {
+      console.error("Error fetching lesson:", error);
+      // Fallback nếu có lỗi
+      const foundLesson = lessons.find((lesson) => lesson.id === id);
+      setLessonToEdit({
+        ...foundLesson,
+        documents: foundLesson?.documents || [],
+      });
+      setIsEditing(true);
+    }
   };
 
   const handleModalClose = () => {

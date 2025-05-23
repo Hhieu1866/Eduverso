@@ -28,13 +28,13 @@ const HomePage = async () => {
               className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#009688] to-[#4dd0e1] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
             />
           </div>
-          <span className="rounded-2xl border bg-muted px-4 py-1.5 text-sm font-medium shadow-lg">
+          <span className="rounded-2xl border bg-muted px-4 py-1.5 text-sm font-semibold text-colors-navy shadow-lg">
             Chào mừng bạn đến với Eduverse
           </span>
           <h1 className="font-heading whitespace-nowrap text-3xl font-bold text-colors-navy sm:text-5xl md:text-6xl lg:text-7xl">
             Bắt đầu lộ trình học tập mới với <br /> Eduverse
           </h1>
-          <p className="max-w-full overflow-auto text-ellipsis whitespace-nowrap leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+          <p className="max-w-full overflow-auto text-ellipsis whitespace-nowrap leading-normal text-colors-navy text-muted-foreground sm:text-xl sm:leading-8">
             "Khám phá các lộ trình học tập phù hợp, giúp bạn học theo tiến độ và
             nhu cầu riêng."
           </p>
