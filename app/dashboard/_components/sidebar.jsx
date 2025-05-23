@@ -2,7 +2,7 @@ import Logo from "@/components/logo";
 import { SidebarRoutes } from "./sidebar-routes";
 import Link from "next/link";
 import { auth } from "@/auth";
-import { UserButton } from "./user-button";
+// import { UserButton } from "./user-button";
 
 const Sidebar = async () => {
   const session = await auth();
@@ -20,16 +20,15 @@ const Sidebar = async () => {
         </Link>
       </div>
 
-      {/* Menu routes */}
+      {/* menu routes */}
       <div className="flex flex-1 flex-col px-2 py-4">
         <div className="mb-2 px-4"></div>
         <SidebarRoutes />
       </div>
 
-      {/* User profile */}
-      <div className="mt-auto border-t p-4">
+      {/* <div className="mt-auto border-t p-4">
         <UserButton user={user} />
-      </div>
+      </div> */}
     </div>
   );
 };

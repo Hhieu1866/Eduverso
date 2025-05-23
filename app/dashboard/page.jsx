@@ -241,7 +241,7 @@ const ReviewItem = ({ review }) => {
         </Avatar>
       </div>
       <div className="min-w-0 flex-1 space-y-2">
-        <p className="font-semibold text-colors-navy">Người dùng</p>
+        <p className="font-semibold text-colors-navy">{fullName}</p>
         <div className="line-clamp-2 text-sm text-gray-700">
           {review.content || review.comment || "Không có nội dung đánh giá"}
         </div>
