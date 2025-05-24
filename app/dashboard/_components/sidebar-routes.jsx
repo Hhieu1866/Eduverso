@@ -44,6 +44,11 @@ const routeGroups = [
         label: "Bộ câu hỏi",
         href: "/dashboard/quiz-sets",
       },
+      {
+        icon: FileText,
+        label: "Bài tự luận",
+        href: "/dashboard/essays",
+      },
     ],
   },
   // {

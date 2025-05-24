@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Award, LockIcon } from "lucide-react";
 import {
@@ -9,18 +9,47 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { checkEssayApprovalStatus } from "@/app/actions/essaySubmission";
 
 export const DownloadCertificate = ({
   courseId,
   totalProgress,
   quizPassed,
+  hasEssays = false,
 }) => {
   const [isCertificateDownloading, setIsCertificateDownloading] =
     useState(false);
+  const [essaysApproved, setEssaysApproved] = useState(false);
+  const [isCheckingEssays, setIsCheckingEssays] = useState(false);
 
-  // Kiểm tra điều kiện để tải chứng chỉ: đã hoàn thành 100% bài học và đã vượt qua bài kiểm tra
+  // Kiểm tra trạng thái duyệt bài tự luận
+  useEffect(() => {
+    const checkEssayStatus = async () => {
+      if (hasEssays) {
+        setIsCheckingEssays(true);
+        try {
+          const approved = await checkEssayApprovalStatus(courseId);
+          setEssaysApproved(approved);
+        } catch (error) {
+          console.error("Lỗi khi kiểm tra trạng thái bài tự luận:", error);
+          setEssaysApproved(false);
+        } finally {
+          setIsCheckingEssays(false);
+        }
+      }
+    };
+
+    checkEssayStatus();
+  }, [courseId, hasEssays]);
+
+  // Kiểm tra điều kiện để tải chứng chỉ:
+  // 1. Đã hoàn thành 100% bài học
+  // 2. Đã vượt qua bài kiểm tra (nếu có)
+  // 3. Đã được duyệt bài tự luận (nếu có)
   const canDownloadCertificate =
-    totalProgress >= 100 && (quizPassed === true || quizPassed === undefined);
+    totalProgress >= 100 &&
+    (quizPassed === true || quizPassed === undefined) &&
+    (!hasEssays || essaysApproved);
 
   // Hiển thị thông báo tại sao không thể tải
   const getTooltipMessage = () => {
@@ -30,12 +59,17 @@ export const DownloadCertificate = ({
     if (quizPassed === false) {
       return "Bạn cần vượt qua bài kiểm tra cuối khóa (đạt ≥90%)";
     }
+    if (hasEssays && !essaysApproved) {
+      return "Bạn cần được duyệt tất cả bài tự luận";
+    }
     return "";
   };
 
   console.log("Debug chứng chỉ:", {
     totalProgress,
     quizPassed,
+    hasEssays,
+    essaysApproved,
     canDownloadCertificate,
   });
 
@@ -71,7 +105,7 @@ export const DownloadCertificate = ({
         )}
         {isCertificateDownloading ? (
           <div className="flex items-center gap-2">
-            <div className="animate-faster-spin h-4 w-4 rounded-full border-2 border-current border-t-transparent" />
+            <div className="h-4 w-4 animate-faster-spin rounded-full border-2 border-current border-t-transparent" />
             <span>Đang tải...</span>
           </div>
         ) : (
@@ -79,6 +113,19 @@ export const DownloadCertificate = ({
         )}
       </>
     );
+
+    if (isCheckingEssays) {
+      return (
+        <Button
+          disabled={true}
+          className="w-full justify-start gap-2 bg-gray-100 text-gray-500"
+          size="lg"
+        >
+          <div className="h-4 w-4 animate-faster-spin rounded-full border-2 border-current border-t-transparent" />
+          Đang kiểm tra điều kiện...
+        </Button>
+      );
+    }
 
     if (!canDownloadCertificate) {
       return (

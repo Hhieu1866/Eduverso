@@ -49,6 +49,7 @@ const courseSchema = new Schema({
   quizSet: {
     type: Schema.ObjectId,
   },
+  essayIds: [{ type: Schema.ObjectId, ref: "Essay" }],
   learning: {
     type: [String],
   },

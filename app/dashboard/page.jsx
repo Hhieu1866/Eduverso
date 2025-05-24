@@ -69,21 +69,25 @@ const fetchDashboardData = async () => {
 
 // Component con: Thẻ thống kê
 const StatCard = ({ title, value, icon, iconColor, description }) => (
-  <Card className="shadow-sm transition-shadow hover:shadow-md">
+  <Card className="shadow-sm drop-shadow-md transition-shadow duration-300 hover:shadow-lg">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium">{title}</CardTitle>
-      {icon}
+      <CardTitle className="text-base font-semibold text-primary">
+        {title}
+      </CardTitle>
+      <div className="flex size-9 items-center justify-center rounded-full border border-gray-200 drop-shadow-md">
+        {icon}
+      </div>
     </CardHeader>
     <CardContent>
       <div className="text-3xl font-bold">{value}</div>
-      <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+      <p className="mt-1 text-sm text-muted-foreground">{description}</p>
     </CardContent>
   </Card>
 );
 
 // Component con: Danh sách khóa học
 const CoursesList = ({ courses = [] }) => (
-  <Card className="shadow-sm lg:col-span-2">
+  <Card className="shadow-sm drop-shadow-md lg:col-span-2">
     <CardHeader className="pb-2">
       <div className="flex items-center justify-between">
         <CardTitle>Khóa học của bạn</CardTitle>
@@ -185,7 +189,7 @@ const EmptyCourseState = () => (
 
 // Component con: Hiển thị tỷ lệ hoàn thành
 const CompletionRateCard = ({ completionRate }) => (
-  <Card className="shadow-sm">
+  <Card className="shadow-sm drop-shadow-md">
     <CardHeader className="pb-2">
       <CardTitle className="text-sm font-medium">
         Tỷ lệ hoàn thành khóa học
@@ -203,7 +207,7 @@ const CompletionRateCard = ({ completionRate }) => (
 
 // Component con: Hiển thị đánh giá gần đây
 const RecentReviewsCard = ({ reviews = [] }) => (
-  <Card className="shadow-sm">
+  <Card className="shadow-sm drop-shadow-md">
     <CardHeader className="pb-2">
       <CardTitle className="text-sm font-medium">Đánh giá gần đây</CardTitle>
     </CardHeader>

@@ -14,6 +14,7 @@ import { Quizset } from "@/model/quizset-model";
 import { Quiz } from "@/model/quizzes-model";
 import mongoose from "mongoose";
 import { Enrollment } from "@/model/enrollment-model";
+import Essay from "@/model/essay";
 
 export async function getCourseList(filters = {}) {
   try {
@@ -117,6 +118,10 @@ export async function getCourseDetails(id) {
         path: "quizIds",
         model: Quiz,
       },
+    })
+    .populate({
+      path: "essayIds",
+      model: "Essay",
     })
     .lean();
 

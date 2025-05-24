@@ -4,6 +4,7 @@ import {
   File,
   LayoutDashboard,
   ListChecks,
+  FileText,
 } from "lucide-react";
 import { CategoryForm } from "./_components/category-form";
 import { DescriptionForm } from "./_components/description-form";
@@ -20,6 +21,8 @@ import { getCategories } from "@/queries/categories";
 import { replaceMongoIdInArray } from "@/lib/convertData";
 import { ObjectId } from "mongoose";
 import { getAllQuizSets } from "@/queries/quizzes";
+import { getEssays } from "@/app/actions/essay";
+import { EssayForm } from "./_components/essay-form";
 
 const EditCourse = async ({ params: { courseId } }) => {
   const course = await getCourseDetailsForInstructor(courseId);
@@ -66,7 +69,17 @@ const EditCourse = async ({ params: { courseId } }) => {
     });
   }
 
-  //console.log(mappedQuizSet);
+  // Lấy tất cả bài tự luận của giảng viên
+  const allEssays = await getEssays();
+  let mappedEssays = [];
+  if (allEssays && allEssays.length > 0) {
+    mappedEssays = allEssays.map((essay) => {
+      return {
+        value: essay._id.toString(),
+        label: essay.title,
+      };
+    });
+  }
 
   return (
     <>
@@ -125,9 +138,15 @@ const EditCourse = async ({ params: { courseId } }) => {
             />
 
             <QuizSetForm
-              initialData={{ quizSetId: course?.quizSet?._id.toString() }}
+              initialData={{ quizSetId: course?.quizSet?._id?.toString() }}
               courseId={courseId}
               options={mappedQuizSet}
+            />
+
+            <EssayForm
+              initialData={{ essayIds: course?.essayIds || [] }}
+              courseId={courseId}
+              options={mappedEssays}
             />
           </div>
           <div className="space-y-6">

@@ -8,7 +8,7 @@ import {
 import { getLessonBySlug } from "@/queries/lessons";
 import { LessonVideo } from "./_components/lesson-video";
 import { DownloadButton } from "@/components/download-button";
-import { FileText, Download, Clock, Calendar } from "lucide-react";
+import { FileText, Download, Clock, Calendar, File } from "lucide-react";
 import { CompleteLessonButton } from "./_components/complete-lesson-button";
 import { getLoggedInUser } from "@/lib/loggedin-user";
 import { Watch } from "@/model/watch-model";
@@ -193,6 +193,63 @@ const LessonPage = async ({ params, searchParams }) => {
     return `${hours} giờ ${remainingMinutes > 0 ? `${remainingMinutes} phút` : ""}`;
   };
 
+  // Hàm nhận diện icon file giống Lesson Editor
+  function getFileIcon(doc) {
+    const name = doc?.name?.toLowerCase() || "";
+    const type = doc?.fileType?.toLowerCase() || "";
+
+    if (name.endsWith(".pdf") || type.includes("pdf")) {
+      return <FileText className="h-5 w-5 text-red-500" />;
+    }
+    if (
+      name.endsWith(".ppt") ||
+      name.endsWith(".pptx") ||
+      type.includes("presentation") ||
+      type.includes("powerpoint")
+    ) {
+      return <FileText className="h-5 w-5 text-orange-500" />;
+    }
+    if (
+      name.endsWith(".xls") ||
+      name.endsWith(".xlsx") ||
+      type.includes("excel") ||
+      type.includes("spreadsheet")
+    ) {
+      return <FileText className="h-5 w-5 text-emerald-600" />;
+    }
+    if (
+      name.endsWith(".doc") ||
+      name.endsWith(".docx") ||
+      type.includes("word") ||
+      type.includes("doc")
+    ) {
+      return <FileText className="h-5 w-5 text-blue-600" />;
+    }
+    if (name.endsWith(".txt") || type.includes("text")) {
+      return <FileText className="h-5 w-5 text-gray-600" />;
+    }
+    if (name.endsWith(".csv") || type.includes("csv")) {
+      return <FileText className="h-5 w-5 text-green-500" />;
+    }
+    if (
+      name.endsWith(".jpg") ||
+      name.endsWith(".jpeg") ||
+      name.endsWith(".png") ||
+      name.endsWith(".gif") ||
+      type.includes("image")
+    ) {
+      return <File className="h-5 w-5 text-purple-500" />;
+    }
+    if (
+      name.endsWith(".zip") ||
+      name.endsWith(".rar") ||
+      type.includes("archive")
+    ) {
+      return <File className="h-5 w-5 text-yellow-600" />;
+    }
+    return <File className="h-5 w-5 text-gray-500" />;
+  }
+
   return (
     <div className="mx-auto max-w-4xl">
       {/* Video Player */}
@@ -231,6 +288,45 @@ const LessonPage = async ({ params, searchParams }) => {
               <span>{currentModule?.title}</span>
             </div>
           </div>
+        </div>
+
+        <Separator />
+
+        {/* Lesson Documents - Tài liệu kèm theo */}
+        <div className="space-y-4">
+          <h2 className="text-lg font-semibold text-gray-900">
+            Tài liệu kèm theo
+          </h2>
+          {Array.isArray(lessonToPay.documents) &&
+          lessonToPay.documents.length > 0 ? (
+            <ul className="space-y-2">
+              {lessonToPay.documents.map((doc, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-center gap-3 rounded border border-gray-200 bg-gray-50 p-3"
+                >
+                  {getFileIcon(doc)}
+                  <span className="flex-1 truncate font-medium text-gray-800">
+                    {doc.name || `Tài liệu ${idx + 1}`}
+                  </span>
+                  {doc.fileUrl && (
+                    <a
+                      href={`/api/upload/course-documents/download?url=${encodeURIComponent(doc.fileUrl)}&name=${encodeURIComponent(doc.name || `Tài liệu ${idx + 1}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 rounded bg-primary px-3 py-1 text-sm font-semibold text-white transition hover:bg-primary/90"
+                    >
+                      <Download className="h-4 w-4" /> Tải xuống
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="italic text-gray-500">
+              Không có tài liệu kèm theo cho bài học này
+            </div>
+          )}
         </div>
 
         <Separator />

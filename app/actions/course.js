@@ -4,6 +4,8 @@ import { getLoggedInUser } from "@/lib/loggedin-user";
 import { Course } from "@/model/course-model";
 import { create } from "@/queries/courses";
 import mongoose from "mongoose";
+import { dbConnect } from "@/service/mongo";
+import { revalidatePath } from "next/cache";
 
 export async function createCourse(data) {
   try {
@@ -60,6 +62,54 @@ export async function updateQuizSetForCourse(courseId, dataUpdated) {
     await Course.findByIdAndUpdate(courseId, data);
   } catch (error) {
     throw new Error(err);
+  }
+}
+
+// Thêm bài tự luận vào khóa học
+export async function addEssaysToCourse(courseId, essayIds) {
+  try {
+    await dbConnect();
+    const loggedInUser = await getLoggedInUser();
+
+    // Kiểm tra quyền giảng viên
+    if (loggedInUser.role !== "instructor") {
+      throw new Error("Không có quyền thực hiện");
+    }
+
+    // Kiểm tra giảng viên có phải là người tạo khóa học
+    const course = await Course.findOne({
+      _id: courseId,
+      instructor: loggedInUser.id,
+    });
+
+    if (!course) {
+      throw new Error("Không tìm thấy khóa học hoặc không có quyền");
+    }
+
+    // Cập nhật danh sách bài tự luận
+    const updatedCourse = await Course.findByIdAndUpdate(
+      courseId,
+      {
+        essayIds: essayIds.map((id) => new mongoose.Types.ObjectId(id)),
+        modifiedOn: Date.now(),
+      },
+      { new: true },
+    );
+
+    if (!updatedCourse) {
+      throw new Error("Không thể cập nhật khóa học");
+    }
+
+    revalidatePath(`/dashboard/courses/${courseId}`);
+
+    return {
+      success: true,
+      message: "Đã cập nhật bài tự luận cho khóa học",
+      course: updatedCourse,
+    };
+  } catch (error) {
+    console.error("Lỗi khi thêm bài tự luận vào khóa học:", error);
+    throw new Error(error.message || "Lỗi khi thêm bài tự luận vào khóa học");
   }
 }
 

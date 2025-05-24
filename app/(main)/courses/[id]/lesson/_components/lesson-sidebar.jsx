@@ -14,6 +14,7 @@ import {
   Award,
   ThumbsUp,
   HelpCircle,
+  FileText,
 } from "lucide-react";
 import Link from "next/link";
 import { getCourseDetails } from "@/queries/courses";
@@ -26,6 +27,7 @@ import { DownloadCertificate } from "./download-certificate";
 import Quiz from "./quiz";
 import { LessonSidebarLink } from "./lesson-sidebar-link";
 import { Separator } from "@/components/ui/separator";
+import { EssayList } from "./essay-list";
 
 export const LessonSidebar = async ({ courseId }) => {
   const course = await getCourseDetails(courseId);
@@ -142,6 +144,10 @@ export const LessonSidebar = async ({ courseId }) => {
   const isQuizComplete = report?.quizAssessment ? true : false;
   const quizSet = quizSetall ? sanitizeData(quizSetall) : null;
 
+  // Lấy danh sách bài tự luận
+  const essays = course?.essayIds || [];
+  const hasEssays = essays.length > 0;
+
   return (
     <div className="flex h-full flex-col border-r bg-white">
       <div className="flex flex-col px-5 py-4">
@@ -160,7 +166,7 @@ export const LessonSidebar = async ({ courseId }) => {
       <div className="flex-1 overflow-y-auto">
         <Accordion
           type="multiple"
-          defaultValue={["quiz", "review", "certificate"]}
+          defaultValue={["quiz", "essay", "review", "certificate"]}
         >
           {updatedModules.map((module, index) => (
             <AccordionItem
@@ -227,6 +233,24 @@ export const LessonSidebar = async ({ courseId }) => {
             </div>
           )}
 
+          {/* Essay Section */}
+          {hasEssays && (
+            <div className="mb-4 rounded-lg border">
+              <div className="flex items-center gap-3 border-b p-4">
+                <FileText className="h-5 w-5 text-green-600" />
+                <div>
+                  <h3 className="font-medium">Bài tự luận</h3>
+                  <p className="text-xs text-muted-foreground">
+                    Làm bài tập tự luận
+                  </p>
+                </div>
+              </div>
+              <div className="">
+                <EssayList courseId={courseId} essays={essays} />
+              </div>
+            </div>
+          )}
+
           {/* Review Button */}
           <div className="mb-3">
             <GiveReview courseId={courseId} loginid={loggedinUser.id} />
@@ -237,6 +261,8 @@ export const LessonSidebar = async ({ courseId }) => {
             <DownloadCertificate
               courseId={courseId}
               totalProgress={totalProgress}
+              quizPassed={isQuizComplete}
+              hasEssays={hasEssays}
             />
           </div>
         </div>
