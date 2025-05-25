@@ -136,9 +136,22 @@ export function LoginForm() {
               />
             </div>
 
-            <div className="flex items-center gap-2 text-sm">
-              <input type="checkbox" className="" />
-              <p>Nhớ mật khẩu</p>
+            <div className="mb-2 mt-2 flex items-center justify-between">
+              <label className="flex cursor-pointer select-none items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-300 accent-primary focus:ring-2 focus:ring-primary"
+                  name="remember"
+                  id="remember"
+                />
+                <span>Nhớ mật khẩu</span>
+              </label>
+              <Link
+                href="#"
+                className="text-sm font-medium text-primary transition hover:underline"
+              >
+                Quên mật khẩu?
+              </Link>
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
@@ -152,9 +165,6 @@ export function LoginForm() {
               )}
             </Button>
           </div>
-          <Link href="#" className="ml-auto inline-block text-sm underline">
-            Quên mật khẩu?
-          </Link>
           <div className="mt-4 text-center text-sm">
             Chưa có tài khoản?{" "}
             <Link
