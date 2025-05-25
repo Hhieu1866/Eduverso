@@ -93,7 +93,7 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="mx-auto w-full max-w-sm">
+    <Card className="mx-auto w-full max-w-sm border-0 drop-shadow-2xl">
       <CardHeader>
         <CardTitle className="text-2xl">
           <p className="font-pj mt-5 text-3xl font-bold leading-tight text-gray-900 sm:text-5xl sm:leading-tight lg:text-3xl lg:leading-tight">

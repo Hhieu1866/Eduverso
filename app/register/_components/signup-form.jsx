@@ -137,12 +137,12 @@ export function SignupForm() {
   }
 
   return (
-    <Card className="mx-auto max-w-md">
+    <Card className="mx-auto max-w-md border-0 drop-shadow-2xl">
       <CardHeader>
         <CardTitle className="text-xl">
-          <p className="mt-5 text-3xl font-bold leading-tight text-gray-900 sm:leading-tight sm:text-5xl lg:text-3xl lg:leading-tight font-pj">
+          <p className="font-pj mt-5 text-3xl font-bold leading-tight text-gray-900 sm:text-5xl sm:leading-tight lg:text-3xl lg:leading-tight">
             <span className="relative inline-flex sm:inline">
-              <span className="bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] blur-lg filter opacity-30 w-full h-full absolute inset-0"></span>
+              <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] opacity-30 blur-lg filter"></span>
               <span className="relative">Đăng ký</span>
             </span>
           </p>
@@ -208,8 +208,8 @@ export function SignupForm() {
                 />
 
                 <div className="mt-2 space-y-1.5">
-                  <p className="text-xs font-medium mb-1">Mật khẩu phải có:</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1 text-xs">
+                  <p className="mb-1 text-xs font-medium">Mật khẩu phải có:</p>
+                  <div className="grid grid-cols-1 gap-1 text-xs md:grid-cols-2">
                     <div className="flex items-center gap-1.5">
                       {passwordRequirements.length ? (
                         <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
@@ -265,13 +265,13 @@ export function SignupForm() {
                 required
               />
               {password && confirmPassword && password !== confirmPassword && (
-                <p className="text-xs text-red-500 mt-1">
+                <p className="mt-1 text-xs text-red-500">
                   Mật khẩu xác nhận không khớp
                 </p>
               )}
             </div>
             {error && (
-              <div className="text-sm text-red-500 p-2 bg-red-50 rounded-md border border-red-200">
+              <div className="rounded-md border border-red-200 bg-red-50 p-2 text-sm text-red-500">
                 {error}
               </div>
             )}
@@ -289,7 +289,7 @@ export function SignupForm() {
           </div>
           <div className="mt-4 text-center text-sm">
             Đã có tài khoản?{" "}
-            <Link href="/login" className="underline text-primary font-medium">
+            <Link href="/login" className="font-medium text-primary underline">
               Đăng nhập
             </Link>
           </div>
