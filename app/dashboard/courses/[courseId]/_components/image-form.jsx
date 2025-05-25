@@ -29,56 +29,76 @@ const formSchema = z.object({
 });
 
 export const ImageForm = ({ initialData, courseId }) => {
+  // State local cho ảnh
+  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || "");
+  const [thumbnailUrl, setThumbnailUrl] = useState(
+    initialData?.thumbnailUrl || "",
+  );
   const [file, setFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const router = useRouter();
 
-  // State lưu url ảnh hiện tại (ưu tiên state thay vì prop)
-  const [imageUrl, setImageUrl] = useState(() => {
-    // Nếu có URL từ Vercel Blob, ưu tiên sử dụng
-    if (initialData?.thumbnailUrl) return initialData.thumbnailUrl;
-    if (initialData?.thumbnail && !initialData.thumbnail.includes("undefined"))
-      return `/assets/images/courses/${initialData.thumbnail}`;
-    if (initialData?.imageUrl && !initialData.imageUrl.includes("undefined")) {
-      if (
-        initialData.imageUrl.startsWith("http") ||
-        initialData.imageUrl.startsWith("/")
-      )
-        return initialData.imageUrl;
-      return `/assets/images/courses/${initialData.imageUrl}`;
-    }
-    return null;
-  });
-
   // Kiểm tra xem imageUrl có hợp lệ hay không
-  const hasValidImage = !!imageUrl;
+  const hasValidImage =
+    (imageUrl && imageUrl !== "undefined" && !imageUrl.includes("undefined")) ||
+    (thumbnailUrl &&
+      thumbnailUrl !== "undefined" &&
+      !thumbnailUrl.includes("undefined"));
 
   // Mặc định isEditing = true nếu chưa có ảnh hợp lệ
   const [isEditing, setIsEditing] = useState(!hasValidImage);
+
+  // Nếu initialData thay đổi (ví dụ khi đổi course), cập nhật lại state
+  useEffect(() => {
+    setImageUrl(initialData?.imageUrl || "");
+    setThumbnailUrl(initialData?.thumbnailUrl || "");
+  }, [initialData]);
+
+  // Khi initialData đổi (ảnh mới về), tự động tắt chế độ chỉnh sửa
+  useEffect(() => {
+    if (
+      (initialData?.thumbnailUrl &&
+        initialData.thumbnailUrl !== "" &&
+        initialData.thumbnailUrl !== "undefined") ||
+      (initialData?.imageUrl &&
+        initialData.imageUrl !== "" &&
+        initialData.imageUrl !== "undefined")
+    ) {
+      setIsEditing(false);
+    }
+  }, [initialData?.thumbnailUrl, initialData?.imageUrl]);
 
   useEffect(() => {
     if (file) {
       uploadFile();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file]);
 
   const uploadFile = async () => {
     try {
       setIsUploading(true);
+
       const formData = new FormData();
       formData.append("file", file[0]);
       formData.append("courseId", courseId);
+
       const response = await fetch("/api/upload/course-thumbnail", {
         method: "POST",
         body: formData,
       });
+
       const result = await response.json();
+
       if (response.ok) {
-        setImageUrl(result.url); // Cập nhật state, UI sẽ re-render ngay
+        setImageUrl(result.url);
+        setThumbnailUrl(result.url);
         toast.success("Đã cập nhật ảnh thumbnail");
         setIsEditing(false);
+        // Gọi revalidate API cho path động trước khi refresh
+        await fetch(`/api/revalidate?path=/dashboard/courses/${courseId}`);
         router.refresh();
       } else {
         toast.error(result.error || "Lỗi khi tải lên ảnh");
@@ -93,15 +113,19 @@ export const ImageForm = ({ initialData, courseId }) => {
   const deleteImage = async () => {
     try {
       setIsDeleting(true);
+
       const response = await fetch(
         `/api/upload/course-thumbnail?courseId=${courseId}`,
         {
           method: "DELETE",
         },
       );
+
       const result = await response.json();
+
       if (response.ok) {
-        setImageUrl(null); // Xóa ảnh khỏi state
+        setImageUrl("");
+        setThumbnailUrl("");
         toast.success("Đã xóa ảnh thumbnail");
         setShowDeleteDialog(false);
         router.refresh();
@@ -116,6 +140,35 @@ export const ImageForm = ({ initialData, courseId }) => {
   };
 
   const toggleEdit = () => setIsEditing((current) => !current);
+
+  // Cập nhật logic xác định đường dẫn ảnh ưu tiên state
+  const getImageUrl = () => {
+    if (
+      thumbnailUrl &&
+      thumbnailUrl !== "undefined" &&
+      !thumbnailUrl.includes("undefined")
+    ) {
+      return thumbnailUrl;
+    }
+    if (
+      imageUrl &&
+      imageUrl !== "undefined" &&
+      !imageUrl.includes("undefined")
+    ) {
+      if (imageUrl.startsWith("http") || imageUrl.startsWith("/")) {
+        return imageUrl;
+      } else {
+        return `/assets/images/courses/${imageUrl}`;
+      }
+    }
+    // Nếu có đường dẫn ảnh từ thư mục public (giữ lại logic cũ nếu cần)
+    if (initialData.thumbnail && !initialData.thumbnail.includes("undefined")) {
+      return `/assets/images/courses/${initialData.thumbnail}`;
+    }
+    return null;
+  };
+
+  const imageDisplayUrl = getImageUrl();
 
   return (
     <div className="mt-6 rounded-md border bg-gray-50 p-4">
@@ -153,19 +206,20 @@ export const ImageForm = ({ initialData, courseId }) => {
       </div>
 
       {/* Chỉ hiển thị ảnh khi có đường dẫn hợp lệ */}
-      {imageUrl && !isEditing && (
+      {hasValidImage && !isEditing && imageDisplayUrl && (
         <div className="relative mt-2 aspect-video">
           <Image
+            key={imageDisplayUrl}
             alt="Ảnh khoá học"
             fill
             className="rounded-md object-cover"
-            src={imageUrl}
+            src={imageDisplayUrl}
           />
         </div>
       )}
 
       {/* Hiển thị placeholder khi không có ảnh hợp lệ và không trong chế độ chỉnh sửa */}
-      {!imageUrl && !isEditing && (
+      {!hasValidImage && !isEditing && (
         <div
           className="relative mt-2 aspect-video cursor-pointer overflow-hidden rounded-md bg-slate-200"
           onClick={toggleEdit}
@@ -192,9 +246,14 @@ export const ImageForm = ({ initialData, courseId }) => {
             courseId={courseId}
             onUpload={(file) => setFile(file)}
             isUploading={isUploading}
+            onUploadComplete={(files) => {
+              // Đảm bảo tắt chế độ chỉnh sửa và refresh UI
+              setIsEditing(false);
+              router.refresh();
+            }}
           />
           <div className="mt-4 text-xs text-muted-foreground">
-            16:9 aspect ratio recommended
+            Khuyến nghị sử dụng ảnh tỷ lệ 16:9
           </div>
         </div>
       )}

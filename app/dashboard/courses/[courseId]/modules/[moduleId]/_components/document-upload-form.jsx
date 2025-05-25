@@ -242,7 +242,12 @@ export const DocumentUploadForm = ({
       <div className="mt-4">
         <FileUpload
           endpoint="course-documents"
-          onUploadComplete={handleUpload}
+          onUploadComplete={(files) => {
+            handleUpload(files);
+            // Đảm bảo UI cập nhật sau khi upload
+            if (onDocumentsChange) onDocumentsChange();
+            router.refresh();
+          }}
           isUploading={isUploading}
           label="Tải lên tài liệu"
           description="PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX (max 10MB)"
