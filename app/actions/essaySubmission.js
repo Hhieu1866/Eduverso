@@ -314,9 +314,6 @@ export async function checkEssayApprovalStatus(courseId) {
     const session = await auth();
 
     if (!session?.user?.id) {
-      // Kiểm tra cả user.id
-      // Nếu không có session hoặc user.id, không thể kiểm tra, coi như chưa duyệt
-      // Hoặc có thể throw lỗi tùy theo logic bạn muốn
       return false;
     }
 
@@ -326,39 +323,18 @@ export async function checkEssayApprovalStatus(courseId) {
       studentId: session.user.id,
     }).lean();
 
-    // Nếu không có bài nộp nào, hoặc khóa học không có bài tự luận nào yêu cầu nộp
-    // thì coi như điều kiện này được bỏ qua (trả về true)
-    // Điều này cần thảo luận: nếu khóa học có essay nhưng học viên chưa nộp cái nào, có được coi là pass essay condition?
-    // Hiện tại, nếu không có bài nộp nào, coi như pass (true) để không block các trường hợp không có essay.
-    // Nếu muốn chỉ pass khi tất cả essay được assigned đều approved, cần logic phức tạp hơn để lấy list essay được assign cho course.
-    // Ví dụ: nếu course.essayIds tồn tại và có phần tử.
-    // Dựa trên cấu trúc hiện tại, chúng ta có thể kiểm tra trực tiếp từ Course model hoặc giả định từ `essays` prop trong `LessonSidebar`
-    // Vì hàm này gọi từ client-side `DownloadCertificate` không có trực tiếp `course.essayIds`
-    // Nên sẽ cần một cách khác để biết course có yêu cầu essay hay không nếu không có submission nào.
-    // Đơn giản nhất là truyền một prop `courseHasRequiredEssays` vào DownloadCertificate.
-    // Trong ngữ cảnh này, nếu không có submission, tạm coi là không có essay bắt buộc phải nộp.
     if (!submissions || submissions.length === 0) {
-      // Kiểm tra xem khóa học này có thực sự yêu cầu bài tự luận không
-      const courseEssays = await Essay.find({
-        /* Điều kiện để lấy essay của course này, ví dụ courseId trong Essay model hoặc thông qua Course model */
-      });
-      // Tạm thời giả định rằng nếu không có submission thì không có essay yêu cầu.
-      // Cần logic chính xác hơn để xác định một khóa học có yêu cầu essay hay không.
-      // Ví dụ: nếu course.essayIds tồn tại và có phần tử.
-      // Dựa trên cấu trúc hiện tại, chúng ta có thể kiểm tra trực tiếp từ Course model hoặc giả định từ `essays` prop trong `LessonSidebar`
-      // Vì hàm này gọi từ client-side `DownloadCertificate` không có trực tiếp `course.essayIds`
-      // Nên sẽ cần một cách khác để biết course có yêu cầu essay hay không nếu không có submission nào.
-      // Đơn giản nhất là truyền một prop `courseHasRequiredEssays` vào DownloadCertificate.
-      // Trong ngữ cảnh này, nếu không có submission, tạm coi là không có essay bắt buộc phải nộp.
+      // Nếu không có bài nộp nào, coi như không có essay bắt buộc phải nộp
       return true;
     }
 
-    // Kiểm tra xem tất cả bài nộp đã được duyệt chưa
-    const allApproved = submissions.every((sub) => sub.status === "approved");
-
-    return allApproved;
+    // Kiểm tra tất cả bài nộp đều có grade >= 6
+    const allPassed = submissions.every(
+      (sub) => typeof sub.grade === "number" && sub.grade >= 6,
+    );
+    return allPassed;
   } catch (error) {
     console.error("Lỗi khi kiểm tra trạng thái duyệt bài tự luận:", error);
-    return false; // An toàn hơn là trả về false nếu có lỗi
+    return false;
   }
 }

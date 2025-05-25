@@ -13,6 +13,12 @@ export async function GET(request) {
 
     // Lấy blob từ Vercel
     const blob = await fetch(fileUrl);
+    console.log(
+      "Status:",
+      blob.status,
+      "Content-Type:",
+      blob.headers.get("content-type"),
+    );
 
     if (!blob.ok) {
       return NextResponse.json(
@@ -22,15 +28,20 @@ export async function GET(request) {
     }
 
     const fileData = await blob.arrayBuffer();
-    const contentType =
+    let contentType =
       blob.headers.get("content-type") || "application/octet-stream";
+    // Nếu là file docx thì ép content-type chuẩn
+    if (fileName && fileName.endsWith(".docx")) {
+      contentType =
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    }
 
     // Tạo response với headers để force download
     const response = new NextResponse(fileData, {
       status: 200,
       headers: {
         "Content-Type": contentType,
-        "Content-Disposition": `attachment; filename="${fileName || "download"}"`,
+        "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(fileName || "download")}`,
         "Content-Length": String(fileData.byteLength),
       },
     });

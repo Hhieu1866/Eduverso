@@ -129,29 +129,31 @@ export const EssayList = ({ courseId, essays = [] }) => {
     if (!submission) return <Badge variant="outline">Chưa nộp</Badge>;
     if (submission.status === "pending")
       return (
-        <Badge className="bg-yellow-500 hover:bg-yellow-500/90">
+        <Badge className="inline-flex bg-yellow-500 hover:bg-yellow-500/90">
           Chờ duyệt
         </Badge>
       );
     if (submission.status === "graded")
       return (
-        <Badge className="bg-green-600 hover:bg-green-600/90">
+        <Badge className="inline-flex bg-green-600 hover:bg-green-600/90">
           Đã chấm ({submission.grade}/10)
         </Badge>
       );
     if (submission.status === "returned")
       return (
-        <Badge className="bg-blue-600 hover:bg-blue-600/90">Đã trả lại</Badge>
+        <Badge className="inline-flex bg-blue-600 hover:bg-blue-600/90">
+          Đã trả lại
+        </Badge>
       );
     if (submission.status === "approved")
       return (
-        <Badge className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-600/90">
+        <Badge className="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-600/90">
           <CheckCircle className="h-3 w-3" /> Đã duyệt
         </Badge>
       );
     if (submission.status === "rejected")
       return (
-        <Badge className="flex items-center gap-1 bg-red-600 hover:bg-red-600/90">
+        <Badge className="inline-flex items-center gap-1 bg-red-600 hover:bg-red-600/90">
           <XCircle className="h-3 w-3" /> Bị từ chối
         </Badge>
       );
@@ -187,62 +189,15 @@ export const EssayList = ({ courseId, essays = [] }) => {
 
   // Hàm nhận diện icon file giống lesson editor
   function getFileIcon(doc) {
-    const name = doc?.name?.toLowerCase() || "";
-    const type = doc?.fileType?.toLowerCase() || "";
-
-    let color = "text-gray-500";
-    if (name.endsWith(".pdf") || type.includes("pdf")) color = "text-red-500";
-    else if (
-      name.endsWith(".ppt") ||
-      name.endsWith(".pptx") ||
-      type.includes("presentation") ||
-      type.includes("powerpoint")
-    )
-      color = "text-orange-500";
-    else if (
-      name.endsWith(".xls") ||
-      name.endsWith(".xlsx") ||
-      type.includes("excel") ||
-      type.includes("spreadsheet")
-    )
-      color = "text-emerald-600";
-    else if (
-      name.endsWith(".doc") ||
-      name.endsWith(".docx") ||
-      type.includes("word") ||
-      type.includes("doc")
-    )
-      color = "text-blue-600";
-    else if (name.endsWith(".csv") || type.includes("csv"))
-      color = "text-green-500";
-    else if (
-      name.endsWith(".jpg") ||
-      name.endsWith(".jpeg") ||
-      name.endsWith(".png") ||
-      name.endsWith(".gif") ||
-      type.includes("image")
-    )
-      color = "text-purple-500";
-    else if (
-      name.endsWith(".zip") ||
-      name.endsWith(".rar") ||
-      type.includes("archive")
-    )
-      color = "text-yellow-600";
-
-    // Chỉ dùng 1 icon duy nhất, thêm class căn chỉnh
     return (
-      <FileText className={`h-5 w-5 ${color} flex-shrink-0 align-middle`} />
+      <Paperclip className="h-5 w-5 flex-shrink-0 align-middle text-primary" />
     );
   }
 
   if (isLoading)
     return (
-      <div className="p-6 text-center">
-        <p className="text-sm text-muted-foreground">
-          Đang tải danh sách bài tự luận...
-        </p>
-        <div className="mt-3 inline-block h-6 w-6 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
+      <div className="flex items-center justify-center py-8">
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   if (essays.length === 0)
@@ -300,36 +255,50 @@ export const EssayList = ({ courseId, essays = [] }) => {
                             : ""}
                         </span>
                       </div>
-                      <DownloadButton
-                        url={`/api/upload/course-documents/download?url=${encodeURIComponent(doc.fileUrl)}&name=${encodeURIComponent(doc.name)}`}
-                        filename={doc.name}
+                      <Button
                         variant="outline"
                         size="sm"
-                        icon={<Download className="mr-1.5 h-4 w-4" />}
+                        onClick={() =>
+                          handleDownloadInstructorFile(doc.fileUrl, doc.name)
+                        }
                       >
-                        Tải
-                      </DownloadButton>
+                        <Download className="size-4" />
+                      </Button>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
 
-            {submission?.feedbackFromInstructor && (
+            {(isApproved || submission?.status === "rejected") && (
               <Alert
-                variant={
-                  submission.status === "rejected" ? "destructive" : "default"
+                variant={isApproved ? "success" : "destructive"}
+                className={
+                  isApproved
+                    ? "mt-3 rounded-md border border-emerald-200 bg-emerald-50 p-3 text-emerald-800"
+                    : "mt-3 rounded-md border border-red-200 bg-red-50 p-3 text-red-800"
                 }
-                className="mt-3"
               >
-                <AlertTitle className="font-semibold">
-                  {submission.status === "rejected"
-                    ? "Bài làm bị từ chối - Phản hồi từ giảng viên:"
-                    : "Phản hồi từ giảng viên:"}
-                </AlertTitle>
-                <AlertDescription className="whitespace-pre-line pt-1">
-                  {submission.feedbackFromInstructor}
-                </AlertDescription>
+                <div className="mb-1 text-base font-semibold">
+                  {isApproved
+                    ? "Bài làm đã được duyệt!"
+                    : "Bài làm đã bị từ chối!"}
+                </div>
+                <div className="mb-2 text-sm">
+                  {isApproved
+                    ? "Bạn đã hoàn thành xuất sắc bài tự luận này."
+                    : "Vui lòng xem lại phản hồi từ giảng viên."}
+                </div>
+                {submission?.feedbackFromInstructor && (
+                  <>
+                    <div className="mb-1 mt-2 text-xs font-medium opacity-80">
+                      Phản hồi từ giảng viên
+                    </div>
+                    <div className="whitespace-pre-line rounded bg-white/60 p-1 text-sm shadow-inner">
+                      {submission.feedbackFromInstructor}
+                    </div>
+                  </>
+                )}
               </Alert>
             )}
 
@@ -346,7 +315,7 @@ export const EssayList = ({ courseId, essays = [] }) => {
                         className="flex items-center justify-between rounded-md border bg-background p-2.5 shadow-sm"
                       >
                         <div className="flex min-w-0 items-center gap-2">
-                          <Paperclip className="h-5 w-5 flex-shrink-0 text-green-600" />
+                          <Paperclip className="h-5 w-5 flex-shrink-0 text-primary" />
                           <span className="truncate text-sm" title={file.name}>
                             {file.name}
                           </span>
@@ -358,8 +327,7 @@ export const EssayList = ({ courseId, essays = [] }) => {
                             handleDownloadSubmittedFile(file.fileUrl, file.name)
                           }
                         >
-                          <Download className="mr-1.5 h-4 w-4" />
-                          Xem/Tải
+                          <Download className="size-4" />
                         </Button>
                       </li>
                     ))}
@@ -457,20 +425,6 @@ export const EssayList = ({ courseId, essays = [] }) => {
                   </div>
                 )}
               </div>
-            )}
-            {isApproved && (
-              <Alert
-                variant="success"
-                className="mt-3 bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
-              >
-                <CheckCircle className="h-5 w-5" />
-                <AlertTitle className="font-semibold">
-                  Bài làm đã được duyệt!
-                </AlertTitle>
-                <AlertDescription>
-                  Bạn đã hoàn thành xuất sắc bài tự luận này.
-                </AlertDescription>
-              </Alert>
             )}
           </div>
         );

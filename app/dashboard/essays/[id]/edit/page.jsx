@@ -9,7 +9,6 @@ import { notFound } from "next/navigation";
 export default async function EditEssayPage({ params }) {
   await dbConnect();
   const session = await auth();
-  image.png;
 
   if (!session?.user || session.user.role !== "instructor") {
     return notFound();

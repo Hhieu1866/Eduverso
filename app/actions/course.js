@@ -118,9 +118,11 @@ export async function submitCourseForReview(courseId) {
   try {
     const course = await Course.findById(courseId);
 
-    // Kiểm tra xem khóa học có phải là draft không
-    if (course.status !== "draft") {
-      throw new Error("Chỉ có thể gửi duyệt khóa học ở trạng thái draft");
+    // Kiểm tra xem khóa học có phải là draft hoặc rejected không
+    if (course.status !== "draft" && course.status !== "rejected") {
+      throw new Error(
+        "Chỉ có thể gửi duyệt khóa học ở trạng thái draft hoặc bị từ chối",
+      );
     }
 
     // Cập nhật status thành pending

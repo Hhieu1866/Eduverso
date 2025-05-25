@@ -172,14 +172,14 @@ export const CategoryForm = ({ initialData, courseId, options }) => {
   return (
     <div className="mt-6 rounded-md border bg-gray-50 p-4">
       <div className="flex items-center justify-between font-medium">
-        Course Category
+        Danh mục khoá học
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
-            <>Cancel</>
+            <>Huỷ</>
           ) : (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              Edit Category
+              Chỉnh sửa danh mục
             </>
           )}
         </Button>
@@ -191,7 +191,7 @@ export const CategoryForm = ({ initialData, courseId, options }) => {
             !initialData.value && "italic text-slate-500",
           )}
         >
-          {selectedOption?.label || "No category"}
+          {selectedOption?.label || "Chưa có danh mục"}
         </p>
       )}
       {isEditing && (

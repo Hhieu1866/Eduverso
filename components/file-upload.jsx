@@ -26,12 +26,31 @@ const FileUpload = ({
   disabled = false,
   uploadImmediately = false, // New prop to control immediate upload
   essayId, // New prop for essayId, only relevant for 'essay-submission' endpoint
+  lessonId, // thêm
+  courseId, // thêm
+  moduleId, // thêm
 }) => {
   const [files, setFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [uploadedFiles, setUploadedFiles] = useState([]); // State để lưu các files đã upload
+
+  // Debug: log toàn bộ props truyền vào
+  console.log("[FileUpload] props:", {
+    endpoint,
+    essayId,
+    lessonId,
+    courseId,
+    moduleId,
+    multiple,
+    maxFiles,
+    maxSize,
+    label,
+    description,
+    disabled,
+    uploadImmediately,
+  });
 
   const onDrop = useCallback(
     (acceptedFiles, fileRejections) => {
@@ -76,29 +95,100 @@ const FileUpload = ({
   });
 
   const handleUpload = async (filesToUpload) => {
+    // Debug: log các trường trước khi upload
+    console.log("[FileUpload] handleUpload - endpoint:", endpoint);
+    console.log("[FileUpload] handleUpload - lessonId:", lessonId);
+    console.log("[FileUpload] handleUpload - courseId:", courseId);
+    console.log("[FileUpload] handleUpload - moduleId:", moduleId);
+    console.log("[FileUpload] handleUpload - essayId:", essayId);
+    console.log("[FileUpload] handleUpload - filesToUpload:", filesToUpload);
+
+    if (!endpoint) {
+      toast.error(
+        "Thiếu endpoint upload. Vui lòng cấu hình endpoint cho FileUpload.",
+      );
+      return;
+    }
     if (!filesToUpload || filesToUpload.length === 0) {
       toast.error("Vui lòng chọn file để tải lên.");
       return;
     }
 
+    // Kiểm tra các trường bắt buộc theo endpoint
+    if (
+      endpoint === "essay-files" ||
+      endpoint === "essay-submission" ||
+      endpoint === "essaySubmission"
+    ) {
+      if (!essayId) {
+        toast.error("Thiếu essayId cho upload bài tự luận.");
+        return;
+      }
+    }
+    if (endpoint === "course-documents") {
+      if (!lessonId || !courseId || !moduleId) {
+        toast.error(
+          "Thiếu lessonId/courseId/moduleId cho upload tài liệu khóa học.",
+        );
+        return;
+      }
+    }
+    if (endpoint === "course-thumbnail") {
+      if (!courseId) {
+        toast.error("Thiếu courseId cho upload ảnh khóa học.");
+        return;
+      }
+    }
+    // Có thể bổ sung các endpoint khác nếu cần
+
     setIsUploading(true);
     setUploadError(null);
     const formData = new FormData();
 
-    // Nếu là endpoint 'essay-submission', thêm essayId vào formData
-    if (endpoint === "essay-submission" && essayId) {
+    if (
+      (endpoint === "essay-submission" ||
+        endpoint === "essaySubmission" ||
+        endpoint === "essay-files") &&
+      essayId
+    ) {
       formData.append("essayId", essayId);
     }
+    if (endpoint === "course-documents") {
+      formData.append("lessonId", lessonId);
+      formData.append("courseId", courseId);
+      formData.append("moduleId", moduleId);
+      formData.append("file", filesToUpload[0]);
+    } else if (endpoint === "essay-files") {
+      formData.append("file", filesToUpload[0]);
+    } else if (
+      endpoint === "essay-submission" ||
+      endpoint === "essaySubmission"
+    ) {
+      if (multiple) {
+        filesToUpload.forEach((file) => {
+          formData.append("files", file);
+        });
+      } else {
+        formData.append("file", filesToUpload[0]);
+      }
+    } else if (endpoint === "course-thumbnail") {
+      formData.append("file", filesToUpload[0]);
+      formData.append("courseId", courseId);
+    } else {
+      filesToUpload.forEach((file) => {
+        formData.append("files", file);
+      });
+    }
 
-    filesToUpload.forEach((file) => {
-      formData.append("files", file); // API mong đợi key là "files"
-    });
+    // Debug: log toàn bộ FormData gửi lên server
+    for (let pair of formData.entries()) {
+      console.log(`[FileUpload] FormData: ${pair[0]} =`, pair[1]);
+    }
 
     try {
       const res = await fetch(`/api/upload/${endpoint}`, {
         method: "POST",
         body: formData,
-        // Không cần 'Content-Type': 'multipart/form-data', browser tự thêm khi có FormData
       });
 
       if (!res.ok) {
@@ -108,16 +198,11 @@ const FileUpload = ({
 
       const result = await res.json();
       toast.success(result.message || "Tải lên thành công!");
-
-      // Lưu file đã upload vào state, không gọi onUploadComplete ngay
       setUploadedFiles(result.files);
-
-      // Chỉ gọi onUploadComplete ngay nếu uploadImmediately = true
-      if (uploadImmediately && onUploadComplete) {
+      if (onUploadComplete) {
         onUploadComplete(result.files);
       }
-
-      setFiles([]); // Xóa file đã chọn sau khi tải lên thành công
+      setFiles([]);
     } catch (error) {
       console.error("Lỗi khi tải file:", error);
       toast.error(error.message || "Tải lên thất bại. Vui lòng thử lại.");
@@ -134,7 +219,11 @@ const FileUpload = ({
 
   // Xác nhận nộp các file đã upload
   const handleConfirmSubmit = () => {
-    if (uploadedFiles.length > 0 && onUploadComplete) {
+    if (
+      Array.isArray(uploadedFiles) &&
+      uploadedFiles.length > 0 &&
+      onUploadComplete
+    ) {
       onUploadComplete(uploadedFiles);
     }
   };
@@ -215,31 +304,32 @@ const FileUpload = ({
       )}
 
       {/* Hiển thị các file đã upload và chờ xác nhận */}
-      {uploadedFiles.length > 0 && !uploadImmediately && (
-        <div className="mt-4 space-y-2">
-          <p className="text-sm font-medium">File đã tải lên thành công:</p>
-          <ul className="divide-y divide-border rounded-md border bg-muted/20">
-            {uploadedFiles.map((file, index) => (
-              <li key={index} className="flex items-center gap-2 p-3">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span className="truncate text-sm" title={file.name}>
-                  {file.name}
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          {/* Nút xác nhận nộp bài - chỉ hiển thị khi đã upload thành công và chưa gửi dữ liệu */}
-          <Button
-            onClick={handleConfirmSubmit}
-            className="mt-2 w-full"
-            variant="default"
-          >
-            <CheckCircle className="mr-2 h-4 w-4" />
-            Xác nhận nộp {uploadedFiles.length} file
-          </Button>
-        </div>
-      )}
+      {Array.isArray(uploadedFiles) &&
+        uploadedFiles.length > 0 &&
+        !uploadImmediately && (
+          <div className="mt-4 space-y-2">
+            <p className="text-sm font-medium">File đã tải lên thành công:</p>
+            <ul className="divide-y divide-border rounded-md border bg-muted/20">
+              {uploadedFiles.map((file, index) => (
+                <li key={index} className="flex items-center gap-2 p-3">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span className="truncate text-sm" title={file.name}>
+                    {file.name}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {/* Nút xác nhận nộp bài - chỉ hiển thị khi đã upload thành công và chưa gửi dữ liệu */}
+            <Button
+              onClick={handleConfirmSubmit}
+              className="mt-2 w-full"
+              variant="default"
+            >
+              <CheckCircle className="mr-2 h-4 w-4" />
+              Xác nhận nộp {uploadedFiles.length} file
+            </Button>
+          </div>
+        )}
 
       {isUploading && Object.keys(uploadProgress).length > 0 && (
         <div className="mt-2 space-y-1">

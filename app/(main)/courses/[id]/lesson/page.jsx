@@ -8,7 +8,14 @@ import {
 import { getLessonBySlug } from "@/queries/lessons";
 import { LessonVideo } from "./_components/lesson-video";
 import { DownloadButton } from "@/components/download-button";
-import { FileText, Download, Clock, Calendar, File } from "lucide-react";
+import {
+  FileText,
+  Download,
+  Clock,
+  Calendar,
+  File,
+  Paperclip,
+} from "lucide-react";
 import { CompleteLessonButton } from "./_components/complete-lesson-button";
 import { getLoggedInUser } from "@/lib/loggedin-user";
 import { Watch } from "@/model/watch-model";
@@ -195,59 +202,7 @@ const LessonPage = async ({ params, searchParams }) => {
 
   // Hàm nhận diện icon file giống Lesson Editor
   function getFileIcon(doc) {
-    const name = doc?.name?.toLowerCase() || "";
-    const type = doc?.fileType?.toLowerCase() || "";
-
-    if (name.endsWith(".pdf") || type.includes("pdf")) {
-      return <FileText className="h-5 w-5 text-red-500" />;
-    }
-    if (
-      name.endsWith(".ppt") ||
-      name.endsWith(".pptx") ||
-      type.includes("presentation") ||
-      type.includes("powerpoint")
-    ) {
-      return <FileText className="h-5 w-5 text-orange-500" />;
-    }
-    if (
-      name.endsWith(".xls") ||
-      name.endsWith(".xlsx") ||
-      type.includes("excel") ||
-      type.includes("spreadsheet")
-    ) {
-      return <FileText className="h-5 w-5 text-emerald-600" />;
-    }
-    if (
-      name.endsWith(".doc") ||
-      name.endsWith(".docx") ||
-      type.includes("word") ||
-      type.includes("doc")
-    ) {
-      return <FileText className="h-5 w-5 text-blue-600" />;
-    }
-    if (name.endsWith(".txt") || type.includes("text")) {
-      return <FileText className="h-5 w-5 text-gray-600" />;
-    }
-    if (name.endsWith(".csv") || type.includes("csv")) {
-      return <FileText className="h-5 w-5 text-green-500" />;
-    }
-    if (
-      name.endsWith(".jpg") ||
-      name.endsWith(".jpeg") ||
-      name.endsWith(".png") ||
-      name.endsWith(".gif") ||
-      type.includes("image")
-    ) {
-      return <File className="h-5 w-5 text-purple-500" />;
-    }
-    if (
-      name.endsWith(".zip") ||
-      name.endsWith(".rar") ||
-      type.includes("archive")
-    ) {
-      return <File className="h-5 w-5 text-yellow-600" />;
-    }
-    return <File className="h-5 w-5 text-gray-500" />;
+    return <Paperclip className="h-5 w-5 text-primary" />;
   }
 
   return (

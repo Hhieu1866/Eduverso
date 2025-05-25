@@ -85,7 +85,7 @@ const EditCourse = async ({ params: { courseId } }) => {
     <>
       {!course.active && (
         <AlertBanner
-          label="This course is unpublished. It will not be visible in the course."
+          label="Khoá học này chưa được công khai. Học viên sẽ không nhìn thấy khoá học này."
           variant="warning"
         />
       )}
@@ -103,7 +103,7 @@ const EditCourse = async ({ params: { courseId } }) => {
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={LayoutDashboard} />
-              <h2 className="text-xl">Customize your course</h2>
+              <h2 className="text-xl">Tuỳ chỉnh khoá học của bạn</h2>
             </div>
             <TitleForm
               initialData={{
@@ -153,7 +153,7 @@ const EditCourse = async ({ params: { courseId } }) => {
             <div>
               <div className="mb-6 flex items-center gap-x-2">
                 <IconBadge icon={ListChecks} />
-                <h2 className="text-xl">Course Modules</h2>
+                <h2 className="text-xl">Danh sách module</h2>
               </div>
 
               <ModulesForm initialData={modules} courseId={courseId} />
@@ -161,7 +161,7 @@ const EditCourse = async ({ params: { courseId } }) => {
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={CircleDollarSign} />
-                <h2 className="text-xl">Sell you course</h2>
+                <h2 className="text-xl">Bán khoá học của bạn</h2>
               </div>
               <PriceForm
                 initialData={{ price: course?.price }}

@@ -8,7 +8,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import * as z from "zod";
 
-import { UploadDropzone } from "@/components/file-upload";
+import FileUpload from "@/components/file-upload";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import {
@@ -35,11 +35,25 @@ export const ImageForm = ({ initialData, courseId }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const router = useRouter();
 
+  // State lưu url ảnh hiện tại (ưu tiên state thay vì prop)
+  const [imageUrl, setImageUrl] = useState(() => {
+    // Nếu có URL từ Vercel Blob, ưu tiên sử dụng
+    if (initialData?.thumbnailUrl) return initialData.thumbnailUrl;
+    if (initialData?.thumbnail && !initialData.thumbnail.includes("undefined"))
+      return `/assets/images/courses/${initialData.thumbnail}`;
+    if (initialData?.imageUrl && !initialData.imageUrl.includes("undefined")) {
+      if (
+        initialData.imageUrl.startsWith("http") ||
+        initialData.imageUrl.startsWith("/")
+      )
+        return initialData.imageUrl;
+      return `/assets/images/courses/${initialData.imageUrl}`;
+    }
+    return null;
+  });
+
   // Kiểm tra xem imageUrl có hợp lệ hay không
-  const hasValidImage =
-    initialData?.imageUrl &&
-    initialData.imageUrl !== "undefined" &&
-    !initialData.imageUrl.includes("undefined");
+  const hasValidImage = !!imageUrl;
 
   // Mặc định isEditing = true nếu chưa có ảnh hợp lệ
   const [isEditing, setIsEditing] = useState(!hasValidImage);
@@ -53,23 +67,16 @@ export const ImageForm = ({ initialData, courseId }) => {
   const uploadFile = async () => {
     try {
       setIsUploading(true);
-
       const formData = new FormData();
       formData.append("file", file[0]);
       formData.append("courseId", courseId);
-
       const response = await fetch("/api/upload/course-thumbnail", {
         method: "POST",
         body: formData,
       });
-
       const result = await response.json();
-
       if (response.ok) {
-        // Cập nhật URL trên giao diện
-        initialData.imageUrl = result.url;
-        initialData.thumbnailUrl = result.url;
-
+        setImageUrl(result.url); // Cập nhật state, UI sẽ re-render ngay
         toast.success("Đã cập nhật ảnh thumbnail");
         setIsEditing(false);
         router.refresh();
@@ -86,21 +93,15 @@ export const ImageForm = ({ initialData, courseId }) => {
   const deleteImage = async () => {
     try {
       setIsDeleting(true);
-
       const response = await fetch(
         `/api/upload/course-thumbnail?courseId=${courseId}`,
         {
           method: "DELETE",
         },
       );
-
       const result = await response.json();
-
       if (response.ok) {
-        // Cập nhật UI
-        initialData.imageUrl = null;
-        initialData.thumbnailUrl = null;
-
+        setImageUrl(null); // Xóa ảnh khỏi state
         toast.success("Đã xóa ảnh thumbnail");
         setShowDeleteDialog(false);
         router.refresh();
@@ -116,43 +117,10 @@ export const ImageForm = ({ initialData, courseId }) => {
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
-  // Cập nhật logic xác định đường dẫn ảnh
-  const getImageUrl = () => {
-    // Nếu có URL từ Vercel Blob, ưu tiên sử dụng
-    if (initialData.thumbnailUrl) {
-      return initialData.thumbnailUrl;
-    }
-
-    // Nếu có đường dẫn ảnh từ thư mục public
-    if (
-      initialData.thumbnail &&
-      !initialData.thumbnail.includes("undefined")
-    ) {
-      return `/assets/images/courses/${initialData.thumbnail}`;
-    }
-
-    // Nếu có imageUrl cũ (không phải từ Blob)
-    if (initialData.imageUrl && !initialData.imageUrl.includes("undefined")) {
-      // Kiểm tra xem imageUrl có phải đường dẫn đầy đủ không (bắt đầu bằng http hoặc /)
-      if (
-        initialData.imageUrl.startsWith("http") ||
-        initialData.imageUrl.startsWith("/")
-      ) {
-        return initialData.imageUrl;
-      } else {
-        return `/assets/images/courses/${initialData.imageUrl}`;
-      }
-    }
-
-    return null;
-  };
-
-  const imageUrl = getImageUrl();
-
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        <span>Course Image</span>
+    <div className="mt-6 rounded-md border bg-gray-50 p-4">
+      <div className="flex items-center justify-between font-medium">
+        <span>Ảnh khoá học</span>
         <div className="flex gap-2">
           {hasValidImage && (
             <>
@@ -163,14 +131,14 @@ export const ImageForm = ({ initialData, courseId }) => {
                 disabled={isDeleting}
                 className="text-destructive hover:text-destructive"
               >
-                <Trash2 className="h-4 w-4 mr-2" />
-                Remove
+                <Trash2 className="mr-2 h-4 w-4" />
+                Xoá ảnh
               </Button>
 
               {!isEditing && (
                 <Button variant="outline" size="sm" onClick={toggleEdit}>
-                  <Pencil className="h-4 w-4 mr-2" />
-                  Change
+                  <Pencil className="mr-2 h-4 w-4" />
+                  Đổi ảnh
                 </Button>
               )}
             </>
@@ -178,38 +146,38 @@ export const ImageForm = ({ initialData, courseId }) => {
 
           {isEditing && (
             <Button variant="outline" size="sm" onClick={toggleEdit}>
-              Cancel
+              Huỷ
             </Button>
           )}
         </div>
       </div>
 
       {/* Chỉ hiển thị ảnh khi có đường dẫn hợp lệ */}
-      {hasValidImage && !isEditing && (
-        <div className="relative aspect-video mt-2">
+      {imageUrl && !isEditing && (
+        <div className="relative mt-2 aspect-video">
           <Image
-            alt="Course thumbnail"
+            alt="Ảnh khoá học"
             fill
-            className="object-cover rounded-md"
+            className="rounded-md object-cover"
             src={imageUrl}
           />
         </div>
       )}
 
       {/* Hiển thị placeholder khi không có ảnh hợp lệ và không trong chế độ chỉnh sửa */}
-      {!hasValidImage && !isEditing && (
+      {!imageUrl && !isEditing && (
         <div
-          className="relative aspect-video mt-2 bg-slate-200 rounded-md overflow-hidden cursor-pointer"
+          className="relative mt-2 aspect-video cursor-pointer overflow-hidden rounded-md bg-slate-200"
           onClick={toggleEdit}
         >
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center p-4">
-              <ImageIcon className="h-12 w-12 mx-auto text-slate-500 mb-2" />
-              <p className="text-slate-500 text-sm">Chưa có ảnh khóa học</p>
-              <p className="text-slate-400 text-xs mt-1">
+            <div className="p-4 text-center">
+              <ImageIcon className="mx-auto mb-2 h-12 w-12 text-slate-500" />
+              <p className="text-sm text-slate-500">Chưa có ảnh khóa học</p>
+              <p className="mt-1 text-xs text-slate-400">
                 Nhấn vào đây để tải lên ảnh
               </p>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="mt-1 text-xs text-slate-400">
                 Khuyến nghị sử dụng ảnh tỷ lệ 16:9
               </p>
             </div>
@@ -217,14 +185,15 @@ export const ImageForm = ({ initialData, courseId }) => {
         </div>
       )}
 
-      {/* Hiển thị UploadDropzone khi ở chế độ chỉnh sửa */}
       {isEditing && (
         <div>
-          <UploadDropzone
+          <FileUpload
+            endpoint="course-thumbnail"
+            courseId={courseId}
             onUpload={(file) => setFile(file)}
             isUploading={isUploading}
           />
-          <div className="text-xs text-muted-foreground mt-4">
+          <div className="mt-4 text-xs text-muted-foreground">
             16:9 aspect ratio recommended
           </div>
         </div>

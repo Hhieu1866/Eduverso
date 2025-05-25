@@ -34,7 +34,7 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { UploadDropzone } from "@/components/file-upload";
+import FileUpload from "@/components/file-upload";
 import { Combobox } from "@/components/ui/combobox";
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -117,7 +117,7 @@ const AddLive = () => {
                   <FormItem>
                     <FormLabel>Ảnh đại diện</FormLabel>
                     <FormControl>
-                      <UploadDropzone />
+                      <FileUpload />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

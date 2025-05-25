@@ -59,8 +59,12 @@ export default async function GradeSubmissionPage({ params }) {
   }
 
   // Kiểm tra quyền chấm điểm (giảng viên phải là người tạo bài tự luận)
-  // Vì đã .lean(), essayId là một ObjectId, cần query lại Essay model
-  const essay = await Essay.findById(submission.essayId).lean();
+  // Vì đã .lean(), essayId có thể là object hoặc string
+  const essayId =
+    typeof submission.essayId === "object" && submission.essayId !== null
+      ? submission.essayId._id
+      : submission.essayId;
+  const essay = await Essay.findById(essayId).lean();
 
   if (!essay || essay.createdBy.toString() !== session.user.id) {
     // Nếu không tìm thấy essay hoặc giảng viên không phải người tạo
@@ -100,7 +104,7 @@ export default async function GradeSubmissionPage({ params }) {
       </div>
 
       <div className="mb-8 rounded-lg border bg-card p-6 shadow-sm">
-        <h2 class="mb-4 border-b pb-2 text-lg font-semibold">
+        <h2 className="mb-4 border-b pb-2 text-lg font-semibold">
           Thông tin bài nộp
         </h2>
         <div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">

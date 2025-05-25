@@ -6,7 +6,7 @@ export default async function EssaysPage() {
   const essays = await getEssays();
 
   return (
-    <div className="px-8 py-8">
+    <div className="p-6">
       <h1 className="mb-6 text-2xl font-bold">Quản lý bài tự luận</h1>
       <DataTable columns={columns} data={essays || []} />
     </div>

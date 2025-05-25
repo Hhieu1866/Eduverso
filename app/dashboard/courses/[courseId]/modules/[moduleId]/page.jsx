@@ -60,7 +60,7 @@ const Module = async ({ params: { courseId, moduleId } }) => {
               className="mb-6 flex items-center text-sm transition hover:opacity-75"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to course setup
+              Quay lại cấu hình khoá học
             </Link>
             <div className="flex items-center justify-end">
               <ModuleActions module={sanitizedModule} courseId={courseId} />
@@ -72,7 +72,7 @@ const Module = async ({ params: { courseId, moduleId } }) => {
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={LayoutDashboard} />
-                <h2 className="text-xl">Customize Your module</h2>
+                <h2 className="text-xl">Tuỳ chỉnh module</h2>
               </div>
               <ModuleTitleForm
                 initialData={{ title: module.title }}
@@ -83,7 +83,7 @@ const Module = async ({ params: { courseId, moduleId } }) => {
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={BookOpenCheck} />
-                <h2 className="text-xl">Module Lessons</h2>
+                <h2 className="text-xl">Bài học trong module</h2>
               </div>
               <LessonForm
                 initialData={lessons}

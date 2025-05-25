@@ -41,27 +41,28 @@ export const LessonModal = ({ open, setOpen, courseId, lesson, moduleId }) => {
     }
   }, [lesson]);
 
+  // Tách hàm fetchLessonData ra ngoài để truyền xuống DocumentUploadForm
+  const fetchLessonData = async () => {
+    try {
+      const response = await fetch(
+        `/api/courses/${courseId}/lessons/${lesson.id}`,
+      );
+      if (response.ok) {
+        const updatedLesson = await response.json();
+        setCurrentLesson({
+          ...updatedLesson,
+          id: updatedLesson._id || updatedLesson.id,
+          documents: updatedLesson.documents || [],
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching lesson data:", error);
+    }
+  };
+
   // Fetch dữ liệu mới nhất khi modal mở
   useEffect(() => {
     if (open && lesson?.id) {
-      const fetchLessonData = async () => {
-        try {
-          const response = await fetch(
-            `/api/courses/${courseId}/lessons/${lesson.id}`,
-          );
-          if (response.ok) {
-            const updatedLesson = await response.json();
-            setCurrentLesson({
-              ...updatedLesson,
-              id: updatedLesson._id || updatedLesson.id,
-              documents: updatedLesson.documents || [],
-            });
-          }
-        } catch (error) {
-          console.error("Error fetching lesson data:", error);
-        }
-      };
-
       fetchLessonData();
     }
   }, [open, lesson?.id, courseId]);
@@ -155,6 +156,7 @@ export const LessonModal = ({ open, setOpen, courseId, lesson, moduleId }) => {
                   courseId={courseId}
                   moduleId={moduleId}
                   lessonId={currentLesson?.id}
+                  onDocumentsChange={fetchLessonData}
                 />
               </div>
             </div>

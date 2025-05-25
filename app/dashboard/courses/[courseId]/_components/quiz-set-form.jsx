@@ -31,7 +31,7 @@ export const QuizSetForm = ({
     {
       value: "quiz_set_1",
       label: "Quiz Set 1",
-    }, 
+    },
     {
       value: "2",
       label: "Quiz Set 2",
@@ -41,7 +41,7 @@ export const QuizSetForm = ({
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
-  const foundMatch = options.find(o => o.value === initialData.quizSetId);
+  const foundMatch = options.find((o) => o.value === initialData.quizSetId);
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
@@ -56,7 +56,7 @@ export const QuizSetForm = ({
 
   const onSubmit = async (values) => {
     try {
-      await updateQuizSetForCourse(courseId,values);
+      await updateQuizSetForCourse(courseId, values);
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
@@ -66,16 +66,16 @@ export const QuizSetForm = ({
   };
 
   return (
-    <div className="mt-6 border bg-gray-50 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
-        Quiz Set
+    <div className="mt-6 rounded-md border bg-gray-50 p-4">
+      <div className="flex items-center justify-between font-medium">
+        Bộ câu hỏi kiểm tra
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
-            <>Cancel</>
+            <>Huỷ</>
           ) : (
             <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Quiz Set
+              <Pencil className="mr-2 h-4 w-4" />
+              Chỉnh sửa bộ câu hỏi
             </>
           )}
         </Button>
@@ -83,11 +83,15 @@ export const QuizSetForm = ({
       {!isEditing && (
         <p
           className={cn(
-            "text-sm mt-2",
-            !initialData.quizSetId && "text-slate-500 italic"
+            "mt-2 text-sm",
+            !initialData.quizSetId && "italic text-slate-500",
           )}
         >
-          {foundMatch ? <span>{foundMatch.label}</span> : <span> "No Quiz set selected"</span>}
+          {foundMatch ? (
+            <span>{foundMatch.label}</span>
+          ) : (
+            <span>Chưa chọn bộ câu hỏi</span>
+          )}
         </p>
       )}
       {console.log({ options })}
@@ -95,7 +99,7 @@ export const QuizSetForm = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
+            className="mt-4 space-y-4"
           >
             <FormField
               control={form.control}
@@ -111,7 +115,7 @@ export const QuizSetForm = ({
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
-                Save
+                Lưu
               </Button>
             </div>
           </form>

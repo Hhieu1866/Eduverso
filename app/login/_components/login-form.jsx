@@ -125,9 +125,6 @@ export function LoginForm() {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Mật khẩu</Label>
-                {/* <Link href="#" className="ml-auto inline-block text-sm underline">
-                  Quên mật khẩu?
-              </Link> */}
               </div>
               <Input
                 id="password"
@@ -138,6 +135,12 @@ export function LoginForm() {
                 className="focus:ring-primary"
               />
             </div>
+
+            <div className="flex items-center gap-2 text-sm">
+              <input type="checkbox" className="" />
+              <p>Nhớ mật khẩu</p>
+            </div>
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <span className="flex items-center gap-2">
@@ -149,6 +152,9 @@ export function LoginForm() {
               )}
             </Button>
           </div>
+          <Link href="#" className="ml-auto inline-block text-sm underline">
+            Quên mật khẩu?
+          </Link>
           <div className="mt-4 text-center text-sm">
             Chưa có tài khoản?{" "}
             <Link

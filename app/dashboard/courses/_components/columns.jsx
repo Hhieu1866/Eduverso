@@ -23,7 +23,7 @@ export const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title <ArrowUpDown className="ml-2 h-4 w-4" />
+          Tiêu đề <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -36,15 +36,15 @@ export const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Price <ArrowUpDown className="ml-2 h-4 w-4" />
+          Giá <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
       const price = parseFloat(row.getValue("price") || "0");
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("vi-VN", {
         style: "currency",
-        currency: "USD",
+        currency: "VND",
       }).format(price);
       return <div>{formatted}</div>;
     },
@@ -57,7 +57,7 @@ export const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Published <ArrowUpDown className="ml-2 h-4 w-4" />
+          Trạng thái <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -66,7 +66,7 @@ export const columns = [
 
       return (
         <Badge className={cn("bg-gray-500", active && "bg-green-600")}>
-          {active ? "Published" : "Unpublished"}
+          {active ? "Đã công khai" : "Chưa công khai"}
         </Badge>
       );
     },
@@ -79,27 +79,27 @@ export const columns = [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-4 w-8 p-0">
-              <span className="sr-only">Open Menu</span>
+              <span className="sr-only">Mở menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <Link href={`/dashboard/courses/${id}`}>
               <DropdownMenuItem className="cursor-pointer">
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit
+                <Pencil className="mr-2 h-4 w-4" />
+                Chỉnh sửa
               </DropdownMenuItem>
             </Link>
             <Link href={`/dashboard/courses/${id}/enrollments`}>
               <DropdownMenuItem className="cursor-pointer">
-                <GraduationCap className="h-4 w-4 mr-2" />
-                View Enrollments
+                <GraduationCap className="mr-2 h-4 w-4" />
+                Xem danh sách học viên
               </DropdownMenuItem>
             </Link>
             <Link href={`/dashboard/courses/${id}/reviews`}>
               <DropdownMenuItem className="cursor-pointer">
-                <Star className="h-4 w-4 mr-2 fill-primary" />
-                View Reviews
+                <Star className="mr-2 h-4 w-4 fill-primary" />
+                Xem đánh giá
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>

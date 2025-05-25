@@ -19,8 +19,8 @@ import { createEssay, updateEssay } from "@/app/actions/essay";
 import { useRouter } from "next/navigation";
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { toast } from "sonner";
-import { UploadDropzone } from "@/components/file-upload";
-import { Download, Eye, Trash2, FileText, File } from "lucide-react";
+import FileUpload from "@/components/file-upload";
+import { Download, Eye, Trash2, FileText, File, Paperclip } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
@@ -52,58 +52,7 @@ const formSchema = z.object({
 });
 
 function getFileIcon(doc) {
-  const name = doc?.name?.toLowerCase() || "";
-  const type = doc?.fileType?.toLowerCase() || "";
-  if (name.endsWith(".pdf") || type.includes("pdf")) {
-    return <FileText className="h-5 w-5 text-red-500" />;
-  }
-  if (
-    name.endsWith(".ppt") ||
-    name.endsWith(".pptx") ||
-    type.includes("presentation") ||
-    type.includes("powerpoint")
-  ) {
-    return <FileText className="h-5 w-5 text-orange-500" />;
-  }
-  if (
-    name.endsWith(".xls") ||
-    name.endsWith(".xlsx") ||
-    type.includes("excel") ||
-    type.includes("spreadsheet")
-  ) {
-    return <FileText className="h-5 w-5 text-emerald-600" />;
-  }
-  if (
-    name.endsWith(".doc") ||
-    name.endsWith(".docx") ||
-    type.includes("word") ||
-    type.includes("doc")
-  ) {
-    return <FileText className="h-5 w-5 text-blue-600" />;
-  }
-  if (name.endsWith(".txt") || type.includes("text")) {
-    return <FileText className="h-5 w-5 text-gray-600" />;
-  }
-  if (name.endsWith(".csv") || type.includes("csv")) {
-    return <FileText className="h-5 w-5 text-green-500" />;
-  }
-  if (
-    name.endsWith(".jpg") ||
-    name.endsWith(".jpeg") ||
-    name.endsWith(".png") ||
-    name.endsWith(".gif") ||
-    type.includes("image")
-  ) {
-    return <File className="h-5 w-5 text-purple-500" />;
-  }
-  if (
-    name.endsWith(".zip") ||
-    name.endsWith(".rar") ||
-    type.includes("archive")
-  ) {
-    return <File className="h-5 w-5 text-yellow-600" />;
-  }
-  return <File className="h-5 w-5 text-gray-500" />;
+  return <Paperclip className="h-5 w-5 text-primary" />;
 }
 
 // Dialog xác nhận xóa file
@@ -399,13 +348,21 @@ export function EssayForm({ initialData }) {
             <FormItem>
               <FormLabel>Tài liệu (tùy chọn)</FormLabel>
               <FormControl>
-                <UploadDropzone
-                  onUpload={handleUpload}
-                  isUploading={isUploading}
-                  label="Tải lên tài liệu"
-                  description="PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX (tối đa 10MB)"
-                  accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx"
-                />
+                {initialData?._id ? (
+                  <FileUpload
+                    endpoint="essay-files"
+                    essayId={initialData._id}
+                    onUploadComplete={fetchUpdatedEssay}
+                    isUploading={isUploading}
+                    label="Tải lên tài liệu"
+                    description="PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX (tối đa 10MB)"
+                    accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx"
+                  />
+                ) : (
+                  <div className="text-sm italic text-muted-foreground">
+                    Bạn cần lưu bài tự luận trước khi upload tài liệu đính kèm.
+                  </div>
+                )}
               </FormControl>
               {renderedDocuments}
               <FormDescription>

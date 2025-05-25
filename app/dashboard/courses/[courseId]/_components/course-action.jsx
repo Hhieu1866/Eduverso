@@ -93,7 +93,7 @@ export const CourseActions = ({
               <TooltipTrigger asChild>
                 <Badge
                   variant="secondary"
-                  className="mr-2 bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                  className="bg-yellow-100 px-4 py-1 text-sm font-semibold text-yellow-800 hover:bg-yellow-200"
                 >
                   <Clock className="mr-1 h-3 w-3" /> Đang chờ duyệt
                 </Badge>
@@ -106,30 +106,18 @@ export const CourseActions = ({
         );
       case "approved":
         return (
-          <Badge
-            variant="secondary"
-            className="mr-2 bg-green-100 text-green-800"
-          >
-            <CheckCircle2 className="mr-1 h-3 w-3" /> Đã duyệt
-          </Badge>
+          <span className="inline-flex items-center rounded-md border border-emerald-200 bg-emerald-100 px-4 py-1 text-sm font-semibold text-emerald-800">
+            Đã duyệt
+          </span>
         );
       case "rejected":
         return (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Badge variant="destructive" className="mr-2">
-                  <AlertTriangle className="mr-1 h-3 w-3" /> Bị từ chối
-                </Badge>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="max-w-xs">
-                  Lý do:{" "}
-                  {rejectionReason || "Không đáp ứng tiêu chuẩn khóa học"}
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <span className="inline-flex items-center rounded-md border border-red-200 bg-red-50 px-4 py-1 text-sm font-semibold text-red-700">
+            Bị từ chối:{" "}
+            <span className="ml-1 font-normal">
+              {rejectionReason || "Không đáp ứng tiêu chuẩn khóa học"}
+            </span>
+          </span>
         );
       default:
         return null;
@@ -150,7 +138,12 @@ export const CourseActions = ({
       );
     } else if (courseStatus === "pending") {
       return (
-        <Button variant="outline" size="sm" disabled>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled
+          className="h-9 cursor-not-allowed rounded-md border border-yellow-200 bg-yellow-100 px-4 text-base text-yellow-800"
+        >
           <Clock className="mr-1 h-4 w-4" />
           Đang chờ duyệt
         </Button>

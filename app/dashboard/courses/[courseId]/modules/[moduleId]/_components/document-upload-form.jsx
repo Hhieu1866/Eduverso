@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { UploadDropzone } from "@/components/file-upload";
+import FileUpload from "@/components/file-upload";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { File, Trash2, FileText, Download } from "lucide-react";
+import { File, Trash2, FileText, Download, Paperclip } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   AlertDialog,
@@ -21,59 +21,7 @@ import { formatFileSize } from "@/app/lib/format-file-size";
 
 // Hàm nhận diện icon file
 function getFileIcon(doc) {
-  const name = doc?.name?.toLowerCase() || "";
-  const type = doc?.fileType?.toLowerCase() || "";
-
-  if (name.endsWith(".pdf") || type.includes("pdf")) {
-    return <FileText className="h-5 w-5 text-red-500" />;
-  }
-  if (
-    name.endsWith(".ppt") ||
-    name.endsWith(".pptx") ||
-    type.includes("presentation") ||
-    type.includes("powerpoint")
-  ) {
-    return <FileText className="h-5 w-5 text-orange-500" />;
-  }
-  if (
-    name.endsWith(".xls") ||
-    name.endsWith(".xlsx") ||
-    type.includes("excel") ||
-    type.includes("spreadsheet")
-  ) {
-    return <FileText className="h-5 w-5 text-emerald-600" />;
-  }
-  if (
-    name.endsWith(".doc") ||
-    name.endsWith(".docx") ||
-    type.includes("word") ||
-    type.includes("doc")
-  ) {
-    return <FileText className="h-5 w-5 text-blue-600" />;
-  }
-  if (name.endsWith(".txt") || type.includes("text")) {
-    return <FileText className="h-5 w-5 text-gray-600" />;
-  }
-  if (name.endsWith(".csv") || type.includes("csv")) {
-    return <FileText className="h-5 w-5 text-green-500" />;
-  }
-  if (
-    name.endsWith(".jpg") ||
-    name.endsWith(".jpeg") ||
-    name.endsWith(".png") ||
-    name.endsWith(".gif") ||
-    type.includes("image")
-  ) {
-    return <File className="h-5 w-5 text-purple-500" />;
-  }
-  if (
-    name.endsWith(".zip") ||
-    name.endsWith(".rar") ||
-    type.includes("archive")
-  ) {
-    return <File className="h-5 w-5 text-yellow-600" />;
-  }
-  return <File className="h-5 w-5 text-gray-500" />;
+  return <Paperclip className="h-5 w-5 text-primary" />;
 }
 
 // Dialog xác nhận xóa
@@ -108,6 +56,7 @@ export const DocumentUploadForm = ({
   courseId,
   moduleId,
   lessonId,
+  onDocumentsChange,
 }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -164,6 +113,7 @@ export const DocumentUploadForm = ({
         if (response.ok) {
           toast.success("Đã tải lên tài liệu thành công");
           await fetchUpdatedLesson();
+          if (onDocumentsChange) onDocumentsChange();
         } else {
           toast.error(result.error || "Lỗi khi tải lên tài liệu");
         }
@@ -173,7 +123,7 @@ export const DocumentUploadForm = ({
         setIsUploading(false);
       }
     },
-    [courseId, lessonId, moduleId, fetchUpdatedLesson],
+    [courseId, lessonId, moduleId, fetchUpdatedLesson, onDocumentsChange],
   );
 
   // confirm xóa
@@ -290,12 +240,16 @@ export const DocumentUploadForm = ({
         <span>Tài liệu bài học</span>
       </div>
       <div className="mt-4">
-        <UploadDropzone
-          onUpload={handleUpload}
+        <FileUpload
+          endpoint="course-documents"
+          onUploadComplete={handleUpload}
           isUploading={isUploading}
           label="Tải lên tài liệu"
           description="PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX (max 10MB)"
           accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx"
+          courseId={courseId}
+          moduleId={moduleId}
+          lessonId={lessonId}
         />
       </div>
       {renderedDocuments}

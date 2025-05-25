@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { submitEssay } from "@/app/actions/essaySubmission";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import FileUpload from "@/components/file-upload";
 import { FileText, CheckCircle, AlertCircle } from "lucide-react";
@@ -35,6 +35,7 @@ const formSchema = z
 
 export function EssaySubmissionForm({ initialData, essayId, courseId }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submission, setSubmission] = useState(initialData);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -43,6 +44,35 @@ export function EssaySubmissionForm({ initialData, essayId, courseId }) {
       fileUrl: initialData?.fileUrl || "",
     },
   });
+
+  // Polling để tự động fetch lại submission nếu chưa approved/rejected
+  useEffect(() => {
+    let interval;
+    if (
+      submission &&
+      submission.status !== "approved" &&
+      submission.status !== "rejected"
+    ) {
+      interval = setInterval(async () => {
+        try {
+          const res = await fetch(
+            `/api/essays/${essayId}/submission?courseId=${courseId}`,
+          );
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data._id && data.updatedAt !== submission.updatedAt) {
+              setSubmission(data);
+              form.reset({
+                content: data.content || "",
+                fileUrl: data.fileUrl || "",
+              });
+            }
+          }
+        } catch {}
+      }, 5000);
+    }
+    return () => interval && clearInterval(interval);
+  }, [submission, essayId, courseId, form]);
 
   const onSubmit = async (values) => {
     try {
@@ -58,11 +88,11 @@ export function EssaySubmissionForm({ initialData, essayId, courseId }) {
     }
   };
 
-  const isGraded = initialData?.status === "graded";
-  const hasFeedback = initialData?.feedback;
-  const isApproved = initialData?.status === "approved";
-  const isRejected = initialData?.status === "rejected";
-  const hasInstructorFeedback = initialData?.feedbackFromInstructor;
+  const isGraded = submission?.status === "graded";
+  const hasFeedback = submission?.feedback;
+  const isApproved = submission?.status === "approved";
+  const isRejected = submission?.status === "rejected";
+  const hasInstructorFeedback = submission?.feedbackFromInstructor;
 
   return (
     <div>
@@ -74,7 +104,7 @@ export function EssaySubmissionForm({ initialData, essayId, courseId }) {
             <AlertDescription>
               <p className="font-medium">Phản hồi từ giảng viên:</p>
               <p className="mt-1 whitespace-pre-line">
-                {initialData.feedbackFromInstructor}
+                {submission.feedbackFromInstructor}
               </p>
             </AlertDescription>
           )}
@@ -89,7 +119,7 @@ export function EssaySubmissionForm({ initialData, essayId, courseId }) {
             <AlertDescription>
               <p className="font-medium">Phản hồi từ giảng viên:</p>
               <p className="mt-1 whitespace-pre-line">
-                {initialData.feedbackFromInstructor}
+                {submission.feedbackFromInstructor}
               </p>
             </AlertDescription>
           )}
@@ -99,10 +129,10 @@ export function EssaySubmissionForm({ initialData, essayId, courseId }) {
       {isGraded && hasFeedback && (
         <Alert className="mb-4">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Đã chấm điểm: {initialData.grade}/10</AlertTitle>
+          <AlertTitle>Đã chấm điểm: {submission.grade}/10</AlertTitle>
           <AlertDescription>
             <p className="font-medium">Nhận xét:</p>
-            <p className="mt-1 whitespace-pre-line">{initialData.feedback}</p>
+            <p className="mt-1 whitespace-pre-line">{submission.feedback}</p>
           </AlertDescription>
         </Alert>
       )}
