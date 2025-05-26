@@ -3,9 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CourseOverview from "./CourseOverview";
 import CourseCurriculam from "./CourseCurriculam";
 import CourseInstructor from "./CourseInstructor";
-import Image from "next/image";
 import { formatMyDate } from "@/lib/date";
-import { CheckCircle, Book, Calendar, Users } from "lucide-react";
+import { Book, Calendar, Users } from "lucide-react";
 
 const CourseDetails = ({ course }) => {
   const lastModifiedDate = formatMyDate(course.modifiedOn);

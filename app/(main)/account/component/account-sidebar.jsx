@@ -1,16 +1,10 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
-import Link from "next/link";
 import Menu from "./account-menu";
-import { auth } from "@/auth";
-import { redirect, useRouter } from "next/navigation";
-import { getUserByEmail } from "@/queries/users";
 import { toast } from "sonner";
 import { Loader2, Camera, Upload, Trash2 } from "lucide-react";
 import ConfirmDialog from "@/components/confirm-dialog";

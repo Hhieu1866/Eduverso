@@ -15,7 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { addEssaysToCourse } from "@/app/actions/course";
 import { Combobox } from "@/components/ui/combobox";

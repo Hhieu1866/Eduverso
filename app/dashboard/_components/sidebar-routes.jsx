@@ -6,11 +6,7 @@ import {
   PlusCircle,
   Radio,
   Book,
-  Settings,
-  Users,
-  BarChart3,
   FileText,
-  HelpCircle,
 } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 

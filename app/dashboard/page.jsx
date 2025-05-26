@@ -16,17 +16,7 @@ import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  ChevronRight,
-  BookOpen,
-  Users,
-  DollarSign,
-  Star,
-  TrendingUp,
-  Clock,
-  Calendar,
-  BarChart,
-} from "lucide-react";
+import { ChevronRight, BookOpen, Users, DollarSign, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";

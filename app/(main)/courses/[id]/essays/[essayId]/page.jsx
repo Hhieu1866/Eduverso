@@ -2,10 +2,7 @@ import { dbConnect } from "@/service/mongo";
 import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
 import Essay from "@/model/essay";
-import {
-  getStudentEssaySubmission,
-  submitEssay,
-} from "@/app/actions/essaySubmission";
+import { getStudentEssaySubmission } from "@/app/actions/essaySubmission";
 import { EssaySubmissionForm } from "./_components/essay-submission-form";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

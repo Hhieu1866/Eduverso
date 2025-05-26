@@ -5,7 +5,6 @@ import {
   ENROLLMENT_DATA,
   getInstructorDashboardData,
 } from "@/lib/dashboard-helper";
-import { ObjectId } from "mongoose";
 
 const EnrollmentsPage = async ({ params: { courseId } }) => {
   const course = await getCourseDetails(courseId);
@@ -24,7 +23,7 @@ const EnrollmentsPage = async ({ params: { courseId } }) => {
       {/* <Link href="/teacher/create">
         <Button>New Course</Button>
       </Link> */}
-      <h2 className="text-3xl text-gray-700 font-bold">{course?.title}</h2>
+      <h2 className="text-3xl font-bold text-gray-700">{course?.title}</h2>
       <DataTable columns={columns} data={enrollmentForCourse} />
     </div>
   );

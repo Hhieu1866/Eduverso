@@ -18,9 +18,7 @@ import { submitEssay } from "@/app/actions/essaySubmission";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import FileUpload from "@/components/file-upload";
-import { FileText, CheckCircle, AlertCircle } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { CheckCircle, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const formSchema = z

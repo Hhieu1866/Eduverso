@@ -1,16 +1,9 @@
 import React from "react";
 import {
-  Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
-import { Radio } from "lucide-react";
-
-import { Video } from "lucide-react";
-import { NotepadText } from "lucide-react";
-import { FileQuestion } from "lucide-react";
 import CourseLessonList from "./CourseLessonList";
 
 const CourseModuleList = ({ module }) => {

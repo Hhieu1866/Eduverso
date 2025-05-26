@@ -5,7 +5,7 @@ import FileUpload from "@/components/file-upload";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { File, Trash2, FileText, Download, Paperclip } from "lucide-react";
+import { Trash2, Download, Paperclip } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   AlertDialog,

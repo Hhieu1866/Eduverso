@@ -1,11 +1,5 @@
 import { IconBadge } from "@/components/icon-badge";
-import {
-  CircleDollarSign,
-  File,
-  LayoutDashboard,
-  ListChecks,
-  FileText,
-} from "lucide-react";
+import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react";
 import { CategoryForm } from "./_components/category-form";
 import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
@@ -19,7 +13,6 @@ import { getCourseDetailsForInstructor } from "@/queries/courses";
 import { SubTitleForm } from "./_components/subtitle-form";
 import { getCategories } from "@/queries/categories";
 import { replaceMongoIdInArray } from "@/lib/convertData";
-import { ObjectId } from "mongoose";
 import { getAllQuizSets } from "@/queries/quizzes";
 import { getEssays } from "@/app/actions/essay";
 import { EssayForm } from "./_components/essay-form";

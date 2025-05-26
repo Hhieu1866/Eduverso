@@ -1,15 +1,8 @@
 import AlertBanner from "@/components/alert-banner";
-import { IconBadge } from "@/components/icon-badge";
-import { LayoutDashboard } from "lucide-react";
 import { QuizSetAction } from "./_components/quiz-set-action";
 import { TitleForm } from "./_components/title-form";
 import { AddQuizForm } from "./_components/add-quiz-form";
 import { cn } from "@/lib/utils";
-
-import { Pencil } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Delete } from "lucide-react";
-import { Trash } from "lucide-react";
 import { CircleCheck } from "lucide-react";
 import { Circle } from "lucide-react";
 import { getQuizSetById } from "@/queries/quizzes";

@@ -1,26 +1,11 @@
 import { CourseProgress } from "@/components/course-progress";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { CheckCircle } from "lucide-react";
-import { PlayCircle } from "lucide-react";
-import { Lock } from "lucide-react";
-import Link from "next/link";
 import { ReviewModal } from "./review-modal";
 import { DownloadCertificate } from "./download-certificate";
 import { GiveReview } from "./give-review";
 import { SidebarModules } from "./sidebar-modules";
 import { getCourseDetails } from "@/queries/courses";
 import { getLoggedInUser } from "@/lib/loggedin-user";
-import { Watch } from "@/model/watch-model";
-import { ObjectId } from "mongoose";
 import { getReport } from "@/queries/reports";
-import Quiz from "./quiz";
 import { dbConnect } from "@/service/mongo";
 import { RequireRole } from "./require-role";
 import { useEffect, useState } from "react";

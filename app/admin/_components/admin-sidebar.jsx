@@ -37,7 +37,7 @@ export default function AdminSidebar({ collapsed, setCollapsed }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Lưu trạng thái thu gọn vào localStorage
+  // Lưu trạng thái toggle vào localStorage
   useEffect(() => {
     localStorage.setItem("admin-sidebar-collapsed", collapsed);
   }, [collapsed]);

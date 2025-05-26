@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
 import Link from "next/link";
 
 const AdminAssignmentsPage = () => {
@@ -24,7 +22,7 @@ const AdminAssignmentsPage = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Quản lý Bài tập Tự luận</h1>
       </div>
       {assignments.length > 0 ? (

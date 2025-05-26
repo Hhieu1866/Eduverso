@@ -20,14 +20,8 @@ import { useRouter } from "next/navigation";
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import FileUpload from "@/components/file-upload";
-import { Download, Eye, Trash2, FileText, File, Paperclip } from "lucide-react";
+import { Download, Trash2, Paperclip } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogHeader,
-} from "@/components/ui/dialog";
 import { formatFileSize } from "@/app/lib/format-file-size";
 import {
   AlertDialog,

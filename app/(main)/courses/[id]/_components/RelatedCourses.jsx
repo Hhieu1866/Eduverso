@@ -7,10 +7,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import Link from "next/link";
-import { BookOpen } from "lucide-react";
 import { formatPrice } from "@/lib/formatPrice";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { SectionTitle } from "@/components/section-title";
 import { getImageUrl, shouldDisplayImage } from "@/lib/imageUtils";
 

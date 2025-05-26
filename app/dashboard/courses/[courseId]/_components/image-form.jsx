@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 // import axios from "axios";
-import { ImageIcon, Pencil, PlusCircle, Trash2 } from "lucide-react";
+import { ImageIcon, Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -22,11 +22,11 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 
-const formSchema = z.object({
-  imageUrl: z.string().min(1, {
-    message: "Image is required",
-  }),
-});
+// const formSchema = z.object({
+//   imageUrl: z.string().min(1, {
+//     message: "Image is required",
+//   }),
+// });
 
 export const ImageForm = ({ initialData, courseId }) => {
   // State local cho ảnh

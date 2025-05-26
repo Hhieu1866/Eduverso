@@ -2,13 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Check,
-  CheckCheck,
-  CheckCircle,
-  ChevronRight,
-  Loader2,
-} from "lucide-react";
+import { Check, CheckCheck, ChevronRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

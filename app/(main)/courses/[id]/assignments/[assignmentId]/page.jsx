@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
 import AssignmentFileUpload from "@/components/assignment-file-upload";
 import { Textarea } from "@/components/ui/textarea";
@@ -52,20 +51,26 @@ const StudentAssignmentPage = ({ params }) => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">{assignment.title}</h1>
+      <h1 className="mb-4 text-2xl font-bold">{assignment.title}</h1>
       <p>{assignment.description}</p>
 
-      <AssignmentFileUpload assignmentId={assignmentId} onSubmit={handleFileUpload} />
+      <AssignmentFileUpload
+        assignmentId={assignmentId}
+        onSubmit={handleFileUpload}
+      />
 
       <div className="mb-4">
-        <label htmlFor="submissionText" className="block text-gray-700 text-sm font-bold mb-2">
+        <label
+          htmlFor="submissionText"
+          className="mb-2 block text-sm font-bold text-gray-700"
+        >
           Nội dung bài làm:
         </label>
         <Textarea
           id="submissionText"
           value={submissionText}
           onChange={(e) => setSubmissionText(e.target.value)}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
         />
       </div>
 

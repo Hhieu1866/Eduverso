@@ -1,5 +1,5 @@
 import React from "react";
-import { Check, Users, Calendar } from "lucide-react";
+import { Check } from "lucide-react";
 
 const CourseOverview = ({ course }) => {
   return (

@@ -5,13 +5,11 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { LayoutDashboard } from "lucide-react";
 import { Eye } from "lucide-react";
 import { Video } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
-import { FileText } from "lucide-react";
 import { File } from "lucide-react";
 import Link from "next/link";
 import { LessonTitleForm } from "./lesson-title-form";
@@ -21,7 +19,6 @@ import { VideoUrlForm } from "./video-url-form";
 import { TextContentForm } from "./text-content-form";
 import { ContentTypeForm } from "./content-type-form";
 import { DocumentUploadForm } from "./document-upload-form";
-import { CourseActions } from "../../../_components/course-action";
 import { LessonActions } from "./lesson-action";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";

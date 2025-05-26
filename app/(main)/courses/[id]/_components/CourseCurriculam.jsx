@@ -1,21 +1,11 @@
 import React from "react";
-import {
-  BookCheck,
-  PlayCircle,
-  Clock,
-  File,
-  Lock,
-  BookOpenCheck,
-  BookMinus,
-} from "lucide-react";
+import { BookCheck, Clock, Lock, BookOpenCheck, BookMinus } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
-import CourseModuleList from "./module/CourseModuleList";
 
 const CourseCurriculam = ({ course }) => {
   // Đảm bảo chỉ hiển thị modules và lessons đã được publish

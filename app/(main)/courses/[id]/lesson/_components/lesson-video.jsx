@@ -3,10 +3,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef, useMemo } from "react";
 import ReactPlayer from "react-player/youtube";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, PlayCircle } from "lucide-react";
 import { toast } from "sonner";
 import {
-  getYoutubeId,
   getYoutubeWatchUrl,
   isYoutubeUrl,
   getYoutubeThumbnail,

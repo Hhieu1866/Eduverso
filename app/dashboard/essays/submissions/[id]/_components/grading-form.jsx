@@ -15,24 +15,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  gradeEssaySubmission,
-  approveEssaySubmission,
-  rejectEssaySubmission,
-} from "@/app/actions/essaySubmission";
+import { gradeEssaySubmission } from "@/app/actions/essaySubmission";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { CheckCircle, XCircle } from "lucide-react";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
   grade: z.coerce

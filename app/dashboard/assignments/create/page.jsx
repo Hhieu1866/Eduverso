@@ -1,5 +1,4 @@
 import AssignmentForm from "../_components/assignment-form";
-import { getCourseDetailsForInstructor } from "@/queries/courses";
 
 const CreateAssignmentPage = async ({ searchParams }) => {
   const courseId = searchParams.courseId;

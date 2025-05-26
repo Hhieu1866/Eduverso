@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 import {
   ArrowUpDown,
   MoreHorizontal,
@@ -19,7 +17,6 @@ import {
 import Link from "next/link";
 import { deleteEssay } from "@/app/actions/essay";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export const columns = [
   {

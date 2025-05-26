@@ -1,16 +1,10 @@
 "use client";
+
 import {
   Accordion,
-  AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { CheckCircle } from "lucide-react";
-import { PlayCircle } from "lucide-react";
-import { Lock } from "lucide-react";
-import Link from "next/link";
 import { SidebarLessons } from "./sidebar-lessons";
 import { replaceMongoIdInArray } from "@/lib/convertData";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";

@@ -5,22 +5,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import {
-  CheckCircle,
-  PlayCircle,
-  Lock,
-  Award,
-  ThumbsUp,
-  HelpCircle,
-  FileText,
-} from "lucide-react";
-import Link from "next/link";
+import { HelpCircle, FileText } from "lucide-react";
 import { getCourseDetails } from "@/queries/courses";
 import { getLoggedInUser } from "@/lib/loggedin-user";
 import { Watch } from "@/model/watch-model";
-import { ObjectId } from "mongoose";
 import { getReport } from "@/queries/reports";
 import { GiveReview } from "./give-review";
 import { DownloadCertificate } from "./download-certificate";

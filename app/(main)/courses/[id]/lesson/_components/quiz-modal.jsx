@@ -1,5 +1,4 @@
 import { addQuizAssessment } from "@/app/actions/quiz";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

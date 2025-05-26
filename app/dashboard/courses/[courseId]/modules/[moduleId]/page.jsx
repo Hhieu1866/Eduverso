@@ -1,19 +1,11 @@
 import AlertBanner from "@/components/alert-banner";
 import { IconBadge } from "@/components/icon-badge";
-import {
-  ArrowLeft,
-  BookOpenCheck,
-  Eye,
-  LayoutDashboard,
-  Video,
-} from "lucide-react";
+import { ArrowLeft, BookOpenCheck, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { ModuleTitleForm } from "./_components/module-title-form";
 import { LessonForm } from "./_components/lesson-form";
-import { CourseActions } from "../../_components/course-action";
 import { getModuleForInstructor } from "@/queries/modules";
 import { replaceMongoIdInArray } from "@/lib/convertData";
-import { ObjectId } from "mongoose";
 import { ModuleActions } from "./_components/module-action";
 
 const Module = async ({ params: { courseId, moduleId } }) => {

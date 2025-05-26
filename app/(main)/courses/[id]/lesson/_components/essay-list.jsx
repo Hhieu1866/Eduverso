@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import {
-  FileText,
   CheckCircle,
   XCircle,
   Download,
   UploadCloud,
   Paperclip,
-  File,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,11 +15,9 @@ import {
   getStudentEssaySubmission,
   submitEssay,
 } from "@/app/actions/essaySubmission";
-import { cn } from "@/lib/utils";
 import FileUpload from "@/components/file-upload";
 import { toast } from "sonner";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { DownloadButton } from "@/components/download-button";
+import { Alert } from "@/components/ui/alert";
 
 export const EssayList = ({ courseId, essays = [] }) => {
   const router = useRouter();

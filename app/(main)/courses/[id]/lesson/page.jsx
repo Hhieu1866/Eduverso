@@ -8,14 +8,7 @@ import {
 import { getLessonBySlug } from "@/queries/lessons";
 import { LessonVideo } from "./_components/lesson-video";
 import { DownloadButton } from "@/components/download-button";
-import {
-  FileText,
-  Download,
-  Clock,
-  Calendar,
-  File,
-  Paperclip,
-} from "lucide-react";
+import { FileText, Download, Clock, Calendar, Paperclip } from "lucide-react";
 import { CompleteLessonButton } from "./_components/complete-lesson-button";
 import { getLoggedInUser } from "@/lib/loggedin-user";
 import { Watch } from "@/model/watch-model";

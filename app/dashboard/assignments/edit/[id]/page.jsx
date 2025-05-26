@@ -1,5 +1,4 @@
 import AssignmentForm from "../../_components/assignment-form";
-import { getCourseDetailsForInstructor } from "@/queries/courses";
 import { getAssignment } from "@/queries/assignments";
 
 const EditAssignmentPage = async ({ params }) => {

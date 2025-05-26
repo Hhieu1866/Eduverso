@@ -6,7 +6,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import { SectionTitle } from "@/components/section-title";
 import StarRating from "@/components/start-rating";
 import { Quote } from "lucide-react";
 

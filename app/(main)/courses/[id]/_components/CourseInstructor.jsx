@@ -1,17 +1,9 @@
 import React from "react";
 import {
-  Presentation,
-  UsersRound,
-  Star,
-  Clock,
-  MessageSquare,
   ExternalLink,
   Mail,
   Phone,
   Globe,
-  Facebook,
-  Instagram,
-  Linkedin,
   Link as LinkIcon,
 } from "lucide-react";
 import Image from "next/image";

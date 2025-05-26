@@ -8,9 +8,7 @@ import AdminHeader from "./admin-header";
 export default function AdminClientLayout({ children, user }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  // Lắng nghe sự thay đổi trạng thái của sidebar
   useEffect(() => {
-    // Khôi phục trạng thái từ localStorage
     const savedState = localStorage.getItem("admin-sidebar-collapsed");
     if (savedState !== null) {
       setSidebarCollapsed(savedState === "true");

@@ -10,7 +10,7 @@ const Content = () => {
       <div className="flex items-start justify-between px-2">
         <div className="flex-1">
           {/* <FeatureCard /> */}
-          <p className="text-colors-navy mt-4 text-2xl font-semibold tracking-tighter sm:text-5xl">
+          <p className="mt-4 text-2xl font-semibold tracking-tighter text-colors-navy sm:text-5xl">
             Học viên nói gì về chúng tôi?
           </p>
         </div>
@@ -22,7 +22,7 @@ const Content = () => {
       <div className="flex items-start justify-between px-2">
         <div className="flex-1">
           {/* <FeatureCard /> */}
-          <p className="text-colors-navy mt-5 text-2xl font-semibold tracking-tighter sm:text-5xl">
+          <p className="mt-5 text-2xl font-semibold tracking-tighter text-colors-navy sm:text-5xl">
             FAQs
           </p>
         </div>

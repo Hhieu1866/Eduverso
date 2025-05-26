@@ -31,7 +31,7 @@ export function SignupForm() {
     special: false,
   });
 
-  // Kiểm tra độ mạnh mật khẩu khi người dùng nhập
+  // kiểm tra độ mạnh mật khẩu khi người dùng nhập
   useEffect(() => {
     if (!password) {
       setPasswordStrength(0);

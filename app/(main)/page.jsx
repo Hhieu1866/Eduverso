@@ -1,6 +1,6 @@
 import Support from "@/components/support";
 import WhyChooseUs from "@/components/Features/WhyChooseUs";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getCourseList } from "@/queries/courses";
 import Link from "next/link";

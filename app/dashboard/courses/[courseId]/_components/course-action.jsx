@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash, Send, Clock, CheckCircle2, AlertTriangle } from "lucide-react";
+import { Trash, Send, Clock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";

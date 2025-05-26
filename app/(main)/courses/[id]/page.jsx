@@ -1,4 +1,3 @@
-import { formatPrice } from "@/lib/formatPrice";
 import CourseDetailsIntro from "./_components/CourseDetailsIntro";
 import CourseDetails from "./_components/CourseDetails";
 import Testimonials from "./_components/Testimonials";

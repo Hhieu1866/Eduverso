@@ -2,7 +2,6 @@ import { getLoggedInUser } from "@/lib/loggedin-user";
 import { redirect } from "next/navigation";
 import { hasEnrollmentForCourse } from "@/queries/enrollments";
 import { LessonSidebar } from "./_components/lesson-sidebar";
-import { LessonHeader } from "./_components/lesson-header";
 import { LessonSidebarMobile } from "./_components/lesson-sidebar-mobile";
 
 const LessonLayout = async ({ children, params }) => {

@@ -16,10 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { PlusCircle } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { addQuizToQuizSet } from "@/app/actions/quiz";

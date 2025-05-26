@@ -98,14 +98,13 @@ export const columns = [
         badgeContent = "Đã trả lại";
         badgeVariant = "secondary";
       } else if (status === "approved") {
-        badgeContent = "Đã duyệt";
-        badgeVariant = "default";
         badgeContent = (
-          <span className="flex items-center gap-1 text-green-700">
-            <span className="h-2 w-2 rounded-full bg-green-500"></span>
+          <span className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-green-400"></span>
             Đã duyệt
           </span>
         );
+        badgeVariant = "default";
       } else if (status === "rejected") {
         badgeContent = (
           <span className="flex items-center gap-1 text-red-700">
@@ -115,7 +114,18 @@ export const columns = [
         );
       }
 
-      return <Badge variant={badgeVariant}>{badgeContent}</Badge>;
+      return (
+        <Badge
+          variant={badgeVariant}
+          className={
+            status === "approved"
+              ? "rounded-full border-none bg-emerald-600 px-4 py-1 text-white shadow transition hover:bg-emerald-700"
+              : ""
+          }
+        >
+          {badgeContent}
+        </Badge>
+      );
     },
   },
   {

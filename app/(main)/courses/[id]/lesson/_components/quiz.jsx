@@ -7,8 +7,6 @@ import { cn } from "@/lib/utils";
 import QuizKnowledgeTest from "@/components/quiz-knowledge-test";
 import { CheckCircle, XCircle, Timer } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
-import { vi } from "date-fns/locale";
 import axiosInstance from "@/lib/axios";
 import { toast } from "sonner";
 

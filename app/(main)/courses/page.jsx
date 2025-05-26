@@ -13,7 +13,6 @@ import ErrorComponent from "./_components/ErrorComponent";
 // Đặt chế độ dynamic cho route này để tránh lỗi khi sử dụng searchParams
 export const dynamic = "force-dynamic";
 
-// Loading component cho phần danh sách khóa học (chỉ hiển thị spinner)
 const CourseListLoading = () => (
   <div className="flex items-center justify-center py-20 lg:col-span-3">
     <div className="text-center">

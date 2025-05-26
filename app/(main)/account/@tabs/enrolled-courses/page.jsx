@@ -1,6 +1,3 @@
-import { Badge } from "@/components/ui/badge";
-import { BookOpen } from "lucide-react";
-import Image from "next/image";
 import EnrolledCourseCard from "../../component/enrolled-coursecard";
 import { auth } from "@/auth";
 import { getUserByEmail } from "@/queries/users";

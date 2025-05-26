@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Delete } from "lucide-react";
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

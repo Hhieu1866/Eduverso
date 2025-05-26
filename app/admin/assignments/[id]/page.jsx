@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const AdminAssignmentDetailPage = ({ params }) => {
@@ -31,7 +28,7 @@ const AdminAssignmentDetailPage = ({ params }) => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold">{assignment.title}</h1>
       </div>
       <p>{assignment.description}</p>
