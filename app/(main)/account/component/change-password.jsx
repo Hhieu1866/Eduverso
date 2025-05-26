@@ -81,9 +81,7 @@ const ChangePassword = ({ email }) => {
       console.log("Client: Kết quả từ server", result);
 
       if (result?.success) {
-        toast.success(
-          result.message || "Mật khẩu đã được thay đổi thành công",
-        );
+        toast.success(result.message || "Mật khẩu đã được thay đổi thành công");
 
         // Reset form after success
         setPasswordState({
@@ -92,7 +90,10 @@ const ChangePassword = ({ email }) => {
           confirmPassword: "",
         });
       } else {
-        toast.error("Cập nhật mật khẩu không thành công");
+        toast.error(
+          result?.message ||
+            "Cập nhật mật khẩu không thành công. Vui lòng kiểm tra lại mật khẩu hiện tại hoặc thử lại sau.",
+        );
       }
     } catch (error) {
       console.error("Client: Lỗi khi đổi mật khẩu", error);
@@ -121,7 +122,7 @@ const ChangePassword = ({ email }) => {
                 Mật khẩu hiện tại
               </Label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
                   <KeyRound className="h-4 w-4" />
                 </div>
                 <Input
@@ -139,7 +140,7 @@ const ChangePassword = ({ email }) => {
                 />
               </div>
               {errors.oldPassword && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.oldPassword}
                 </p>
               )}
@@ -150,7 +151,7 @@ const ChangePassword = ({ email }) => {
                 Mật khẩu mới
               </Label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
                   <LockKeyhole className="h-4 w-4" />
                 </div>
                 <Input
@@ -168,7 +169,7 @@ const ChangePassword = ({ email }) => {
                 />
               </div>
               {errors.newPassword && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.newPassword}
                 </p>
               )}
@@ -179,7 +180,7 @@ const ChangePassword = ({ email }) => {
                 Nhập lại mật khẩu mới
               </Label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
                   <Lock className="h-4 w-4" />
                 </div>
                 <Input
@@ -197,7 +198,7 @@ const ChangePassword = ({ email }) => {
                 />
               </div>
               {errors.confirmPassword && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.confirmPassword}
                 </p>
               )}
@@ -208,7 +209,7 @@ const ChangePassword = ({ email }) => {
             type="submit"
             disabled={isLoading}
             variant="default"
-            className="gap-2 w-full"
+            className="w-full gap-2"
           >
             {isLoading ? (
               <>

@@ -6,6 +6,13 @@ import {
   Clock,
   MessageSquare,
   ExternalLink,
+  Mail,
+  Phone,
+  Globe,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Link as LinkIcon,
 } from "lucide-react";
 import Image from "next/image";
 import { getCourseDetailsByInstructor } from "@/queries/courses";
@@ -21,11 +28,11 @@ const CourseInstructor = async ({ course }) => {
   );
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="">
       <div className="rounded-lg border bg-white p-8">
         <div className="flex flex-col gap-8 md:flex-row">
           <div className="md:w-1/3">
-            <div className="relative aspect-square w-full overflow-hidden rounded-lg">
+            <div className="relative aspect-square w-full overflow-hidden rounded-xl">
               <Image
                 src={instructor?.profilePicture || "/placeholder-avatar.jpg"}
                 alt={fullName}
@@ -35,34 +42,45 @@ const CourseInstructor = async ({ course }) => {
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-4">
-              <div className="rounded-lg bg-gray-50 p-3 text-center">
+              <div className="rounded-lg bg-gray-100 p-3 text-center">
                 <div className="text-xl font-bold">
                   {courseDetailsByInstructor?.courses || 0}
                 </div>
-                <div className="text-sm text-gray-600">Khóa học</div>
+                <div className="text-sm font-medium text-gray-600">
+                  Khóa học
+                </div>
               </div>
-              <div className="rounded-lg bg-gray-50 p-3 text-center">
+              <div className="rounded-lg bg-gray-100 p-3 text-center">
                 <div className="text-xl font-bold">
                   {courseDetailsByInstructor?.reviews || 0}
                 </div>
-                <div className="text-sm text-gray-600">Đánh giá</div>
+                <div className="text-sm font-medium text-gray-600">
+                  Đánh giá
+                </div>
               </div>
-              <div className="rounded-lg bg-gray-50 p-3 text-center">
+              <div className="rounded-lg bg-gray-100 p-3 text-center">
                 <div className="text-xl font-bold">
                   {courseDetailsByInstructor?.enrollments || 0}+
                 </div>
-                <div className="text-sm text-gray-600">Học viên</div>
+                <div className="text-sm font-medium text-gray-600">
+                  Học viên
+                </div>
               </div>
-              <div className="rounded-lg bg-gray-50 p-3 text-center">
+              <div className="rounded-lg bg-gray-100 p-3 text-center">
                 <div className="text-xl font-bold">
                   {courseDetailsByInstructor?.ratings || "5.0"}
                 </div>
-                <div className="text-sm text-gray-600">Xếp hạng</div>
+                <div className="text-sm font-medium text-gray-600">
+                  Xếp hạng
+                </div>
               </div>
             </div>
 
             <Button asChild className="mt-6 w-full">
-              <Link href={`/inst-profile/${instructor?._id}`}>
+              <Link
+                href={`/inst-profile/${instructor?._id}`}
+                className="font-medium"
+              >
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Xem trang cá nhân
               </Link>
@@ -72,20 +90,80 @@ const CourseInstructor = async ({ course }) => {
           <div className="md:w-2/3">
             <div className="mb-6">
               <h2 className="text-2xl font-bold">{fullName}</h2>
-              <p className="text-gray-600">
-                {instructor?.designation || "Giảng viên"}
+              <p className="mt-1 font-medium text-gray-600">
+                {instructor?.designation}
               </p>
             </div>
 
             <h3 className="mb-3 text-lg font-semibold">Giới thiệu</h3>
             <div className="prose prose-gray mb-6">
-              <p>
-                {instructor?.bio ||
-                  `${fullName} là giảng viên với nhiều năm kinh nghiệm trong lĩnh vực đào tạo. Với kiến thức sâu rộng và phương pháp giảng dạy hiệu quả, giảng viên đã giúp hàng nghìn học viên đạt được mục tiêu học tập và phát triển sự nghiệp của họ.`}
+              <p className="text-base font-medium text-gray-600">
+                {instructor?.bio || "Chưa có giới thiệu bản thân."}
               </p>
             </div>
 
-            <h3 className="mb-3 text-lg font-semibold">Chuyên môn</h3>
+            {/* Thông tin liên hệ thực */}
+            <div className="mb-6 space-y-2 font-medium">
+              <div className="flex items-center text-gray-600">
+                <Mail className="mr-2 h-4 w-4 text-primary" />
+                {instructor?.email ? (
+                  <span>{instructor.email}</span>
+                ) : (
+                  <span className="italic text-gray-400">Chưa có email</span>
+                )}
+              </div>
+              <div className="flex items-center text-gray-600">
+                <Phone className="mr-2 h-4 w-4 text-primary" />
+                {instructor?.phone ? (
+                  <span>{instructor.phone}</span>
+                ) : (
+                  <span className="italic text-gray-400">
+                    Chưa có số điện thoại
+                  </span>
+                )}
+              </div>
+              {/* Social media: object hoặc string */}
+              <div className="flex items-center text-gray-700">
+                <Globe className="mr-2 h-4 w-4 text-primary" />
+                {instructor?.socialMedia &&
+                typeof instructor.socialMedia === "object" &&
+                Object.values(instructor.socialMedia).filter(Boolean).length >
+                  0 ? (
+                  <div className="flex flex-col gap-1">
+                    {Object.entries(instructor.socialMedia).map(
+                      ([key, value]) =>
+                        value ? (
+                          <a
+                            key={key}
+                            href={value}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block hover:underline"
+                          >
+                            {key}: {value}
+                          </a>
+                        ) : null,
+                    )}
+                  </div>
+                ) : instructor?.socialMedia &&
+                  typeof instructor.socialMedia === "string" ? (
+                  <a
+                    href={instructor.socialMedia}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    {instructor.socialMedia}
+                  </a>
+                ) : (
+                  <span className="italic text-gray-400">
+                    Chưa có mạng xã hội
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* <h3 className="mb-3 text-lg font-semibold">Chuyên môn</h3>
             <div className="mb-6 flex flex-wrap gap-2">
               <span className="rounded-full bg-gray-100 px-3 py-1 text-sm">
                 Kiểm thử phần mềm
@@ -102,9 +180,9 @@ const CourseInstructor = async ({ course }) => {
               <span className="rounded-full bg-gray-100 px-3 py-1 text-sm">
                 Agile
               </span>
-            </div>
+            </div> */}
 
-            <h3 className="mb-3 text-lg font-semibold">Kinh nghiệm</h3>
+            {/* <h3 className="mb-3 text-lg font-semibold">Kinh nghiệm</h3>
             <ul className="space-y-2 text-gray-700">
               <li className="flex items-center">
                 <Clock className="mr-2 h-4 w-4 text-gray-500" />
@@ -120,7 +198,7 @@ const CourseInstructor = async ({ course }) => {
                   Giảng viên tại nhiều trường đại học và trung tâm đào tạo
                 </span>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </div>
       </div>

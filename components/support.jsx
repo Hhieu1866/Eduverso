@@ -16,7 +16,7 @@ const support = () => {
               </span>
             </p>
 
-            <p className="mb-8 mt-8 leading-relaxed text-colors-navy">
+            <p className="mb-8 mt-8 font-medium leading-relaxed text-colors-navy">
               Là người sáng lập Eduverse và cũng là người truyền cảm hứng, chia
               sẻ kiến thức đến các bạn. Mục tiêu của chúng tôi là giúp các bạn,
               dù mới bắt đầu hay đã có kinh nghiệm, nâng cao kỹ năng, cải thiện
@@ -26,14 +26,14 @@ const support = () => {
             <div className="flex flex-wrap gap-4">
               <a
                 href="#"
-                className="w-40 rounded-lg bg-primary px-6 py-3 text-center font-semibold text-white shadow transition hover:bg-colors-primaryHover"
+                className="w-40 rounded-lg bg-primary px-6 py-2 text-center font-semibold text-white shadow transition hover:bg-colors-primaryHover"
               >
                 Liên hệ ngay
               </a>
 
               <a
                 href="#"
-                className="w-40 rounded-lg border border-primary bg-secondary px-6 py-3 text-center font-semibold text-primary shadow transition hover:bg-colors-secondaryHover"
+                className="w-40 rounded-lg border border-primary bg-secondary px-6 py-2 text-center font-semibold text-primary shadow transition hover:bg-colors-secondaryHover"
               >
                 Gọi hỗ trợ
               </a>

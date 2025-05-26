@@ -218,13 +218,13 @@ const AccountSidebar = ({ loggedInUser }) => {
               )}
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 space-y-2">
               <h5 className="text-lg font-semibold">
                 {`${loggedInUser?.firstName} ${loggedInUser?.lastName}`}
               </h5>
               <p className="text-slate-400">{loggedInUser?.email}</p>
               <p className="text-sm font-bold text-slate-700">
-                Role: {loggedInUser?.role}
+                Vai trò hiện tại: {loggedInUser?.role}
               </p>
             </div>
           </div>

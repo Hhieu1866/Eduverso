@@ -77,8 +77,8 @@ const CourseCard = async ({ course }) => {
         </div>
 
         <div className="px-4">
-          <div className="mt-4 space-y-1">
-            <div className="line-clamp-2 text-lg font-medium">
+          <div className="mt-4 space-y-2">
+            <div className="line-clamp-2 text-lg font-bold text-gray-800">
               {course?.title}
             </div>
 

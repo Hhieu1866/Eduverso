@@ -45,7 +45,7 @@ const CourseDetailsIntro = async ({ course }) => {
             <div className="flex-1">
               <div className="mb-4">
                 <span className="rounded-full bg-primary px-3 py-1 text-xs font-medium text-white">
-                  {course?.category?.title || "QA/QC"}
+                  {course?.category?.title || "Title khóa học"}
                 </span>
               </div>
 
@@ -114,63 +114,62 @@ const CourseDetailsIntro = async ({ course }) => {
             </div>
 
             {/* Cột hình ảnh và đăng ký */}
-            <div className="lg:w-[450px]">
+            <div className="mx-auto w-full max-w-[422px] lg:w-[450px]">
               <div className="overflow-hidden rounded-lg bg-white shadow-lg">
                 {showImage && (
-                  <div className="relative h-[250px] w-full">
+                  <div className="relative aspect-[16/9] w-full">
                     <Image
                       src={imageSrc}
                       alt={course?.title}
-                      layout="fill"
-                      objectFit="cover"
+                      fill
+                      className="object-cover"
                       priority
                     />
                   </div>
                 )}
-
-                <div className="p-6">
-                  <div className="mb-6 flex items-center justify-between">
+                <div className="p-4">
+                  <div className="mb-4 flex items-center justify-between">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-bold">
+                      <span className="text-2xl font-bold">
                         {course?.price === 0
                           ? "Miễn phí"
                           : `${course?.price.toLocaleString()}đ`}
                       </span>
                       {course?.price > 0 && (
-                        <span className="text-lg text-gray-400 line-through">
+                        <span className="text-base text-gray-400 line-through">
                           {(course?.price * 1.2).toLocaleString()}đ
                         </span>
                       )}
                     </div>
                     {course?.price > 0 && (
-                      <span className="rounded bg-red-100 px-2 py-1 text-sm font-medium text-red-700">
+                      <span className="rounded bg-red-100 px-2 py-1 text-xs font-medium text-red-700">
                         Giảm 20% - Còn 3 ngày
                       </span>
                     )}
                   </div>
-
-                  <div className="mb-6 space-y-4">
+                  <div className="mb-4 space-y-3">
                     <div className="flex items-center gap-3">
-                      <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                      <div className="flex size-7 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
                         <GraduationCap className="h-4 w-4 text-primary" />
                       </div>
-                      <span>{course?.modules?.length || 0} bài học</span>
+                      <span className="text-sm">
+                        {course?.modules?.length || 0} bài học
+                      </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                      <div className="flex size-7 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
                         <Clock className="h-4 w-4 text-primary" />
                       </div>
-                      <span>Chứng chỉ hoàn thành</span>
+                      <span className="text-sm">Chứng chỉ hoàn thành</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+                      <div className="flex size-7 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
                         <File className="h-4 w-4 text-primary" />
                       </div>
-                      <span>Tài liệu kèm theo</span>
+                      <span className="text-sm">Tài liệu kèm theo</span>
                     </div>
                   </div>
-
-                  <div className="mt-6">
+                  <div className="mt-4">
                     {hasEnrollment ? (
                       <Link
                         href={`/courses/${course?.id}/lesson`}
@@ -191,8 +190,7 @@ const CourseDetailsIntro = async ({ course }) => {
                         />
                       </div>
                     )}
-
-                    <p className="mt-4 text-center text-sm text-gray-500">
+                    <p className="mt-3 text-center text-xs font-medium text-gray-500">
                       Đảm bảo hoàn tiền trong 30 ngày
                     </p>
                   </div>

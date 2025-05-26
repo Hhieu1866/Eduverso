@@ -68,18 +68,21 @@ const PersonalDetails = ({ userInfo }) => {
     <form onSubmit={handleUpdate}>
       <Card className="border-0 shadow-none">
         <CardHeader className="px-0 pb-4">
-          <CardTitle className="text-xl font-semibold text-slate-800 dark:text-slate-200">
+          <CardTitle className="text-2xl font-bold text-colors-navy dark:text-slate-200">
             Thông tin cá nhân
           </CardTitle>
-          <CardDescription className="text-sm text-muted-foreground">
+          <CardDescription className="text-sm font-medium text-muted-foreground">
             Cập nhật thông tin cá nhân của bạn
           </CardDescription>
         </CardHeader>
         <Separator className="mb-6" />
-        <CardContent className="px-0 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <CardContent className="space-y-6 px-0">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="firstName">
+              <Label
+                htmlFor="firstName"
+                className="font-semibold text-colors-navy"
+              >
                 Họ <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -93,7 +96,10 @@ const PersonalDetails = ({ userInfo }) => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="lastName">
+              <Label
+                htmlFor="lastName"
+                className="font-semibold text-colors-navy"
+              >
                 Tên <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -108,9 +114,9 @@ const PersonalDetails = ({ userInfo }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="email">
+              <Label htmlFor="email" className="font-semibold text-colors-navy">
                 Email <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -120,14 +126,19 @@ const PersonalDetails = ({ userInfo }) => {
                 value={infoState?.email}
                 onChange={handleChange}
                 disabled
-                className="bg-muted cursor-not-allowed"
+                className="cursor-not-allowed bg-muted"
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="mt-1 text-xs font-medium italic text-muted-foreground">
                 Email không thể thay đổi
               </p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="designation">Nghề nghiệp</Label>
+              <Label
+                htmlFor="designation"
+                className="font-semibold text-colors-navy"
+              >
+                Nghề nghiệp
+              </Label>
               <Input
                 id="designation"
                 name="designation"
@@ -140,15 +151,17 @@ const PersonalDetails = ({ userInfo }) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="bio">Giới thiệu bản thân</Label>
+            <Label htmlFor="bio" className="font-semibold text-colors-navy">
+              Giới thiệu bản thân
+            </Label>
             <Textarea
               id="bio"
               name="bio"
               value={infoState?.bio}
               onChange={handleChange}
               placeholder="Viết một vài điều về bản thân bạn..."
-              rows={4}
-              className="resize-none focus:ring-primary"
+              rows={6}
+              className="min-h-[120px] w-full resize-y rounded-md border border-gray-200 p-3 text-sm transition focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
         </CardContent>

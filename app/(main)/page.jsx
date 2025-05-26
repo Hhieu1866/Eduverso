@@ -34,7 +34,7 @@ const HomePage = async () => {
           <h1 className="font-heading whitespace-nowrap text-3xl font-bold text-colors-navy sm:text-5xl md:text-6xl lg:text-7xl">
             Bắt đầu lộ trình học tập mới với <br /> Eduverse
           </h1>
-          <p className="max-w-full overflow-auto text-ellipsis whitespace-nowrap leading-normal text-colors-navy text-muted-foreground sm:text-xl sm:leading-8">
+          <p className="max-w-full overflow-auto text-ellipsis whitespace-nowrap font-medium leading-normal text-muted-foreground sm:text-xl sm:leading-8">
             "Khám phá các lộ trình học tập phù hợp, giúp bạn học theo tiến độ và
             nhu cầu riêng."
           </p>
@@ -43,13 +43,13 @@ const HomePage = async () => {
               href="/courses"
               className={cn(buttonVariants({ size: "lg" }))}
             >
-              Explore Now
+              Khám phá ngay
             </Link>
             <Link
               href="/register"
               className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
             >
-              Become An Instructor
+              Trở thành giảng viên
             </Link>
           </div>
         </div>

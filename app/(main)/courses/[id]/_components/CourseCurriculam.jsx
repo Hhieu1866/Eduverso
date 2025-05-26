@@ -50,7 +50,7 @@ const CourseCurriculam = ({ course }) => {
     }, 0) || 0;
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="">
       <div className="mb-8 rounded-lg bg-gray-50 p-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <div className="flex flex-col items-center rounded-lg bg-white p-4 shadow-sm">
@@ -71,7 +71,7 @@ const CourseCurriculam = ({ course }) => {
             <Clock className="mb-2 h-8 w-8 text-primary" />
             <div className="flex items-center gap-1 text-base">
               <span className="font-bold">
-                {Math.floor(totalDuration / 60)}h {totalDuration % 60}m
+                {Math.floor(totalDuration / 60)}p {totalDuration % 60}s
               </span>
               <span className="text-gray-600">Thời lượng</span>
             </div>
@@ -101,12 +101,12 @@ const CourseCurriculam = ({ course }) => {
                       0,
                     ) || 0) / 60,
                   )}
-                  h{" "}
+                  p{" "}
                   {(module.lessonIds?.reduce(
                     (acc, lesson) => acc + (lesson.duration || 0),
                     0,
                   ) || 0) % 60}
-                  m
+                  s
                 </span>
               </div>
             </AccordionTrigger>

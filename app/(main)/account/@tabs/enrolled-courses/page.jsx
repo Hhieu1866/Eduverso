@@ -36,7 +36,7 @@ async function EnrolledCourses() {
           ))}
         </>
       ) : (
-        <div>
+        <div className="">
           <p className="mb-4 font-bold text-red-700">
             Không tìm thấy khóa học nào đã đăng ký!
           </p>

@@ -5,8 +5,8 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 const menu = [
-  { label: "Profile", href: "/account" },
-  { label: "Enrolled Courses", href: "/account/enrolled-courses" },
+  { label: "Hồ sơ cá nhân", href: "/account" },
+  { label: "Lộ trình đã đăng ký", href: "/account/enrolled-courses" },
 ];
 
 function Menu() {
@@ -14,13 +14,13 @@ function Menu() {
   const router = useRouter();
 
   return (
-    <ul className="list-none sidebar-nav mb-0 mt-3" id="navmenu-nav">
+    <ul className="sidebar-nav mb-0 mt-3 list-none" id="navmenu-nav">
       {menu.map((item, i) => (
         <li className="navbar-item account-menu" key={i}>
           <Link
             href={item.href}
-            className={`navbar-link flex items-center py-2 rounded ${
-              pathname === item.href ? "text-primary" : "text-slate-400"
+            className={`navbar-link flex items-center rounded py-2 ${
+              pathname === item.href ? "text-primary" : "text-slate-500"
             }`}
           >
             <h6 className="mb-0 font-semibold">{item?.label}</h6>
@@ -36,9 +36,9 @@ function Menu() {
               router.push("/login");
             });
           }}
-          className="navbar-link text-slate-400 flex items-center py-2 rounded"
+          className="navbar-link flex items-center rounded py-2 text-slate-400"
         >
-          <h6 className="mb-0 font-semibold">Sign Out</h6>
+          <h6 className="mb-0 font-semibold text-red-600">Đăng xuất</h6>
         </Link>
       </li>
     </ul>

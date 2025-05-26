@@ -53,7 +53,7 @@ const MainNav = ({ items, children }) => {
                 key={index}
                 href={item.disable ? "#" : item.href}
                 className={cn(
-                  "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
+                  "flex items-center text-lg font-semibold text-colors-navy transition-colors hover:text-gray-500 sm:text-sm",
                 )}
               >
                 {item.title}
@@ -86,72 +86,86 @@ const MainNav = ({ items, children }) => {
         )}
 
         {loginSession && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <div className="cursor-pointer">
-                <Avatar>
-                  <AvatarImage
-                    src={loggedInUser?.profilePicture}
-                    alt={`${loggedInUser?.firstName || ""} ${
-                      loggedInUser?.lastName || ""
-                    }`}
-                    style={{ objectFit: "cover", objectPosition: "center" }}
-                  />
-                  <AvatarFallback className="text-xs">
-                    {loggedInUser?.firstName?.[0] || ""}
-                    {loggedInUser?.lastName?.[0] || ""}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-            </DropdownMenuTrigger>
+          <div className="flex items-center gap-2">
+            {loggedInUser && (
+              <span className="mr-2 hidden text-sm font-semibold text-gray-600 md:inline-block">
+                Xin chào,{" "}
+                {loggedInUser.fullName ||
+                  (loggedInUser.firstName || "") +
+                    (loggedInUser.lastName ? " " + loggedInUser.lastName : "")}
+              </span>
+            )}
 
-            <DropdownMenuContent align="end" className="mt-4 w-56">
-              <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link href="/account" className="text-colors-navy">
-                  Profile
-                </Link>
-              </DropdownMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="cursor-pointer">
+                  <Avatar>
+                    <AvatarImage
+                      src={loggedInUser?.profilePicture}
+                      alt={`${loggedInUser?.firstName || ""} ${
+                        loggedInUser?.lastName || ""
+                      }`}
+                      style={{ objectFit: "cover", objectPosition: "center" }}
+                    />
+                    <AvatarFallback className="text-xs">
+                      {loggedInUser?.firstName?.[0] || ""}
+                      {loggedInUser?.lastName?.[0] || ""}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+              </DropdownMenuTrigger>
 
-              {loggedInUser?.role === "instructor" && (
+              <DropdownMenuContent
+                align="end"
+                className="mt-4 w-56 font-semibold text-colors-navy"
+              >
+                {loggedInUser?.role === "instructor" && (
+                  <DropdownMenuItem className="cursor-pointer" asChild>
+                    <Link href="/dashboard">
+                      {" "}
+                      <strong className="text-colors-navy">
+                        Tới trang quản trị
+                      </strong>{" "}
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+
                 <DropdownMenuItem className="cursor-pointer" asChild>
-                  <Link href="/dashboard">
-                    {" "}
-                    <strong className="text-colors-navy">
-                      Instructor Dashboard
-                    </strong>{" "}
+                  <Link href="/account" className="text-gray-600">
+                    Hồ sơ cá nhân
                   </Link>
                 </DropdownMenuItem>
-              )}
 
-              <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link
-                  href="/account/enrolled-courses"
-                  className="text-colors-navy"
-                >
-                  My Courses
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link href="" className="text-colors-navy">
-                  Testimonials & Certificates
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer" asChild>
-                <Link
-                  href=""
-                  onClick={(e) => {
-                    e.preventDefault();
-                    signOut({ redirect: false }).then(() => {
-                      router.push("/login");
-                    });
-                  }}
-                  className="text-red-700"
-                >
-                  Logout
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DropdownMenuItem className="cursor-pointer" asChild>
+                  <Link
+                    href="/account/enrolled-courses"
+                    className="text-gray-600"
+                  >
+                    Lộ trình của bạn
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" asChild>
+                  <Link href="" className="text-gray-600">
+                    Chứng chỉ đã nhận
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" asChild>
+                  <Link
+                    href=""
+                    onClick={(e) => {
+                      e.preventDefault();
+                      signOut({ redirect: false }).then(() => {
+                        router.push("/login");
+                      });
+                    }}
+                    className="text-red-600"
+                  >
+                    Đăng xuất
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         )}
 
         <button
