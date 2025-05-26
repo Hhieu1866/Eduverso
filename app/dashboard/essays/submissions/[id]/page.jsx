@@ -243,7 +243,7 @@ export default async function GradeSubmissionPage({ params }) {
       </div>
 
       <div className="rounded-lg border bg-card p-6 shadow-sm">
-        <h2 className="mb-4 text-xl font-semibold">Đánh giá và phản hồi</h2>
+        <h2 className="mb-4 text-xl font-bold">Đánh giá và phản hồi</h2>
         <GradingForm initialData={submissionDataForForm} />
       </div>
     </div>
