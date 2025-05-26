@@ -8,6 +8,7 @@ import Menu from "./account-menu";
 import { toast } from "sonner";
 import { Loader2, Camera, Upload, Trash2 } from "lucide-react";
 import ConfirmDialog from "@/components/confirm-dialog";
+import { useRouter } from "next/navigation";
 
 const AccountSidebar = ({ loggedInUser }) => {
   const [isHovering, setIsHovering] = useState(false);

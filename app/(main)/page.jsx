@@ -106,11 +106,12 @@ const HomePage = async () => {
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl lg:text-5xl">
-                Sẵn sàng bắt đầu hành trình học tập của bạn?
+                Bạn muốn chia sẻ kiến thức và tạo dấu ấn riêng?
               </h2>
-              <p className="mx-auto max-w-[700px] text-sm text-primary-foreground/80 sm:text-base md:text-xl">
-                Đăng ký ngay hôm nay để truy cập hàng nghìn khóa học chất lượng
-                cao và bắt đầu phát triển kỹ năng của bạn.
+              <p className="mx-auto max-w-[750px] text-sm text-primary-foreground/80 sm:text-base md:text-xl">
+                Hãy bắt đầu hành trình trở thành giảng viên cùng chúng tôi - nơi
+                bạn có thể xây dựng khóa học của riêng mình và tiếp cận hàng
+                nghìn người học đang chờ đón.
               </p>
             </div>
             <div className="text-base font-medium">

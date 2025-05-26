@@ -13,6 +13,7 @@ import { getReport } from "@/queries/reports";
 import { GiveReview } from "./give-review";
 import { DownloadCertificate } from "./download-certificate";
 import Quiz from "./quiz";
+import { ObjectId } from "mongoose";
 import { LessonSidebarLink } from "./lesson-sidebar-link";
 import { Separator } from "@/components/ui/separator";
 import { EssayList } from "./essay-list";
