@@ -55,7 +55,7 @@ export const ModuleActions = ({ module, courseId }) => {
           size="sm"
           onClick={() => setAction("change-active")}
         >
-          {published ? "Unpublish" : "Publish"}
+          {published ? "Ẩn" : "Công khai"}
         </Button>
 
         <Button size="sm" onClick={() => setAction("delete")}>

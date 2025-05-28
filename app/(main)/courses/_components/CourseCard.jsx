@@ -61,7 +61,7 @@ const CourseCard = async ({ course }) => {
       : "0.0";
 
   return (
-    <div className="group rounded-xl border shadow-xl">
+    <div className="group mb-2 rounded-xl border shadow-xl">
       <Link key={course.id} href={`/courses/${course.id}`}>
         <div className="relative aspect-video w-full overflow-hidden rounded-t-xl">
           {showImage && (

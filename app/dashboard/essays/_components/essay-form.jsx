@@ -142,6 +142,8 @@ export function EssayForm({ initialData }) {
       } else {
         await createEssay(values);
         toast.success("Đã tạo bài tự luận thành công");
+        router.push("/dashboard/essays");
+        return;
       }
       router.refresh();
     } catch (error) {

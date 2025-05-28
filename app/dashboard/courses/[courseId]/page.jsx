@@ -16,6 +16,7 @@ import { replaceMongoIdInArray } from "@/lib/convertData";
 import { getAllQuizSets } from "@/queries/quizzes";
 import { getEssays } from "@/app/actions/essay";
 import { EssayForm } from "./_components/essay-form";
+import { ObjectId } from "mongoose";
 
 const EditCourse = async ({ params: { courseId } }) => {
   const course = await getCourseDetailsForInstructor(courseId);

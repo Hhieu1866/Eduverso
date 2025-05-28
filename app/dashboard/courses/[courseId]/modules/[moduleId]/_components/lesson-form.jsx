@@ -84,7 +84,7 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
     try {
       setIsUpdating(true);
       await reOrderLesson(updateData);
-      toast.success("Lesson reordered");
+      toast.success("Đã sắp xếp lại thứ tự bài học");
       router.refresh();
     } catch {
       toast.error("Something went wrong");
@@ -138,14 +138,14 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
         </div>
       )}
       <div className="flex items-center justify-between font-medium">
-        Module Lessions
+        Các bài học
         <Button variant="ghost" onClick={toggleCreating}>
           {isCreating ? (
-            <>Cancel</>
+            <>Hủy</>
           ) : (
             <>
               <PlusCircle className="mr-2 h-4 w-4" />
-              Add a chapter
+              Thêm bài học
             </>
           )}
         </Button>
@@ -186,7 +186,7 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
             !lessons?.length && "italic text-slate-500",
           )}
         >
-          {!lessons?.length && "No module"}
+          {!lessons?.length && "Chưa có bài học nào"}
           <LessonList
             onEdit={onEdit}
             onReorder={onReorder}
@@ -196,7 +196,7 @@ export const LessonForm = ({ initialData, moduleId, courseId }) => {
       )}
       {!isCreating && (
         <p className="mt-4 text-xs text-muted-foreground">
-          Drag & Drop to reorder the modules
+          Kéo thả để chỉnh thứ tự các bài học
         </p>
       )}
       <LessonModal

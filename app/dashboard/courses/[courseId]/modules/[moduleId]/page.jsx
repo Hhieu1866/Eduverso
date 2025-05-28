@@ -7,6 +7,7 @@ import { LessonForm } from "./_components/lesson-form";
 import { getModuleForInstructor } from "@/queries/modules";
 import { replaceMongoIdInArray } from "@/lib/convertData";
 import { ModuleActions } from "./_components/module-action";
+import { ObjectId } from "mongoose";
 
 const Module = async ({ params: { courseId, moduleId } }) => {
   const module = await getModuleForInstructor(moduleId);
@@ -64,7 +65,7 @@ const Module = async ({ params: { courseId, moduleId } }) => {
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={LayoutDashboard} />
-                <h2 className="text-xl">Tuỳ chỉnh module</h2>
+                <h2 className="text-xl">Tuỳ chỉnh chương</h2>
               </div>
               <ModuleTitleForm
                 initialData={{ title: module.title }}
@@ -75,7 +76,7 @@ const Module = async ({ params: { courseId, moduleId } }) => {
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={BookOpenCheck} />
-                <h2 className="text-xl">Bài học trong module</h2>
+                <h2 className="text-xl">Bài học trong chương hiện tại</h2>
               </div>
               <LessonForm
                 initialData={lessons}

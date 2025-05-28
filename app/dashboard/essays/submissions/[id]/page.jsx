@@ -76,9 +76,30 @@ export default async function GradeSubmissionPage({ params }) {
   const submissionDataForForm = {
     ...submission,
     _id: submission._id.toString(),
-    essayId: submission.essayId.toString(),
-    studentId: submission.studentId._id.toString(),
-    courseId: submission.courseId._id.toString(),
+    essayId:
+      typeof submission.essayId === "object" && submission.essayId !== null
+        ? submission.essayId._id.toString()
+        : submission.essayId.toString(),
+    studentId:
+      typeof submission.studentId === "object" && submission.studentId !== null
+        ? submission.studentId._id.toString()
+        : submission.studentId.toString(),
+    courseId:
+      typeof submission.courseId === "object" && submission.courseId !== null
+        ? submission.courseId._id.toString()
+        : submission.courseId.toString(),
+    studentName:
+      typeof submission.studentId === "object" && submission.studentId !== null
+        ? submission.studentId.name
+        : "",
+    studentEmail:
+      typeof submission.studentId === "object" && submission.studentId !== null
+        ? submission.studentId.email
+        : "",
+    essayTitle:
+      typeof submission.essayId === "object" && submission.essayId !== null
+        ? submission.essayId.title
+        : "",
   };
 
   return (

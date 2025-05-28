@@ -28,7 +28,6 @@ export const LessonSidebar = async ({ courseId }) => {
   });
 
   // Lọc lại một lần nữa để đảm bảo chỉ hiển thị module và lesson đã active
-  // (Mặc dù query đã lọc, nhưng thêm lớp đảm bảo này để tránh lỗi)
   const publishedModules =
     course?.modules?.filter((module) => module.active === true) || [];
 

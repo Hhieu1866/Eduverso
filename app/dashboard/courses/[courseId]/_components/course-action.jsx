@@ -133,7 +133,7 @@ export const CourseActions = ({
           size="sm"
           onClick={() => setAction("change-active")}
         >
-          {published ? "Unpublish" : "Publish"}
+          {published ? "Ẩn" : "Công khai"}
         </Button>
       );
     } else if (courseStatus === "pending") {

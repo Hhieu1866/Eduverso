@@ -35,7 +35,7 @@ const PopularCourses = async () => {
                 return <CourseCard key={course.id} course={course} />;
               })}
             </div>
-            <div className="mt-10 flex items-center justify-center">
+            <div className="mt-6 flex items-center justify-center">
               <Link
                 href={"/courses"}
                 className="flex items-center gap-1 text-sm font-medium hover:opacity-80"

@@ -15,13 +15,34 @@ export async function createEssay(values) {
       throw new Error("Không có quyền thực hiện");
     }
 
-    const essay = await Essay.create({
+    const newEssay = await Essay.create({
       ...values,
       createdBy: session.user.id,
     });
 
     revalidatePath("/dashboard/essays");
-    return essay;
+    const plainEssay = newEssay.toObject();
+    return {
+      ...plainEssay,
+      _id: plainEssay._id.toString(),
+      id: plainEssay._id.toString(),
+      createdAt: plainEssay.createdAt
+        ? new Date(plainEssay.createdAt).toISOString()
+        : "",
+      updatedAt: plainEssay.updatedAt
+        ? new Date(plainEssay.updatedAt).toISOString()
+        : "",
+      createdBy: plainEssay.createdBy ? plainEssay.createdBy.toString() : null,
+      documents: Array.isArray(plainEssay.documents)
+        ? plainEssay.documents.map((doc) => ({
+            ...doc,
+            _id: doc._id ? doc._id.toString() : undefined,
+            uploadedAt: doc.uploadedAt
+              ? new Date(doc.uploadedAt).toISOString()
+              : "",
+          }))
+        : [],
+    };
   } catch (error) {
     console.error("Lỗi khi tạo bài tự luận:", error);
     throw new Error("Đã xảy ra lỗi khi tạo bài tự luận");
@@ -82,7 +103,30 @@ export async function updateEssay(essayId, values) {
 
     revalidatePath("/dashboard/essays");
     revalidatePath(`/dashboard/essays/${essayId}`);
-    return essay;
+    const updatedEssayObject = essay.toObject();
+    return {
+      ...updatedEssayObject,
+      _id: updatedEssayObject._id.toString(),
+      id: updatedEssayObject._id.toString(),
+      createdAt: updatedEssayObject.createdAt
+        ? new Date(updatedEssayObject.createdAt).toISOString()
+        : "",
+      updatedAt: updatedEssayObject.updatedAt
+        ? new Date(updatedEssayObject.updatedAt).toISOString()
+        : "",
+      createdBy: updatedEssayObject.createdBy
+        ? updatedEssayObject.createdBy.toString()
+        : null,
+      documents: Array.isArray(updatedEssayObject.documents)
+        ? updatedEssayObject.documents.map((doc) => ({
+            ...doc,
+            _id: doc._id ? doc._id.toString() : undefined,
+            uploadedAt: doc.uploadedAt
+              ? new Date(doc.uploadedAt).toISOString()
+              : "",
+          }))
+        : [],
+    };
   } catch (error) {
     console.error("Lỗi khi cập nhật bài tự luận:", error);
     throw new Error("Đã xảy ra lỗi khi cập nhật bài tự luận");
@@ -109,7 +153,30 @@ export async function deleteEssay(essayId) {
     }
 
     revalidatePath("/dashboard/essays");
-    return essay;
+    const deletedEssayObject = essay.toObject();
+    return {
+      ...deletedEssayObject,
+      _id: deletedEssayObject._id.toString(),
+      id: deletedEssayObject._id.toString(),
+      createdAt: deletedEssayObject.createdAt
+        ? new Date(deletedEssayObject.createdAt).toISOString()
+        : "",
+      updatedAt: deletedEssayObject.updatedAt
+        ? new Date(deletedEssayObject.updatedAt).toISOString()
+        : "",
+      createdBy: deletedEssayObject.createdBy
+        ? deletedEssayObject.createdBy.toString()
+        : null,
+      documents: Array.isArray(deletedEssayObject.documents)
+        ? deletedEssayObject.documents.map((doc) => ({
+            ...doc,
+            _id: doc._id ? doc._id.toString() : undefined,
+            uploadedAt: doc.uploadedAt
+              ? new Date(doc.uploadedAt).toISOString()
+              : "",
+          }))
+        : [],
+    };
   } catch (error) {
     console.error("Lỗi khi xóa bài tự luận:", error);
     throw new Error("Đã xảy ra lỗi khi xóa bài tự luận");

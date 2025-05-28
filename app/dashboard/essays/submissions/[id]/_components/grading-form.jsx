@@ -46,50 +46,14 @@ export function GradingForm({ initialData }) {
     },
   });
 
-  // Helper để lấy essayId dạng string - đã sửa để xử lý đúng ObjectId
-  const getEssayIdString = () => {
-    const essayId = initialData.essayId;
-
-    // Nếu là string, trả về luôn
-    if (typeof essayId === "string") return essayId;
-
-    // Nếu là ObjectId hoặc có _id
-    if (essayId && typeof essayId === "object") {
-      // Kiểm tra nếu có thuộc tính _id là string
-      if (essayId._id && typeof essayId._id === "string") {
-        return essayId._id;
-      }
-
-      // Nếu ObjectId có toString và là function
-      if (typeof essayId.toString === "function") {
-        const idStr = essayId.toString();
-        // Kiểm tra nếu toString không trả về [object Object]
-        if (idStr !== "[object Object]") {
-          return idStr;
-        }
-      }
-    }
-
-    // Fallback: Tìm trong initialData nếu có trường essay có _id
-    if (initialData.essay && initialData.essay._id) {
-      return typeof initialData.essay._id === "string"
-        ? initialData.essay._id
-        : initialData.essay._id.toString();
-    }
-
-    console.error("Không thể xác định essayId:", initialData);
-    return "error-essay-id"; // Fallback để tránh lỗi
-  };
+  // initialData.essayId giờ đây đã được đảm bảo là string từ component cha
+  const essayIdString = initialData.essayId;
 
   const onSubmit = async (values) => {
     try {
       setIsLoading(true);
       await gradeEssaySubmission(initialData._id, values);
       toast.success("Đã lưu đánh giá bài tự luận thành công");
-
-      const essayIdString = getEssayIdString();
-      console.log("Chuyển hướng đến essayId:", essayIdString);
-      router.push(`/dashboard/essays/${essayIdString}/submissions`);
     } catch (error) {
       console.error(error);
       toast.error("Đã xảy ra lỗi khi lưu đánh giá");
