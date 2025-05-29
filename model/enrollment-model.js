@@ -22,18 +22,5 @@ const enrollmentSchema = new Schema({
   student: { type: Schema.ObjectId, ref: "User" },
 });
 
-// Cách khởi tạo model an toàn hơn, không kiểm tra readyState
-let EnrollmentModel;
-
-// Kiểm tra an toàn cho cả client và server side rendering
-try {
-  // Kiểm tra xem model đã tồn tại chưa
-  EnrollmentModel =
-    mongoose.models.Enrollment ||
-    mongoose.model("Enrollment", enrollmentSchema);
-} catch (error) {
-  // Trong trường hợp có lỗi, tạo model mới
-  EnrollmentModel = mongoose.model("Enrollment", enrollmentSchema);
-}
-
-export { EnrollmentModel as Enrollment };
+export const Enrollment =
+  mongoose.models?.Enrollment || mongoose.model("Enrollment", enrollmentSchema);

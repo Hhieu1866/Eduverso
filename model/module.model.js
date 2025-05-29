@@ -28,14 +28,5 @@ const moduleSchema = new Schema({
   },
 });
 
-// Sửa lại cách khởi tạo model để tránh lỗi
-let ModuleModel;
-try {
-  // Kiểm tra xem model đã tồn tại chưa
-  ModuleModel = mongoose.model("Module");
-} catch (error) {
-  // Nếu chưa tồn tại, tạo mới model
-  ModuleModel = mongoose.model("Module", moduleSchema);
-}
-
-export const Module = ModuleModel;
+export const Module =
+  mongoose.models?.Module || mongoose.model("Module", moduleSchema);

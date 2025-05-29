@@ -18,10 +18,6 @@ const quizesetSchema = new Schema({
     type: Boolean,
   },
 });
-let Quizset;
-try {
-  Quizset = mongoose.model("Quizset");
-} catch (error) {
-  Quizset = mongoose.model("Quizset", quizesetSchema);
-}
-export { Quizset };
+
+export const Quizset =
+  mongoose.models?.Quizset || mongoose.model("Quizset", quizesetSchema);

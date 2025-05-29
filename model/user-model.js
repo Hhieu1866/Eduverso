@@ -51,15 +51,4 @@ const userSchema = new Schema({
   },
 });
 
-// // Xử lý an toàn hơn để tránh lỗi khi mongoose chưa được kết nối
-// let User;
-
-// // Sử dụng mô hình người dùng nếu đã tồn tại, nếu không thì tạo mới
-// if (mongoose.models && mongoose.models.User) {
-//   User = mongoose.models.User;
-// } else {
-//   User = mongoose.model("User", userSchema);
-// }
-
-// export { User };
 export const User = mongoose.models?.User || mongoose.model("User", userSchema);

@@ -16,6 +16,7 @@ const testimonialSchema = new Schema(
   },
   { timestamps: true },
 );
+
 export const Testimonial =
-  mongoose.models.Testimonial ??
+  mongoose.models?.Testimonial ||
   mongoose.model("Testimonial", testimonialSchema);

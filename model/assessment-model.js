@@ -42,4 +42,4 @@ const assessmentSchema = new Schema({
 });
 
 export const Assessment =
-  mongoose.models.Assessment || mongoose.model("Assessment", assessmentSchema);
+  mongoose.models?.Assessment || mongoose.model("Assessment", assessmentSchema);

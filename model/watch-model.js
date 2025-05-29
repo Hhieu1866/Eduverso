@@ -26,14 +26,5 @@ const watchSchema = new Schema({
   },
 });
 
-// Sửa lại cách khởi tạo model để tránh lỗi
-let WatchModel;
-try {
-  // Kiểm tra xem model đã tồn tại chưa
-  WatchModel = mongoose.model("Watch");
-} catch (error) {
-  // Nếu chưa tồn tại, tạo mới model
-  WatchModel = mongoose.model("Watch", watchSchema);
-}
-
-export const Watch = WatchModel;
+export const Watch =
+  mongoose.models?.Watch || mongoose.model("Watch", watchSchema);

@@ -27,5 +27,6 @@ const quizzesSchema = new Schema({
     default: true,
   },
 });
+
 export const Quiz =
-  mongoose.models.Quiz ?? mongoose.model("Quiz", quizzesSchema);
+  mongoose.models?.Quiz || mongoose.model("Quiz", quizzesSchema);

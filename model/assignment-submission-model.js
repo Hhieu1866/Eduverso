@@ -62,16 +62,6 @@ const assignmentSubmissionSchema = new Schema({
   },
 });
 
-let AssignmentSubmission;
-try {
-  AssignmentSubmission =
-    mongoose.models.AssignmentSubmission ||
-    mongoose.model("AssignmentSubmission", assignmentSubmissionSchema);
-} catch (error) {
-  AssignmentSubmission = mongoose.model(
-    "AssignmentSubmission",
-    assignmentSubmissionSchema,
-  );
-}
-
-export { AssignmentSubmission };
+export const AssignmentSubmission =
+  mongoose.models?.AssignmentSubmission ||
+  mongoose.model("AssignmentSubmission", assignmentSubmissionSchema);

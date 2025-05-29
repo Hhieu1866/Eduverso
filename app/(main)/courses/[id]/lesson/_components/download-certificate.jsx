@@ -99,9 +99,9 @@ export const DownloadCertificate = ({
     const buttonContent = (
       <>
         {canDownloadCertificate ? (
-          <Award className="h-4 w-4 text-primary" />
+          <Award className="h-4 w-4 text-primary text-white" />
         ) : (
-          <LockIcon className="h-4 w-4 text-gray-400" />
+          <LockIcon className="h-4 w-4 text-white" />
         )}
         {isCertificateDownloading ? (
           <div className="flex items-center gap-2">

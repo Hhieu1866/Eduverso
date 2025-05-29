@@ -22,14 +22,5 @@ const reportSchema = new Schema({
   },
 });
 
-// Sửa lại cách khởi tạo model để tránh lỗi
-let ReportModel;
-try {
-  // Kiểm tra xem model đã tồn tại chưa
-  ReportModel = mongoose.model("Report");
-} catch (error) {
-  // Nếu chưa tồn tại, tạo mới model
-  ReportModel = mongoose.model("Report", reportSchema);
-}
-
-export const Report = ReportModel;
+export const Report =
+  mongoose.models?.Report || mongoose.model("Report", reportSchema);

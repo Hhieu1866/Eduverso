@@ -71,13 +71,5 @@ assignmentSchema.pre("save", function (next) {
   next();
 });
 
-let Assignment;
-try {
-  Assignment =
-    mongoose.models.Assignment ||
-    mongoose.model("Assignment", assignmentSchema);
-} catch (error) {
-  Assignment = mongoose.model("Assignment", assignmentSchema);
-}
-
-export { Assignment };
+export const Assignment =
+  mongoose.models?.Assignment || mongoose.model("Assignment", assignmentSchema);
