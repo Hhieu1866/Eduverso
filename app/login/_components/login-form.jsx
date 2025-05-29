@@ -34,62 +34,42 @@ export function LoginForm() {
 
       // Kiểm tra cơ bản ở client side trước khi gửi request
       if (!email || !password) {
-        toast.error("Vui lòng nhập đầy đủ email và mật khẩu", {
-          duration: 3000,
-          position: "top-center",
-        });
-        setIsLoading(false);
+        toast.error("Vui lòng nhập đầy đủ email và mật khẩu");
         return;
       }
 
       const response = await ceredntialLogin(formData);
+      console.log("Login response:", response); // Debug log
 
-      if (!!response?.error) {
-        console.log(response.error);
-        // Hiển thị lỗi với toast
-        toast.error(response.error, {
-          duration: 4000,
-          position: "top-center",
-          id: "login-error",
-        });
-        setIsLoading(false);
+      if (response?.error) {
+        toast.error(response.error);
       } else {
-        toast.success("Đăng nhập thành công!", {
-          duration: 3000,
-          position: "top-center",
-        });
+        toast.success("Đăng nhập thành công!");
 
-        // Kiểm tra role của người dùng để chuyển hướng phù hợp
-        const userEmail = formData.get("email");
-        try {
-          // Lấy thông tin vai trò người dùng
-          const userResponse = await fetch(
-            `/api/users/check-role?email=${encodeURIComponent(userEmail)}`,
-          );
-          const userData = await userResponse.json();
+        // Lấy role từ response
+        const userRole = response?.user?.role;
+        console.log("User role:", userRole); // Debug log
 
-          if (userData.role === "admin") {
-            // Nếu là admin, chuyển đến trang admin dashboard
-            router.push("/admin");
-          } else if (userData.role === "instructor") {
-            // Nếu là instructor, chuyển đến trang dashboard
-            router.push("/dashboard");
-          } else {
-            // Nếu là người dùng thông thường (student), chuyển đến trang courses
-            router.push("/courses");
-          }
-        } catch (err) {
-          // Nếu có lỗi khi kiểm tra role, vẫn chuyển đến trang courses
-          console.error("Lỗi khi kiểm tra role:", err);
-          router.push("/courses");
+        // Xác định URL chuyển hướng dựa trên role
+        let redirectUrl = "/courses"; // Mặc định cho student
+
+        if (userRole === "admin") {
+          redirectUrl = "/admin";
+        } else if (userRole === "instructor") {
+          redirectUrl = "/dashboard";
         }
+
+        console.log("Redirecting to:", redirectUrl); // Debug log
+
+        // Chuyển hướng người dùng và đảm bảo push được thực hiện
+        setTimeout(() => {
+          router.push(redirectUrl);
+        }, 300);
       }
     } catch (error) {
-      // Hiển thị lỗi với toast
-      toast.error(error.message || "Đã xảy ra lỗi khi đăng nhập", {
-        duration: 4000,
-        position: "top-center",
-      });
+      console.error("Login error:", error);
+      toast.error("Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại sau.");
+    } finally {
       setIsLoading(false);
     }
   }
@@ -122,6 +102,7 @@ export function LoginForm() {
                 required
                 disabled={isLoading}
                 className="focus:ring-primary"
+                autoComplete="email"
               />
             </div>
             <div className="grid gap-2">
@@ -136,6 +117,7 @@ export function LoginForm() {
                   required
                   disabled={isLoading}
                   className="pr-10 focus:ring-primary"
+                  autoComplete="current-password"
                 />
                 <button
                   type="button"
