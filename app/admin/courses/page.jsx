@@ -379,24 +379,52 @@ export default function AdminCoursesPage() {
   // Hàm đóng dialog chi tiết
   const closeDetailDialog = () => {
     setIsDetailOpen(false);
-  };
-  // Hàm đóng dialog xóa
-  const closeDeleteDialog = () => {
-    setIsDeleteOpen(false);
-  };
-  // Hàm đóng dialog từ chối
-  const closeRejectDialog = () => {
-    setIsRejectDialogOpen(false);
-  };
-
-  // Xử lý focus khi đóng Dialog
-  useEffect(() => {
-    // Cleanup focus khi component unmount hoặc dialog đóng
-    return () => {
-      // Đảm bảo không có element nào bị focus sau khi dialog đóng
+    // Đảm bảo xóa bỏ bất kỳ overlay nào có thể còn sót lại
+    setTimeout(() => {
+      document.body.style.pointerEvents = "auto";
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
+    }, 100);
+  };
+
+  // Hàm đóng dialog xóa
+  const closeDeleteDialog = () => {
+    setIsDeleteOpen(false);
+    // Đảm bảo xóa bỏ bất kỳ overlay nào có thể còn sót lại
+    setTimeout(() => {
+      document.body.style.pointerEvents = "auto";
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    }, 100);
+  };
+
+  // Hàm đóng dialog từ chối
+  const closeRejectDialog = () => {
+    setIsRejectDialogOpen(false);
+    // Đảm bảo xóa bỏ bất kỳ overlay nào có thể còn sót lại
+    setTimeout(() => {
+      document.body.style.pointerEvents = "auto";
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    }, 100);
+  };
+
+  // Xử lý cleanup khi component unmount hoặc dialog đóng
+  useEffect(() => {
+    // Cleanup focus và pointer events khi dialog đóng
+    if (!isDetailOpen && !isRejectDialogOpen && !isDeleteOpen) {
+      document.body.style.pointerEvents = "auto";
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    }
+
+    // Cleanup khi component unmount
+    return () => {
+      document.body.style.pointerEvents = "auto";
     };
   }, [isDetailOpen, isRejectDialogOpen, isDeleteOpen]);
 
