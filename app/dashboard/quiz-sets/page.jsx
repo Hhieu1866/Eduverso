@@ -2,7 +2,7 @@ import { getAllQuizSets } from "@/queries/quizzes";
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { AlertTriangle } from "lucide-react";
 
 const QuizSets = async () => {
   try {
@@ -19,7 +19,7 @@ const QuizSets = async () => {
       return (
         <div className="p-6">
           <Alert className="mb-4">
-            <ExclamationTriangleIcon className="h-4 w-4" />
+            <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Chưa có dữ liệu</AlertTitle>
             <AlertDescription>
               Hiện chưa có bộ câu hỏi nào. Bạn có thể thêm mới bằng nút bên
@@ -50,7 +50,7 @@ const QuizSets = async () => {
     return (
       <div className="p-6">
         <Alert variant="destructive" className="mb-4">
-          <ExclamationTriangleIcon className="h-4 w-4" />
+          <AlertTriangle className="h-4 w-4" />
           <AlertTitle>Đã xảy ra lỗi</AlertTitle>
           <AlertDescription>
             Không thể tải danh sách bộ câu hỏi. Vui lòng thử lại sau.

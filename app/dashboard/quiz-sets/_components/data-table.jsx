@@ -57,8 +57,8 @@ export function DataTable({ columns, data }) {
         />
         <Link href="/dashboard/quiz-sets/add">
           <Button>
-            <PlusCircle className="h-4 w-4 mr-2" />
-            New Quiz Set
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Tạo mới
           </Button>
         </Link>
       </div>
@@ -74,7 +74,7 @@ export function DataTable({ columns, data }) {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -93,7 +93,7 @@ export function DataTable({ columns, data }) {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

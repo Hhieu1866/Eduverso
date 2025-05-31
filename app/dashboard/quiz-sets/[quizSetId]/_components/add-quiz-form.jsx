@@ -24,55 +24,55 @@ import { addQuizToQuizSet } from "@/app/actions/quiz";
 const formSchema = z.object({
   title: z
     .string({
-      required_error: "Question is required",
+      required_error: "Vui lòng nhập tiêu đề câu hỏi",
     })
     .min(1, {
-      message: "Title is required",
+      message: "Vui lòng nhập tiêu đề",
     }),
   description: z
     .string({
-      required_error: "Description is required",
+      required_error: "Vui lòng nhập mô tả câu hỏi",
     })
     .min(1, {
-      message: "Description is required",
+      message: "Vui lòng nhập mô tả",
     }),
   optionA: z.object({
     label: z
       .string({
-        required_error: "Option label is required",
+        required_error: "Vui lòng nhập nội dung đáp án",
       })
       .min(1, {
-        message: "Option label is required",
+        message: "Vui lòng nhập nội dung đáp án",
       }),
     isTrue: z.boolean().default(false),
   }),
   optionB: z.object({
     label: z
       .string({
-        required_error: "Option label is required",
+        required_error: "Vui lòng nhập nội dung đáp án",
       })
       .min(1, {
-        message: "Option label is required",
+        message: "Vui lòng nhập nội dung đáp án",
       }),
     isTrue: z.boolean().default(false),
   }),
   optionC: z.object({
     label: z
       .string({
-        required_error: "Option label is required",
+        required_error: "Vui lòng nhập nội dung đáp án",
       })
       .min(1, {
-        message: "Option label is required",
+        message: "Vui lòng nhập nội dung đáp án",
       }),
     isTrue: z.boolean().default(false),
   }),
   optionD: z.object({
     label: z
       .string({
-        required_error: "Option label is required",
+        required_error: "Vui lòng nhập nội dung đáp án",
       })
       .min(1, {
-        message: "Option label is required",
+        message: "Vui lòng nhập nội dung đáp án",
       }),
     isTrue: z.boolean().default(false),
   }),
@@ -206,7 +206,7 @@ export const AddQuizForm = ({ quizSetId }) => {
 
             {/* --------------- OPTION A -------- */}
             <div className="space-y-3">
-              <FormLabel>Option A</FormLabel>
+              <FormLabel>Đáp án A</FormLabel>
               <div className="flex items-start gap-3">
                 <FormField
                   control={form.control}
@@ -232,7 +232,7 @@ export const AddQuizForm = ({ quizSetId }) => {
                         <FormControl>
                           <Input
                             disabled={isSubmitting}
-                            placeholder="Enter quiz question"
+                            placeholder="Nhập nội dung đáp án"
                             {...field}
                           />
                         </FormControl>
@@ -247,7 +247,7 @@ export const AddQuizForm = ({ quizSetId }) => {
 
             {/* --------------- OPTION B -------- */}
             <div className="space-y-3">
-              <FormLabel>Option B</FormLabel>
+              <FormLabel>Đáp án B</FormLabel>
               <div className="flex items-start gap-3">
                 <FormField
                   control={form.control}
@@ -273,7 +273,7 @@ export const AddQuizForm = ({ quizSetId }) => {
                         <FormControl>
                           <Input
                             disabled={isSubmitting}
-                            placeholder="Enter quiz question"
+                            placeholder="Nhập nội dung đáp án"
                             {...field}
                           />
                         </FormControl>
@@ -288,7 +288,7 @@ export const AddQuizForm = ({ quizSetId }) => {
 
             {/* --------------- OPTION C -------- */}
             <div className="space-y-3">
-              <FormLabel>Option C</FormLabel>
+              <FormLabel>Đáp án C</FormLabel>
               <div className="flex items-start gap-3">
                 <FormField
                   control={form.control}
@@ -314,7 +314,7 @@ export const AddQuizForm = ({ quizSetId }) => {
                         <FormControl>
                           <Input
                             disabled={isSubmitting}
-                            placeholder="Enter quiz question"
+                            placeholder="Nhập nội dung đáp án"
                             {...field}
                           />
                         </FormControl>
@@ -329,7 +329,7 @@ export const AddQuizForm = ({ quizSetId }) => {
 
             {/* --------------- OPTION D -------- */}
             <div className="space-y-3">
-              <FormLabel>Option D</FormLabel>
+              <FormLabel>Đáp án D</FormLabel>
               <div className="flex items-start gap-3">
                 <FormField
                   control={form.control}
@@ -355,7 +355,7 @@ export const AddQuizForm = ({ quizSetId }) => {
                         <FormControl>
                           <Input
                             disabled={isSubmitting}
-                            placeholder="Enter quiz question"
+                            placeholder="Nhập nội dung đáp án"
                             {...field}
                           />
                         </FormControl>
@@ -369,7 +369,7 @@ export const AddQuizForm = ({ quizSetId }) => {
             {/* --------------- OPTION D ENDS -------- */}
             <div className="flex items-center justify-end gap-x-2">
               <Button disabled={isSubmitting} type="submit">
-                Save
+                Lưu
               </Button>
             </div>
           </form>

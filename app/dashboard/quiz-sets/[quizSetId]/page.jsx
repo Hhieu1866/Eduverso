@@ -41,7 +41,7 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
     <>
       {!quizSet.active && (
         <AlertBanner
-          label="This Quiz is unpublished. It will not be visible in the course."
+          label="Bài kiểm tra này chưa được xuất bản. Nó sẽ không hiển thị trong khoá học."
           variant="warning"
         />
       )}
@@ -57,10 +57,10 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
         <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Quiz List */}
           <div className="max-lg:order-2">
-            <h2 className="mb-6 text-xl">Quiz List</h2>
+            <h2 className="mb-6 text-xl">Danh sách các câu trắc nghiệm</h2>
             {quizzes.length === 0 && (
               <AlertBanner
-                label="No Quiz are in the set, add some using the form above."
+                label="Chưa có câu hỏi nào trong bộ này, hãy thêm mới bằng form kế bên."
                 variant="warning"
                 className="mb-6 rounded"
               />
@@ -106,7 +106,7 @@ const EditQuizSet = async ({ params: { quizSetId } }) => {
           {/*  */}
           <div>
             <div className="flex items-center gap-x-2">
-              <h2 className="text-xl">Customize your quiz set</h2>
+              <h2 className="text-xl">Tùy chỉnh nội dung câu hỏi</h2>
             </div>
             <div className="max-w-[800px]">
               <TitleForm

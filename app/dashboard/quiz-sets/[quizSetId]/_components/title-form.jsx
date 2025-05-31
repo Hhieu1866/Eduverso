@@ -53,7 +53,7 @@ export const TitleForm = ({ initialData = {}, quizSetId }) => {
   return (
     <div className="mt-6 rounded-md border bg-gray-50 p-4">
       <div className="flex items-center justify-between font-medium">
-        Tiêu đề bài kiểm tra
+        Tiêu đề bộ câu hỏi
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
             <>Hủy</>

@@ -25,11 +25,11 @@ const routeGroups = [
         label: "Khóa học",
         href: "/dashboard/courses",
       },
-      {
-        icon: PlusCircle,
-        label: "Thêm khóa học",
-        href: "/dashboard/courses/add",
-      },
+      // {
+      //   icon: PlusCircle,
+      //   label: "Thêm khóa học",
+      //   href: "/dashboard/courses/add",
+      // },
       {
         icon: Radio,
         label: "Buổi học trực tuyến",
