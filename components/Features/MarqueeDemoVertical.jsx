@@ -4,22 +4,34 @@ import Marquee from "../magicui/marquee";
 
 const reviews = [
   {
-    name: "Jack",
-    username: "@jack",
-    body: "I've never seen anything like this before. It's amazing. I love it.",
-    img: "https://avatar.vercel.sh/jack",
+    name: "Nguyễn Thùy Linh",
+    username: "@linhnguyen",
+    body: "Eduverse giúp mình hoàn thành khóa học và nhận chứng chỉ rất dễ dàng. Giao diện đẹp, quiz và bài tự luận đều rất trực quan!",
+    img: "https://avatar.vercel.sh/linh",
   },
   {
-    name: "Jill",
-    username: "@jill",
-    body: "I don't know what to say. I'm speechless. This is amazing.",
-    img: "https://avatar.vercel.sh/jill",
+    name: "Trần Minh",
+    username: "@minhtran",
+    body: "Mình thích nhất là phần nộp bài tự luận, giảng viên phản hồi rất nhanh và chi tiết. Nhờ đó mình tiến bộ rõ rệt.",
+    img: "https://avatar.vercel.sh/minh",
   },
   {
-    name: "John",
-    username: "@john",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/john",
+    name: "Lê Hoàng Phúc",
+    username: "@phuclehoang",
+    body: "Các bộ quiz trên Eduverse rất đa dạng, làm xong là biết mình yếu chỗ nào ngay. Chứng chỉ tải về cũng rất chuyên nghiệp!",
+    img: "https://avatar.vercel.sh/phuc",
+  },
+  {
+    name: "Phạm Quỳnh Anh",
+    username: "@quynhanhpham",
+    body: "Tôi là giảng viên, quản lý bài tập và chấm điểm trên Eduverse cực kỳ tiện lợi. Học viên nộp bài, nhận xét, duyệt chỉ vài click!",
+    img: "https://avatar.vercel.sh/anh",
+  },
+  {
+    name: "Vũ Nam",
+    username: "@namvu",
+    body: "Hỗ trợ kỹ thuật của Eduverse rất nhiệt tình, mình hỏi gì cũng được giải đáp nhanh chóng. Rất hài lòng!",
+    img: "https://avatar.vercel.sh/nam",
   },
 ];
 
