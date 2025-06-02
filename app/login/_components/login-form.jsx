@@ -63,7 +63,7 @@ export function LoginForm() {
 
         // Chuyển hướng người dùng và đảm bảo push được thực hiện
         setTimeout(() => {
-          router.push(redirectUrl);
+          window.location.href = redirectUrl;
         }, 300);
       }
     } catch (error) {
