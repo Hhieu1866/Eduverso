@@ -86,7 +86,7 @@ export function MonthlyRegistrationsChart() {
     const fetchUserStats = async () => {
       try {
         const response = await axios.get("/api/admin/users/stats");
-        console.log("Dữ liệu đăng ký người dùng theo ngày:", response);
+        // console.log("Dữ liệu đăng ký người dùng theo ngày:", response);
 
         if (response && response.dailyData) {
           setData(response.dailyData);
@@ -182,7 +182,7 @@ export function YearlyRegistrationsChart() {
     const fetchUserStats = async () => {
       try {
         const response = await axios.get("/api/admin/users/stats");
-        console.log("Dữ liệu đăng ký người dùng theo tháng:", response);
+        // console.log("Dữ liệu đăng ký người dùng theo tháng:", response);
 
         if (response && response.monthlyData) {
           setData(response.monthlyData);

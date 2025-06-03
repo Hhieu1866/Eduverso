@@ -23,7 +23,7 @@ export async function enrollForCourse(courseId, userId) {
     // Đảm bảo đã kết nối đến MongoDB trước khi thực hiện thao tác
     await dbConnect();
 
-    console.log("Đang đăng ký khóa học với ID:", courseId, "cho user:", userId);
+    // console.log("Đang đăng ký khóa học với ID:", courseId, "cho user:", userId);
 
     const newEnrollment = {
       course: courseId,
@@ -41,7 +41,7 @@ export async function enrollForCourse(courseId, userId) {
     const cacheKey = createCacheKey("getEnrollmentsForUser", userId);
     setCache(cacheKey, null, 0); // Xóa cache
 
-    console.log("Đăng ký thành công:", savedEnrollment);
+    // console.log("Đăng ký thành công:", savedEnrollment);
     return savedEnrollment;
   } catch (error) {
     console.error("Lỗi chi tiết khi đăng ký khóa học:", error);
@@ -60,7 +60,7 @@ export async function getEnrollmentsForUser(userId) {
     const cacheKey = createCacheKey("getEnrollmentsForUser", userId);
     const cachedData = getCache(cacheKey);
     if (cachedData) {
-      console.log("Sử dụng dữ liệu cache cho danh sách khóa học đã đăng ký");
+      // console.log("Sử dụng dữ liệu cache cho danh sách khóa học đã đăng ký");
       return cachedData;
     }
 
@@ -75,7 +75,7 @@ export async function getEnrollmentsForUser(userId) {
       return [];
     }
 
-    console.log("Đang lấy danh sách khóa học đã đăng ký cho user:", userId);
+    // console.log("Đang lấy danh sách khóa học đã đăng ký cho user:", userId);
 
     const enrollments = await Enrollment.find({ student: userObjectId })
       .populate({
@@ -84,7 +84,7 @@ export async function getEnrollmentsForUser(userId) {
       })
       .lean();
 
-    console.log("Tìm thấy", enrollments.length, "khóa học đã đăng ký");
+    // console.log("Tìm thấy", enrollments.length, "khóa học đã đăng ký");
 
     // Lọc bỏ các enrollment có course null hoặc không có _id
     const validEnrollments = enrollments.filter(
@@ -92,9 +92,9 @@ export async function getEnrollmentsForUser(userId) {
     );
 
     if (validEnrollments.length !== enrollments.length) {
-      console.log(
-        `Đã lọc bỏ ${enrollments.length - validEnrollments.length} enrollment không hợp lệ`,
-      );
+      // console.log(
+      //   `Đã lọc bỏ ${enrollments.length - validEnrollments.length} enrollment không hợp lệ`,
+      // );
     }
 
     const result = replaceMongoIdInArray(validEnrollments);

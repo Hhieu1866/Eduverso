@@ -132,13 +132,6 @@ const QuizKnowledgeTest = ({
         details: results,
       });
 
-      // Log dữ liệu trước khi gửi cho component cha
-      console.log("Kết quả quiz trước khi gửi:", {
-        score: correctCount,
-        totalQuestions: totalQuizzes,
-        detailsCount: results.length,
-      });
-
       // Callback khi hoàn thành
       onComplete({
         score: correctCount,

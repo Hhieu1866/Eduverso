@@ -7,11 +7,8 @@ import { getCourseDetails } from "./courses";
 
 export async function getReport(filter) {
   try {
-    console.log("getReport được gọi với filter:", JSON.stringify(filter));
-
     // Đảm bảo bộ lọc hợp lệ
     if (!filter || !filter.student || !filter.course) {
-      console.log("Thiếu thông tin bắt buộc trong filter của getReport");
       return null;
     }
 
@@ -24,13 +21,8 @@ export async function getReport(filter) {
       .lean();
 
     if (!report) {
-      console.log(
-        `Không tìm thấy báo cáo cho học viên ${filter.student} và khóa học ${filter.course}`,
-      );
       return null;
     }
-
-    console.log(`Đã tìm thấy báo cáo với ID: ${report._id}`);
 
     // Kiểm tra nếu báo cáo có quizAssessment, đảm bảo nó thuộc về người dùng hiện tại
     if (report.quizAssessment) {
@@ -40,9 +32,6 @@ export async function getReport(filter) {
       }).lean();
 
       if (!assessment) {
-        console.log(
-          `Assessment ${report.quizAssessment} không thuộc về người dùng ${filter.student}. Đang xóa liên kết.`,
-        );
         // Trả về báo cáo nhưng loại bỏ liên kết với quizAssessment không thuộc về người dùng
         const reportWithoutAssessment = { ...report };
         delete reportWithoutAssessment.quizAssessment;
@@ -52,7 +41,6 @@ export async function getReport(filter) {
 
     return replaceMongoIdInObject(report);
   } catch (error) {
-    console.error("Lỗi trong hàm getReport:", error);
     throw new Error(error);
   }
 }
@@ -95,7 +83,6 @@ export async function createWatchReport(data) {
     const module = await Module.findById(data.moduleId);
 
     if (!module || !module.lessonIds) {
-      console.error("Module không tồn tại hoặc không có bài học!");
       await report.save();
       return;
     }
@@ -118,7 +105,6 @@ export async function createWatchReport(data) {
         report.totalCompletedModeules.push(
           new mongoose.Types.ObjectId(data.moduleId),
         );
-        console.log("Module đã được đánh dấu hoàn thành:", data.moduleId);
       }
     }
 
@@ -132,13 +118,10 @@ export async function createWatchReport(data) {
 
     if (completedModuleCount >= 1 && completedModuleCount === moduleCount) {
       report.completion_date = Date.now();
-      console.log("Khóa học đã được đánh dấu hoàn thành!");
     }
 
     await report.save();
-    console.log("Đã cập nhật báo cáo tiến trình thành công!");
   } catch (error) {
-    console.error("Lỗi cập nhật báo cáo tiến trình:", error);
     throw new Error(error);
   }
 }
@@ -164,7 +147,6 @@ export async function createAssessmentReport(data) {
       }
     }
   } catch (error) {
-    console.error("Lỗi tạo báo cáo đánh giá:", error);
     throw new Error(error);
   }
 }

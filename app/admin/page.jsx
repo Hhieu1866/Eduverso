@@ -51,7 +51,7 @@ export default function AdminDashboard() {
     const fetchLatestUsers = async () => {
       try {
         const response = await axios.get("/api/admin/users/stats");
-        console.log("Dữ liệu người dùng mới nhất:", response);
+        // console.log("Dữ liệu người dùng mới nhất:", response);
 
         if (response && response.latestUsers) {
           setLatestUsers(response.latestUsers);

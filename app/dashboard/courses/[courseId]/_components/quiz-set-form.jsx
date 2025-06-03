@@ -94,7 +94,6 @@ export const QuizSetForm = ({
           )}
         </p>
       )}
-      {console.log({ options })}
       {isEditing && (
         <Form {...form}>
           <form

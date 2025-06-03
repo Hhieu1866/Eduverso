@@ -73,7 +73,6 @@ const AddLive = () => {
     } catch (error) {
       toast.error("Đã xảy ra lỗi");
     }
-    console.log(values);
   };
   return (
     <section className="py-8">

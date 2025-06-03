@@ -62,8 +62,6 @@ async function dbConnect() {
 }
 
 async function main() {
-  console.log("Bắt đầu seeding database...");
-
   // Kết nối đến MongoDB
   await dbConnect();
 
@@ -112,8 +110,6 @@ async function main() {
   } else {
     console.log(`Tài khoản admin ${adminData.email} đã tồn tại, bỏ qua.`);
   }
-
-  console.log("Seeding database hoàn tất!");
 }
 
 main()

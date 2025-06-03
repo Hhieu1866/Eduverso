@@ -50,7 +50,6 @@ const AddCourse = () => {
     } catch (error) {
       toast.error("Đã xảy ra lỗi, vui lòng thử lại");
     }
-    console.log(values);
   };
 
   return (

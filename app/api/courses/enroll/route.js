@@ -15,11 +15,6 @@ export async function POST(request) {
       );
     }
 
-    console.log("Session user data:", {
-      id: session.user.id,
-      email: session.user.email,
-    });
-
     // Lấy thông tin khóa học từ request body
     const { courseId, checkOnly } = await request.json();
     if (!courseId) {
@@ -29,20 +24,11 @@ export async function POST(request) {
       );
     }
 
-    console.log(
-      "Yêu cầu cho khóa học:",
-      courseId,
-      "checkOnly:",
-      checkOnly ? true : false,
-    );
-
     // Kết nối đến MongoDB
     await dbConnect();
-    console.log("MongoDB đã kết nối, bắt đầu đăng ký khóa học");
 
     // Kiểm tra xem courseId có đúng định dạng ObjectId không
     if (!mongoose.Types.ObjectId.isValid(courseId)) {
-      console.error("courseId không hợp lệ:", courseId);
       return NextResponse.json(
         { error: "ID khóa học không hợp lệ" },
         { status: 400 },
@@ -53,21 +39,11 @@ export async function POST(request) {
     const courseObjectId = new mongoose.Types.ObjectId(courseId);
     const studentObjectId = new mongoose.Types.ObjectId(session.user.id);
 
-    console.log("ObjectIds:", {
-      course: courseObjectId.toString(),
-      student: studentObjectId.toString(),
-    });
-
     // Kiểm tra xem người dùng đã đăng ký khóa học này chưa
     const existingEnrollment = await Enrollment.findOne({
       course: courseObjectId,
       student: studentObjectId,
     });
-
-    console.log(
-      "Kiểm tra đăng ký hiện có:",
-      existingEnrollment ? true : false,
-    );
 
     // Nếu chỉ là yêu cầu kiểm tra, trả về kết quả không tạo đăng ký mới
     if (checkOnly) {
@@ -107,12 +83,6 @@ export async function POST(request) {
 
     // Lưu đăng ký
     const savedEnrollment = await newEnrollment.save();
-    console.log("Đăng ký khóa học thành công, dữ liệu đã lưu:", {
-      id: savedEnrollment._id.toString(),
-      course: savedEnrollment.course.toString(),
-      student: savedEnrollment.student.toString(),
-      date: savedEnrollment.enrollment_date,
-    });
 
     return NextResponse.json(
       {
@@ -124,7 +94,6 @@ export async function POST(request) {
       { status: 201 },
     );
   } catch (error) {
-    console.error("Lỗi chi tiết khi đăng ký khóa học:", error);
     return NextResponse.json(
       {
         success: false,

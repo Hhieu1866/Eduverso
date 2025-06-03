@@ -19,7 +19,7 @@ export const QuizCardActions = ({ quiz, quizSetId }) => {
 
       switch (action) {
         case "edit-quiz": {
-          console.log(`Edting quiz: ${quiz.id} in quiz set: ${quizSetId} `);
+          // console.log(`Edting quiz: ${quiz.id} in quiz set: ${quizSetId} `);
           break;
         }
         case "delete-quiz": {

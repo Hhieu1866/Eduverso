@@ -177,8 +177,6 @@ export default function UsersPage() {
           params.role = role;
         }
 
-        console.log("Fetching users with params:", params);
-
         // Thêm timeout để tránh UI flickering khi dữ liệu tải nhanh
         const timeoutPromise = new Promise((resolve) =>
           setTimeout(resolve, 300),
@@ -187,8 +185,6 @@ export default function UsersPage() {
           axios.get("/api/admin/users", { params }),
           shouldShowFullLoading ? timeoutPromise : Promise.resolve(),
         ]);
-
-        console.log("Fetched users data:", data);
 
         // Cập nhật state theo thứ tự để tránh render lại nhiều lần
         setUsers(data.users || []);

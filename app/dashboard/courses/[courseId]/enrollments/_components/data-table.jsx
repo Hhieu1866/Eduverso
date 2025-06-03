@@ -40,8 +40,6 @@ export function DataTable({ columns, data }) {
     },
   });
 
-  console.log(table.getColumn("name"));
-
   // Hàm xuất CSV
   const exportToCSV = () => {
     if (!data || data.length === 0) return;

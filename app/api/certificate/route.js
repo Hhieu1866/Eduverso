@@ -125,23 +125,21 @@ export async function GET(request) {
      *
      *-------------------*/
     try {
-      console.log("Đang tải logo...");
-
       // Thử tải logo từ public folder
       const logoPath = path.join(process.cwd(), "public", "logo.png");
-      console.log("Logo path:", logoPath);
+      // console.log("Logo path:", logoPath);
 
       let logo;
       let logoBytes;
 
       // Ưu tiên đọc từ file system trước
       if (fs.existsSync(logoPath)) {
-        console.log("Đang tải logo từ file system...");
+        // console.log("Đang tải logo từ file system...");
         logoBytes = fs.readFileSync(logoPath);
         logo = await pdfDoc.embedPng(logoBytes);
       } else {
         // Nếu không có file, thử tải từ URL
-        console.log("Đang tải logo từ URL...");
+        // console.log("Đang tải logo từ URL...");
         const logoUrl = new URL(
           "/logo.png",
           "http://localhost:3000",
@@ -176,7 +174,7 @@ export async function GET(request) {
         color: rgb(0.08, 0.49, 0.5), // Màu #147e7f
       });
 
-      console.log("Đã tải và hiển thị logo thành công");
+      // console.log("Đã tải và hiển thị logo thành công");
     } catch (error) {
       console.error("Lỗi khi tải logo:", error);
       // Nếu không tải được logo, hiển thị chỉ tên Eduverse
@@ -318,11 +316,11 @@ export async function GET(request) {
       let signatureBytes;
 
       if (fs.existsSync(signaturePath)) {
-        console.log("Đang tải chữ ký từ file system...");
+        // console.log("Đang tải chữ ký từ file system...");
         signatureBytes = fs.readFileSync(signaturePath);
         signature = await pdfDoc.embedPng(signatureBytes);
       } else {
-        console.log("Đang tải chữ ký từ URL...");
+        // console.log("Đang tải chữ ký từ URL...");
         const signatureUrl = new URL(
           "/sign.webp",
           "http://localhost:3000",
@@ -348,7 +346,7 @@ export async function GET(request) {
         height: signDimns.height,
       });
 
-      console.log("Đã tải và hiển thị chữ ký thành công");
+      // console.log("Đã tải và hiển thị chữ ký thành công");
     } catch (error) {
       console.error("Không thể tải chữ ký:", error);
     }

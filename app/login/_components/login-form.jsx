@@ -39,7 +39,6 @@ export function LoginForm() {
       }
 
       const response = await ceredntialLogin(formData);
-      console.log("Login response:", response); // Debug log
 
       if (response?.error) {
         toast.error(response.error);
@@ -48,7 +47,6 @@ export function LoginForm() {
 
         // Lấy role từ response
         const userRole = response?.user?.role;
-        console.log("User role:", userRole); // Debug log
 
         // Xác định URL chuyển hướng dựa trên role
         let redirectUrl = "/courses"; // Mặc định cho student
@@ -58,8 +56,6 @@ export function LoginForm() {
         } else if (userRole === "instructor") {
           redirectUrl = "/dashboard";
         }
-
-        console.log("Redirecting to:", redirectUrl); // Debug log
 
         // Chuyển hướng người dùng và đảm bảo push được thực hiện
         setTimeout(() => {

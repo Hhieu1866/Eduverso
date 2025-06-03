@@ -62,7 +62,6 @@ const EditLive = () => {
     } catch (error) {
       toast.error("Đã xảy ra lỗi");
     }
-    console.log(values);
   };
   return (
     <div className="mx-auto flex h-full max-w-5xl p-6 md:items-center md:justify-center">

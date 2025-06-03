@@ -13,12 +13,12 @@ export async function GET(request) {
 
     // Lấy blob từ Vercel
     const blob = await fetch(fileUrl);
-    console.log(
-      "Status:",
-      blob.status,
-      "Content-Type:",
-      blob.headers.get("content-type"),
-    );
+    // console.log(
+    //   "Status:",
+    //   blob.status,
+    //   "Content-Type:",
+    //   blob.headers.get("content-type"),
+    // );
 
     if (!blob.ok) {
       return NextResponse.json(

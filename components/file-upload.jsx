@@ -37,20 +37,20 @@ const FileUpload = ({
   const [uploadedFiles, setUploadedFiles] = useState([]); // State để lưu các files đã upload
 
   // Debug: log toàn bộ props truyền vào
-  console.log("[FileUpload] props:", {
-    endpoint,
-    essayId,
-    lessonId,
-    courseId,
-    moduleId,
-    multiple,
-    maxFiles,
-    maxSize,
-    label,
-    description,
-    disabled,
-    uploadImmediately,
-  });
+  // console.log("[FileUpload] props:", {
+  //   endpoint,
+  //   essayId,
+  //   lessonId,
+  //   courseId,
+  //   moduleId,
+  //   multiple,
+  //   maxFiles,
+  //   maxSize,
+  //   label,
+  //   description,
+  //   disabled,
+  //   uploadImmediately,
+  // });
 
   const onDrop = useCallback(
     (acceptedFiles, fileRejections) => {
@@ -96,12 +96,12 @@ const FileUpload = ({
 
   const handleUpload = async (filesToUpload) => {
     // Debug: log các trường trước khi upload
-    console.log("[FileUpload] handleUpload - endpoint:", endpoint);
-    console.log("[FileUpload] handleUpload - lessonId:", lessonId);
-    console.log("[FileUpload] handleUpload - courseId:", courseId);
-    console.log("[FileUpload] handleUpload - moduleId:", moduleId);
-    console.log("[FileUpload] handleUpload - essayId:", essayId);
-    console.log("[FileUpload] handleUpload - filesToUpload:", filesToUpload);
+    // console.log("[FileUpload] handleUpload - endpoint:", endpoint);
+    // console.log("[FileUpload] handleUpload - lessonId:", lessonId);
+    // console.log("[FileUpload] handleUpload - courseId:", courseId);
+    // console.log("[FileUpload] handleUpload - moduleId:", moduleId);
+    // console.log("[FileUpload] handleUpload - essayId:", essayId);
+    // console.log("[FileUpload] handleUpload - filesToUpload:", filesToUpload);
 
     if (!endpoint) {
       toast.error(
@@ -181,9 +181,9 @@ const FileUpload = ({
     }
 
     // Debug: log toàn bộ FormData gửi lên server
-    for (let pair of formData.entries()) {
-      console.log(`[FileUpload] FormData: ${pair[0]} =`, pair[1]);
-    }
+    // for (let pair of formData.entries()) {
+    //   console.log(`[FileUpload] FormData: ${pair[0]} =`, pair[1]);
+    // }
 
     try {
       const res = await fetch(`/api/upload/${endpoint}`, {

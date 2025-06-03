@@ -20,7 +20,7 @@ const SiteFooter = () => {
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     // TODO: Implement newsletter subscription
-    console.log("Newsletter subscription submitted");
+    // console.log("Newsletter subscription submitted");
   };
 
   return (

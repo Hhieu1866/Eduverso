@@ -59,7 +59,7 @@ export function StatsCards() {
     const fetchStats = async () => {
       try {
         const response = await axios.get("/api/admin/stats");
-        console.log("Dữ liệu thống kê:", response);
+        // console.log("Dữ liệu thống kê:", response);
         setStats({
           users: {
             total: response.totalUsers || 0,
