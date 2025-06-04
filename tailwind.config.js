@@ -107,25 +107,26 @@ module.exports = {
             height: "0",
           },
         },
-        "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
-        },
-        "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
-        },
         "faster-spin": {
           to: {
             transform: "rotate(360deg)",
+          },
+        },
+        typing: {
+          "0%": {
+            width: "0%",
+            visibility: "hidden",
+          },
+          "100%": {
+            width: "100%",
+          },
+        },
+        blink: {
+          "50%": {
+            borderColor: "transparent",
+          },
+          "100%": {
+            borderColor: "white",
           },
         },
       },
@@ -136,9 +137,8 @@ module.exports = {
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
         spin: "spin 1s linear infinite",
         orbit: "orbit calc(var(--duration)*1s) linear infinite",
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
         "faster-spin": "faster-spin 0.6s linear infinite",
+        typing: "typing 3s steps(50) infinite alternate, blink .7s infinite",
       },
     },
   },

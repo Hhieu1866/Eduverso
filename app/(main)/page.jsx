@@ -34,10 +34,12 @@ const HomePage = async () => {
           <h1 className="font-heading whitespace-nowrap text-3xl font-bold text-colors-navy sm:text-5xl md:text-6xl lg:text-7xl">
             Bắt đầu lộ trình học tập mới với <br /> Eduverse
           </h1>
-          <p className="max-w-full overflow-auto text-ellipsis whitespace-nowrap font-medium leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-            "Khám phá các lộ trình học tập phù hợp, giúp bạn học theo tiến độ và
-            nhu cầu riêng."
-          </p>
+          <div class="w-max">
+            <h1 class="animate-typing overflow-hidden whitespace-nowrap border-r-4 border-r-white pr-5 font-medium text-muted-foreground sm:text-xl sm:leading-8">
+              Khám phá các lộ trình học tập phù hợp, giúp bạn học theo tiến độ
+              và nhu cầu riêng...
+            </h1>
+          </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/courses"
