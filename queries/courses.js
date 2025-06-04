@@ -15,8 +15,10 @@ import { Quiz } from "@/model/quizzes-model";
 import mongoose from "mongoose";
 import { Enrollment } from "@/model/enrollment-model";
 import Essay from "@/model/essay";
+import { dbConnect } from "@/service/mongo";
 
 export async function getCourseList(filters = {}) {
+  await dbConnect();
   try {
     // Xây dựng query filter
     // Chỉ lấy các khóa học đã được duyệt (approved) và active
@@ -83,6 +85,7 @@ export async function getCourseList(filters = {}) {
 }
 
 export async function getCourseDetails(id) {
+  await dbConnect();
   const course = await Course.findById(id)
     .populate({
       path: "category",
@@ -138,6 +141,7 @@ export async function getCourseDetails(id) {
 }
 
 export async function getCourseDetailsForInstructor(id) {
+  await dbConnect();
   const course = await Course.findById(id)
     .populate({
       path: "category",
@@ -197,6 +201,7 @@ function groupBy(array, keyFn) {
 }
 
 export async function getCourseDetailsByInstructor(instructorId, expand) {
+  await dbConnect();
   const publishCourses = await Course.find({
     instructor: instructorId,
     active: true,
@@ -287,6 +292,7 @@ export async function getCourseDetailsByInstructor(instructorId, expand) {
 }
 
 export async function create(courseData) {
+  await dbConnect();
   try {
     const course = await Course.create(courseData);
     return JSON.parse(JSON.stringify(course));
@@ -296,6 +302,7 @@ export async function create(courseData) {
 }
 
 export async function getCoursesByCategory(categoryId) {
+  await dbConnect();
   try {
     const courses = await Course.find({
       category: categoryId,
@@ -311,6 +318,7 @@ export async function getCoursesByCategory(categoryId) {
 }
 
 export const getCategoryById = async (categoryId) => {
+  await dbConnect();
   try {
     const category = await Category.findById(categoryId);
     return category;
@@ -320,6 +328,7 @@ export const getCategoryById = async (categoryId) => {
 };
 
 export async function getRelatedCourses(currentCourseId, categoryId) {
+  await dbConnect();
   try {
     const currentCourseObjectId = new mongoose.Types.ObjectId(currentCourseId);
     const categoryObjectId = new mongoose.Types.ObjectId(categoryId);

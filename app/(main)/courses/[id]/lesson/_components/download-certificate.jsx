@@ -65,13 +65,13 @@ export const DownloadCertificate = ({
     return "";
   };
 
-  // console.log("Debug chứng chỉ:", {
-  //   totalProgress,
-  //   quizPassed,
-  //   hasEssays,
-  //   essaysApproved,
-  //   canDownloadCertificate,
-  // });
+  console.log("Debug chứng chỉ:", {
+    totalProgress,
+    quizPassed,
+    hasEssays,
+    essaysApproved,
+    canDownloadCertificate,
+  });
 
   async function handleCertificateDownload() {
     try {

@@ -107,7 +107,7 @@ export const AddQuizForm = ({ quizSetId }) => {
   });
 
   const { isSubmitting, isValid, errors } = form.formState;
-  // console.log(errors);
+  console.log(errors);
 
   const onSubmit = async (values) => {
     try {

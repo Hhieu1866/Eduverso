@@ -176,13 +176,13 @@ const LessonPage = async ({ params, searchParams }) => {
     }
   }
 
-  // Debug lỗi thử phát
-  // console.log("Lesson data:", {
-  //   id: lessonToPay?.id,
-  //   title: lessonToPay?.title,
-  //   content_type: lessonToPay?.content_type,
-  //   video_url: lessonToPay?.video_url,
-  // });
+  // Debug thông tin bài học
+  console.log("Lesson data:", {
+    id: lessonToPay?.id,
+    title: lessonToPay?.title,
+    content_type: lessonToPay?.content_type,
+    video_url: lessonToPay?.video_url,
+  });
 
   // Format duration
   const formatDuration = (minutes) => {

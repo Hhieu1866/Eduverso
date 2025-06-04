@@ -230,7 +230,7 @@ export default function UsersPage() {
 
   // Xử lý lọc theo vai trò
   const handleRoleFilterChange = (value) => {
-    // console.log("Chọn lọc theo vai trò:", value);
+    console.log("Chọn lọc theo vai trò:", value);
     setRoleFilter(value);
     fetchUsers(1, search, value === "all" ? "" : value);
   };
@@ -260,12 +260,12 @@ export default function UsersPage() {
 
   // Cập nhật hàm handleRoleChange
   const handleRoleChange = async (userId, newRole) => {
-    // console.log("handleRoleChange được gọi với:", {
-    //   userId,
-    //   userIdType: typeof userId,
-    //   userIdLength: userId ? userId.length : 0,
-    //   newRole,
-    // });
+    console.log("handleRoleChange được gọi với:", {
+      userId,
+      userIdType: typeof userId,
+      userIdLength: userId ? userId.length : 0,
+      newRole,
+    });
 
     // Đảm bảo có userId và log chi tiết nếu không có
     if (!userId) {
@@ -281,7 +281,7 @@ export default function UsersPage() {
     let toastId = toast.loading("Đang cập nhật quyền người dùng...");
 
     try {
-      // console.log("Gọi API với userId:", userId, "và newRole:", newRole);
+      console.log("Gọi API với userId:", userId, "và newRole:", newRole);
 
       // Cập nhật UI trước khi gọi API để cải thiện trải nghiệm
       setUsers((prevUsers) =>
@@ -297,7 +297,7 @@ export default function UsersPage() {
 
       // Gọi API với axios
       await axios.patch(`/api/admin/users/${userId}`, { role: newRole });
-      // console.log("API trả về thành công");
+      console.log("API trả về thành công");
 
       // Đóng thông báo loading
       toast.dismiss(toastId);
@@ -482,7 +482,7 @@ export default function UsersPage() {
 
   // Lấy màu sắc badge dựa trên role
   const getRoleBadge = (role) => {
-    // console.log("Hiển thị badge cho role:", role);
+    console.log("Hiển thị badge cho role:", role);
     // Tìm thông tin vai trò từ danh sách đã định nghĩa
     const roleInfo = userRoles.find((r) => r.value === role);
 

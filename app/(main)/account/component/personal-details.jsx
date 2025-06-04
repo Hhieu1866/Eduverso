@@ -40,14 +40,14 @@ const PersonalDetails = ({ userInfo }) => {
     event.preventDefault();
     setIsLoading(true);
 
-    // console.log(
-    //   "Client: Bắt đầu gửi yêu cầu cập nhật thông tin người dùng",
-    //   infoState,
-    // );
+    console.log(
+      "Client: Bắt đầu gửi yêu cầu cập nhật thông tin người dùng",
+      infoState,
+    );
 
     try {
       const result = await updateUserInfo(userInfo?.email, infoState);
-      // console.log("Client: Kết quả từ server", result);
+      console.log("Client: Kết quả từ server", result);
 
       if (result?.success) {
         toast.success(

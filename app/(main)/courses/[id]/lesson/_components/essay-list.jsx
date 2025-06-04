@@ -58,20 +58,20 @@ export const EssayList = ({ courseId, essays = [] }) => {
   const handleApiUploadComplete = async (uploadedApiFiles, essayId) => {
     try {
       setIsSubmittingEssay(true);
-      // console.log(
-      //   "Files sau khi upload:",
-      //   JSON.stringify(uploadedApiFiles, null, 2),
-      // );
+      console.log(
+        "Files sau khi upload:",
+        JSON.stringify(uploadedApiFiles, null, 2),
+      );
 
       // Đảm bảo dùng đúng cấu trúc dữ liệu cho submitEssay
       const submissionResult = await submitEssay(essayId, courseId, {
         submittedFiles: uploadedApiFiles,
         content: "",
       });
-      // console.log(
-      //   "Kết quả nộp bài:",
-      //   JSON.stringify(submissionResult, null, 2),
-      // );
+      console.log(
+        "Kết quả nộp bài:",
+        JSON.stringify(submissionResult, null, 2),
+      );
 
       // Cập nhật state khi nộp bài thành công
       setSubmissions((prev) => ({
