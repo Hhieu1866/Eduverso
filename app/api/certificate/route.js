@@ -1,4 +1,5 @@
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import { PDFDocument, rgb } from "pdf-lib";
+import fontkit from "@pdf-lib/fontkit";
 import { getCourseDetails } from "@/queries/courses";
 import { getLoggedInUser } from "@/lib/loggedin-user";
 import { getReport } from "@/queries/reports";
@@ -64,15 +65,32 @@ export async function GET(request) {
 
     const pdfDoc = await PDFDocument.create();
 
-    // Sử dụng các font tiêu chuẩn
-    const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
-    const timesRomanBoldFont = await pdfDoc.embedFont(
-      StandardFonts.TimesRomanBold,
+    // Đăng ký fontkit để có thể sử dụng font TTF tùy chỉnh
+    pdfDoc.registerFontkit(fontkit);
+
+    // Nhúng font Unicode hỗ trợ tiếng Việt (Montserrat)
+    const fontPath = path.join(
+      process.cwd(),
+      "public",
+      "fonts",
+      "montserrat",
+      "Montserrat-Regular.ttf",
     );
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const helveticaBoldFont = await pdfDoc.embedFont(
-      StandardFonts.HelveticaBold,
+    const fontBoldPath = path.join(
+      process.cwd(),
+      "public",
+      "fonts",
+      "montserrat",
+      "Montserrat-Bold.ttf",
     );
+
+    // Đọc file font
+    const fontBytes = fs.readFileSync(fontPath);
+    const fontBoldBytes = fs.readFileSync(fontBoldPath);
+
+    // Nhúng font vào PDF
+    const unicodeFont = await pdfDoc.embedFont(fontBytes);
+    const unicodeFontBold = await pdfDoc.embedFont(fontBoldBytes);
 
     // Tạo trang ngang (landscape)
     const page = pdfDoc.addPage([842, 595]); // A4 ngang
@@ -170,7 +188,7 @@ export async function GET(request) {
         x: width / 2 - 10,
         y: height - 105,
         size: 28,
-        font: helveticaBoldFont,
+        font: unicodeFontBold,
         color: rgb(0.08, 0.49, 0.5), // Màu #147e7f
       });
 
@@ -182,7 +200,7 @@ export async function GET(request) {
         x: width / 2 - 70,
         y: height - 120,
         size: 32,
-        font: helveticaBoldFont,
+        font: unicodeFontBold,
         color: rgb(0.08, 0.49, 0.5), // Màu #147e7f
       });
     }
@@ -194,7 +212,7 @@ export async function GET(request) {
      *-------------------*/
     const titleFontSize = 60; // Kích thước font chữ lớn
     const titleText = "CERTIFICATE";
-    const titleTextWidth = helveticaBoldFont.widthOfTextAtSize(
+    const titleTextWidth = unicodeFontBold.widthOfTextAtSize(
       titleText,
       titleFontSize,
     );
@@ -203,14 +221,14 @@ export async function GET(request) {
       x: width / 2 - titleTextWidth / 2,
       y: height - 210, // Điều chỉnh vị trí xuống thấp hơn để cân đối với logo
       size: titleFontSize,
-      font: helveticaBoldFont,
+      font: unicodeFontBold,
       color: rgb(0.05, 0.3, 0.6),
     });
 
     // Thêm "OF COMPLETION" và gạch ngang
     const subTitleFontSize = 18;
     const subTitleText = "OF COMPLETION";
-    const subTitleTextWidth = helveticaFont.widthOfTextAtSize(
+    const subTitleTextWidth = unicodeFont.widthOfTextAtSize(
       subTitleText,
       subTitleFontSize,
     );
@@ -231,7 +249,7 @@ export async function GET(request) {
       x: width / 2 - subTitleTextWidth / 2,
       y: subTitleY, // Điều chỉnh vị trí để tạo khoảng cách với thanh ngang
       size: subTitleFontSize,
-      font: helveticaFont,
+      font: unicodeFont,
       color: rgb(0.4, 0.4, 0.4),
     });
 
@@ -250,7 +268,7 @@ export async function GET(request) {
      *-------------------*/
     const presentTextFontSize = 14;
     const presentText = "WE PROUDLY PRESENT THIS CERTIFICATE TO";
-    const presentTextWidth = helveticaFont.widthOfTextAtSize(
+    const presentTextWidth = unicodeFont.widthOfTextAtSize(
       presentText,
       presentTextFontSize,
     );
@@ -259,7 +277,7 @@ export async function GET(request) {
       x: width / 2 - presentTextWidth / 2,
       y: height - 290, // Điều chỉnh vị trí
       size: presentTextFontSize,
-      font: helveticaFont,
+      font: unicodeFont,
       color: rgb(0.3, 0.3, 0.3),
     });
 
@@ -270,7 +288,7 @@ export async function GET(request) {
      *-------------------*/
     const nameText = completionInfo.name;
     const nameFontSize = 36;
-    const nameTextWidth = timesRomanBoldFont.widthOfTextAtSize(
+    const nameTextWidth = unicodeFontBold.widthOfTextAtSize(
       nameText,
       nameFontSize,
     );
@@ -279,7 +297,7 @@ export async function GET(request) {
       x: width / 2 - nameTextWidth / 2,
       y: height - 340, // Điều chỉnh vị trí
       size: nameFontSize,
-      font: timesRomanBoldFont,
+      font: unicodeFontBold,
       color: rgb(0.05, 0.3, 0.6),
     });
 
@@ -290,7 +308,7 @@ export async function GET(request) {
      *-------------------*/
     const detailsText = `for completing the course ${completionInfo.courseName}`;
     const detailsFontSize = 16;
-    const detailsTextWidth = helveticaFont.widthOfTextAtSize(
+    const detailsTextWidth = unicodeFont.widthOfTextAtSize(
       detailsText,
       detailsFontSize,
     );
@@ -299,7 +317,7 @@ export async function GET(request) {
       x: width / 2 - detailsTextWidth / 2,
       y: height - 380, // Điều chỉnh vị trí
       size: detailsFontSize,
-      font: helveticaFont,
+      font: unicodeFont,
       color: rgb(0.3, 0.3, 0.3),
     });
 
@@ -351,12 +369,13 @@ export async function GET(request) {
       console.error("Không thể tải chữ ký:", error);
     }
 
-    // Tên người ký và chức danh
-    page.drawText(completionInfo.instructor.toUpperCase(), {
+    // Tên người ký và chức danh - Sử dụng font Unicode để đảm bảo hiển thị tiếng Việt
+    // Tránh dùng toUpperCase() với tiếng Việt để tránh lỗi mã hóa Unicode
+    page.drawText(completionInfo.instructor, {
       x: 220,
       y: 100,
       size: 14,
-      font: helveticaBoldFont,
+      font: unicodeFontBold,
       color: rgb(0, 0, 0),
     });
 
@@ -371,7 +390,7 @@ export async function GET(request) {
       x: 220,
       y: 80,
       size: 12,
-      font: helveticaFont,
+      font: unicodeFont,
       color: rgb(0.3, 0.3, 0.3),
     });
 
@@ -380,7 +399,7 @@ export async function GET(request) {
       x: width - 350,
       y: 100,
       size: 12,
-      font: helveticaBoldFont,
+      font: unicodeFontBold,
       color: rgb(0, 0, 0),
     });
 
@@ -388,7 +407,7 @@ export async function GET(request) {
       x: width - 350,
       y: 80,
       size: 12,
-      font: helveticaBoldFont,
+      font: unicodeFontBold,
       color: rgb(0, 0, 0),
     });
 
