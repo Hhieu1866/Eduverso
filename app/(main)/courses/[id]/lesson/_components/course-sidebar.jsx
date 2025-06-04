@@ -107,7 +107,7 @@ export const CourseProgressClient = ({
     const handleLessonCompleted = (event) => {
       // Kiểm tra xem sự kiện có thuộc về khóa học hiện tại không
       if (event.detail?.courseId === courseId) {
-        console.log("Đã nhận sự kiện hoàn thành bài học:", event.detail);
+        // console.log("Đã nhận sự kiện hoàn thành bài học:", event.detail);
 
         // Tính toán giá trị tiến trình mới
         const newCount = progress.completedCount + 1;
@@ -122,9 +122,9 @@ export const CourseProgressClient = ({
           completedCount: newCount,
         });
 
-        console.log(
-          `Tiến trình cập nhật: ${newCount}/${totalLessons} bài học (${newValue}%)`,
-        );
+        // console.log(
+        //   `Tiến trình cập nhật: ${newCount}/${totalLessons} bài học (${newValue}%)`,
+        // );
 
         // Refresh dữ liệu từ server
         router.refresh();
@@ -152,9 +152,9 @@ export const CourseProgressClient = ({
         completedCount: completedLessons,
       });
 
-      console.log(
-        `Cập nhật từ server: ${completedLessons}/${totalLessons} bài học (${newValue}%)`,
-      );
+      // console.log(
+      //   `Cập nhật từ server: ${completedLessons}/${totalLessons} bài học (${newValue}%)`,
+      // );
     }
   }, [completedLessons, progress.completedCount, totalLessons]);
 

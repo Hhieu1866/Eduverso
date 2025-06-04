@@ -34,9 +34,9 @@ const SiteFooter = () => {
               <Logo className="h-8 w-auto" />
             </div>
             <p className="mb-4 text-sm text-slate-500">
-              Eduverse là nền tảng học trực tuyến hàng đầu, cung cấp các khóa
-              học chất lượng cao từ các giảng viên hàng đầu trong nhiều lĩnh vực
-              khác nhau.
+              Eduverse là nền tảng học trực tuyến hàng đầu, cung cấp các lộ
+              trình học chất lượng cao từ các giảng viên hàng đầu trong nhiều
+              lĩnh vực khác nhau.
             </p>
             <div className="mt-4 flex space-x-4">
               <Link

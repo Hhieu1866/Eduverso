@@ -72,7 +72,7 @@ const EnrollCourse = ({ asLink, courseId, className }) => {
 
     setIsLoading(true);
     try {
-      console.log("Bắt đầu đăng ký khóa học:", courseId);
+      // console.log("Bắt đầu đăng ký khóa học:", courseId);
 
       // Gọi API để đăng ký khóa học
       const response = await fetch("/api/courses/enroll", {

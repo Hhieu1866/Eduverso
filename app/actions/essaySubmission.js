@@ -29,11 +29,10 @@ export async function submitEssay(essayId, courseId, data) {
       throw new Error("Không có file nào được cung cấp để nộp.");
     }
 
-    // Thêm log để kiểm tra dữ liệu file đầu vào
-    console.log(
-      "Data submittedFiles được gửi lên:",
-      JSON.stringify(data.submittedFiles, null, 2),
-    );
+    // console.log(
+    //   "Data submittedFiles được gửi lên:",
+    //   JSON.stringify(data.submittedFiles, null, 2),
+    // );
 
     const existingSubmission = await EssaySubmission.findOne({
       essayId,
@@ -63,10 +62,10 @@ export async function submitEssay(essayId, courseId, data) {
         uploadedAt: file.uploadedAt || new Date().toISOString(),
       }));
 
-      console.log(
-        "Dữ liệu sau khi chuẩn hóa:",
-        JSON.stringify(normalizedFiles, null, 2),
-      );
+      // console.log(
+      //   "Dữ liệu sau khi chuẩn hóa:",
+      //   JSON.stringify(normalizedFiles, null, 2),
+      // );
 
       // Cập nhật bài nộp hiện có: ghi đè mảng submittedFiles và đặt lại status
       submissionResult = await EssaySubmission.findByIdAndUpdate(
@@ -95,10 +94,10 @@ export async function submitEssay(essayId, courseId, data) {
         uploadedAt: file.uploadedAt || new Date().toISOString(),
       }));
 
-      console.log(
-        "Tạo submission mới với files:",
-        JSON.stringify(normalizedFiles, null, 2),
-      );
+      // console.log(
+      //   "Tạo submission mới với files:",
+      //   JSON.stringify(normalizedFiles, null, 2),
+      // );
 
       // Tạo bài nộp mới
       submissionResult = await EssaySubmission.create({
@@ -111,7 +110,7 @@ export async function submitEssay(essayId, courseId, data) {
       });
     }
 
-    console.log("Kết quả sau khi lưu:", submissionResult._id.toString());
+    // console.log("Kết quả sau khi lưu:", submissionResult._id.toString());
 
     revalidatePath(`/courses/${courseId}/lesson`); // Revalidate trang lesson để cập nhật UI
     revalidatePath(`/courses/${courseId}/essays/${essayId}`); // Revalidate trang chi tiết essay nếu có

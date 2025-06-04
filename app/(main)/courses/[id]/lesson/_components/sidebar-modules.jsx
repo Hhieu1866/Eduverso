@@ -120,9 +120,9 @@ export const SidebarModules = ({ courseId, modules }) => {
 
       // Chỉ làm mới nếu cùng khóa học
       if (completedCourseId === courseId) {
-        console.log(
-          `Nhận sự kiện hoàn thành bài học trong module ${moduleSlug} - làm mới sidebar`,
-        );
+        // console.log(
+        //   `Nhận sự kiện hoàn thành bài học trong module ${moduleSlug} - làm mới sidebar`,
+        // );
 
         // Đặt timeout ngắn để đảm bảo server đã cập nhật dữ liệu
         setTimeout(() => {

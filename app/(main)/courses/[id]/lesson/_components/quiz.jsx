@@ -10,6 +10,15 @@ import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axios";
 import { toast } from "sonner";
 
+// Hàm xáo trộn mảng (thuật toán Fisher-Yates shuffle)
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+  }
+  return array;
+}
+
 const Quiz = ({ courseId, quizSet, isTaken, assessmentData }) => {
   const [open, setOpen] = useState(false);
   const [quizResults, setQuizResults] = useState(assessmentData || null);
@@ -26,12 +35,14 @@ const Quiz = ({ courseId, quizSet, isTaken, assessmentData }) => {
       id: quiz._id.toString(),
       title: quiz.title,
       description: quiz.description,
-      options: quiz.options.map((option) => {
-        return {
-          label: option.text,
-          isTrue: option.is_correct,
-        };
-      }),
+      options: shuffleArray(
+        quiz.options.map((option) => {
+          return {
+            label: option.text,
+            isTrue: option.is_correct,
+          };
+        }),
+      ), // Áp dụng shuffleArray ở đây
     };
   });
 
@@ -39,24 +50,24 @@ const Quiz = ({ courseId, quizSet, isTaken, assessmentData }) => {
   useEffect(() => {
     const fetchAssessmentData = async () => {
       try {
-        console.log(
-          `Đang fetch dữ liệu assessment: quizSetId=${quizSet._id.toString()}, courseId=${courseId}`,
-        );
+        // console.log(
+        //   `Đang fetch dữ liệu assessment: quizSetId=${quizSet._id.toString()}, courseId=${courseId}`,
+        // );
 
         // Thay đổi API endpoint từ /api/assessments thành /api/lesson-watch vì chúng ta không có endpoint /api/assessments
         const response = await axiosInstance.get(
           `/api/lesson-watch?quizSetId=${quizSet._id.toString()}&courseId=${courseId}&fetchAssessment=true`,
         );
 
-        console.log("Dữ liệu assessment nhận được:", response);
+        // console.log("Dữ liệu assessment nhận được:", response);
 
         if (response.assessment) {
-          console.log("Cập nhật quizResults với:", response.assessment);
+          // console.log("Cập nhật quizResults với:", response.assessment);
           setQuizResults(response.assessment);
         } else {
-          console.log(
-            "Không tìm thấy dữ liệu assessment cho người dùng hiện tại",
-          );
+          // console.log(
+          //   "Không tìm thấy dữ liệu assessment cho người dùng hiện tại",
+          // );
           // Không cần lấy từ localStorage vì có thể gây xung đột dữ liệu giữa các user
           setQuizResults(null);
         }
@@ -116,12 +127,11 @@ const Quiz = ({ courseId, quizSet, isTaken, assessmentData }) => {
     setIsSubmitting(true);
 
     try {
-      // Log dữ liệu gửi đi để debug
-      console.log("Dữ liệu gửi đi:", {
-        courseId,
-        quizSetId: quizSet._id.toString(),
-        results,
-      });
+      // console.log("Dữ liệu gửi đi:", {
+      //   courseId,
+      //   quizSetId: quizSet._id.toString(),
+      //   results,
+      // });
 
       // Lưu kết quả chi tiết để xem lại sau này
       setSavedResults({
@@ -216,11 +226,11 @@ const Quiz = ({ courseId, quizSet, isTaken, assessmentData }) => {
         score: quizResults?.score || 0,
       });
 
-      console.log("Đã tạo savedResults mới:", {
-        details,
-        totalQuestions: quizzes.length,
-        score: quizResults?.score || 0,
-      });
+      // console.log("Đã tạo savedResults mới:", {
+      //   details,
+      //   totalQuestions: quizzes.length,
+      //   score: quizResults?.score || 0,
+      // });
     }
 
     // Đánh dấu đang ở chế độ xem lại và mở modal

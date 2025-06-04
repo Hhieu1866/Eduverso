@@ -69,7 +69,7 @@ const ChangePassword = ({ email }) => {
     }
 
     setIsLoading(true);
-    console.log("Client: Bắt đầu gửi yêu cầu đổi mật khẩu", { email });
+    // console.log("Client: Bắt đầu gửi yêu cầu đổi mật khẩu", { email });
 
     try {
       const result = await changePassword(
@@ -77,7 +77,7 @@ const ChangePassword = ({ email }) => {
         passwordState.oldPassword,
         passwordState.newPassword,
       );
-      console.log("Client: Kết quả từ server", result);
+      // console.log("Client: Kết quả từ server", result);
 
       if (result?.success) {
         toast.success(result.message || "Mật khẩu đã được thay đổi thành công");

@@ -18,7 +18,7 @@ export async function GET(request) {
 
     // Kết nối đến MongoDB
     await dbConnect();
-    console.log("Đã kết nối MongoDB");
+    // console.log("Đã kết nối MongoDB");
 
     // Kiểm tra role của người dùng (bỏ qua bước này trong môi trường phát triển)
     let isAdmin = true;
@@ -104,10 +104,10 @@ export async function GET(request) {
         ]);
 
         if (usersByMonthFallback.length > 0) {
-          console.log(
-            "Kết quả thống kê theo tháng (createdOn):",
-            usersByMonthFallback,
-          );
+          // console.log(
+          //   "Kết quả thống kê theo tháng (createdOn):",
+          //   usersByMonthFallback,
+          // );
 
           // Chuyển đổi dữ liệu thống kê theo tháng
           for (let i = 1; i <= 12; i++) {
@@ -123,9 +123,9 @@ export async function GET(request) {
           }
         } else {
           // Không có dữ liệu thực, sử dụng dữ liệu mẫu cho thống kê theo tháng
-          console.log(
-            "Không tìm thấy dữ liệu người dùng theo tháng, sử dụng dữ liệu mẫu",
-          );
+          // console.log(
+          //   "Không tìm thấy dữ liệu người dùng theo tháng, sử dụng dữ liệu mẫu",
+          // );
           useRandomMonthlyData(monthlyData);
         }
       } else {
@@ -195,10 +195,10 @@ export async function GET(request) {
         ]);
 
         if (usersByDayFallback.length > 0) {
-          console.log(
-            "Kết quả thống kê theo ngày (createdOn):",
-            usersByDayFallback,
-          );
+          // console.log(
+          //   "Kết quả thống kê theo ngày (createdOn):",
+          //   usersByDayFallback,
+          // );
 
           // Chuyển đổi dữ liệu thống kê theo ngày
           for (let i = 1; i <= daysInMonth; i++) {
@@ -212,9 +212,9 @@ export async function GET(request) {
           }
         } else {
           // Không có dữ liệu thực, sử dụng dữ liệu mẫu cho thống kê theo ngày
-          console.log(
-            "Không tìm thấy dữ liệu người dùng theo ngày, sử dụng dữ liệu mẫu",
-          );
+          // console.log(
+          //   "Không tìm thấy dữ liệu người dùng theo ngày, sử dụng dữ liệu mẫu",
+          // );
           useRandomDailyData(dailyData, daysInMonth);
         }
       } else {

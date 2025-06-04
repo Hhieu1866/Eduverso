@@ -3,11 +3,11 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { toast } from "sonner";
 import axios from "@/lib/axios";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
@@ -28,11 +28,11 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { 
-  Search, 
-  User, 
-  UserCog, 
-  Shield, 
+import {
+  Search,
+  User,
+  UserCog,
+  Shield,
   BadgeCheck,
   MoreHorizontal,
   UserPlus,
@@ -70,12 +70,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
@@ -115,8 +115,8 @@ export default function UsersPage() {
   // Memoize các hàm và dữ liệu không thay đổi thường xuyên
   const userRoles = useMemo(
     () => [
-    { value: "admin", label: "Admin", icon: Shield },
-    { value: "instructor", label: "Giảng viên", icon: BadgeCheck },
+      { value: "admin", label: "Admin", icon: Shield },
+      { value: "instructor", label: "Giảng viên", icon: BadgeCheck },
       { value: "student", label: "Học viên", icon: User },
     ],
     [],
@@ -161,22 +161,22 @@ export default function UsersPage() {
 
       try {
         if (shouldShowFullLoading) {
-      setLoading(true);
+          setLoading(true);
         }
-      
-      const params = {
-        page: currentPage.toString(),
+
+        const params = {
+          page: currentPage.toString(),
           limit: "10",
-      };
-      
-      if (searchTerm) {
-        params.search = searchTerm;
-      }
-      
-      if (role && role !== "all") {
-        params.role = role;
-      }
-      
+        };
+
+        if (searchTerm) {
+          params.search = searchTerm;
+        }
+
+        if (role && role !== "all") {
+          params.role = role;
+        }
+
         // Thêm timeout để tránh UI flickering khi dữ liệu tải nhanh
         const timeoutPromise = new Promise((resolve) =>
           setTimeout(resolve, 300),
@@ -187,19 +187,19 @@ export default function UsersPage() {
         ]);
 
         // Cập nhật state theo thứ tự để tránh render lại nhiều lần
-      setUsers(data.users || []);
-      setTotalPages(data.totalPages || 1);
-      setTotalItems(data.total || 0);
-      setPage(currentPage);
-    } catch (error) {
-      console.error("Lỗi khi tải danh sách người dùng:", error);
+        setUsers(data.users || []);
+        setTotalPages(data.totalPages || 1);
+        setTotalItems(data.total || 0);
+        setPage(currentPage);
+      } catch (error) {
+        console.error("Lỗi khi tải danh sách người dùng:", error);
         toast.error(
           "Không thể tải danh sách người dùng: " +
             (error.response?.data?.error || error.message),
         );
-    } finally {
-      setLoading(false);
-    }
+      } finally {
+        setLoading(false);
+      }
     },
     [page, search, roleFilter, users.length],
   );
@@ -230,7 +230,7 @@ export default function UsersPage() {
 
   // Xử lý lọc theo vai trò
   const handleRoleFilterChange = (value) => {
-    console.log("Chọn lọc theo vai trò:", value);
+    // console.log("Chọn lọc theo vai trò:", value);
     setRoleFilter(value);
     fetchUsers(1, search, value === "all" ? "" : value);
   };
@@ -260,13 +260,13 @@ export default function UsersPage() {
 
   // Cập nhật hàm handleRoleChange
   const handleRoleChange = async (userId, newRole) => {
-    console.log("handleRoleChange được gọi với:", {
-      userId,
-      userIdType: typeof userId,
-      userIdLength: userId ? userId.length : 0,
-      newRole,
-    });
-    
+    // console.log("handleRoleChange được gọi với:", {
+    //   userId,
+    //   userIdType: typeof userId,
+    //   userIdLength: userId ? userId.length : 0,
+    //   newRole,
+    // });
+
     // Đảm bảo có userId và log chi tiết nếu không có
     if (!userId) {
       console.error(
@@ -276,13 +276,13 @@ export default function UsersPage() {
       toast.error("Không thể xác định người dùng để cập nhật");
       return;
     }
-    
+
     // Tạo một biến để lưu toast ID
     let toastId = toast.loading("Đang cập nhật quyền người dùng...");
-    
+
     try {
-      console.log("Gọi API với userId:", userId, "và newRole:", newRole);
-      
+      // console.log("Gọi API với userId:", userId, "và newRole:", newRole);
+
       // Cập nhật UI trước khi gọi API để cải thiện trải nghiệm
       setUsers((prevUsers) =>
         prevUsers.map((user) => {
@@ -297,24 +297,24 @@ export default function UsersPage() {
 
       // Gọi API với axios
       await axios.patch(`/api/admin/users/${userId}`, { role: newRole });
-      console.log("API trả về thành công");
+      // console.log("API trả về thành công");
 
       // Đóng thông báo loading
       toast.dismiss(toastId);
 
       // Hiển thị thông báo thành công
-        toast.success("Cập nhật quyền người dùng thành công");
-      
+      toast.success("Cập nhật quyền người dùng thành công");
+
       // Đặt timeout nhỏ trước khi cập nhật danh sách để tránh đơ UI
       createManagedTimeout(() => {
-      // Làm mới dữ liệu
-      fetchUsers(page, search, roleFilter);
+        // Làm mới dữ liệu
+        fetchUsers(page, search, roleFilter);
       }, 300);
     } catch (error) {
       console.error("Lỗi chi tiết khi cập nhật quyền:", error);
       console.error("Response data:", error.response?.data);
       console.error("Status code:", error.response?.status);
-      
+
       // Đóng thông báo loading
       toast.dismiss(toastId);
       toast.error(
@@ -333,7 +333,7 @@ export default function UsersPage() {
   const handleSaveEdit = async (e) => {
     e.preventDefault();
     if (!currentUser) return;
-    
+
     const userId = getUserId(currentUser);
     if (!userId) {
       toast.error("Không thể xác định người dùng để cập nhật");
@@ -342,8 +342,8 @@ export default function UsersPage() {
 
     setIsSubmitting(true);
     let toastId = toast.loading("Đang cập nhật thông tin người dùng...");
-    
-    try {      
+
+    try {
       await axios.patch(`/api/admin/users/${userId}`, editFormData);
 
       // Đóng dialog
@@ -353,7 +353,7 @@ export default function UsersPage() {
       toast.dismiss(toastId);
 
       // Hiển thị thông báo thành công
-        toast.success("Cập nhật thông tin người dùng thành công");
+      toast.success("Cập nhật thông tin người dùng thành công");
 
       // Đặt timeout nhỏ trước khi cập nhật danh sách để tránh đơ UI
       createManagedTimeout(() => {
@@ -375,7 +375,7 @@ export default function UsersPage() {
   // Xử lý xóa người dùng
   const handleDeleteUser = async () => {
     if (!currentUser) return;
-    
+
     const userId = getUserId(currentUser);
     if (!userId) {
       toast.error("Không thể xác định người dùng để xóa");
@@ -407,7 +407,7 @@ export default function UsersPage() {
 
       // Sau khi xóa thành công, hiển thị thông báo
       toast.dismiss(toastId);
-        toast.success("Xóa người dùng thành công");
+      toast.success("Xóa người dùng thành công");
     } catch (error) {
       // Nếu lỗi xảy ra, khôi phục lại danh sách user ban đầu
       console.error("Lỗi khi xóa người dùng:", error);
@@ -433,7 +433,7 @@ export default function UsersPage() {
   // Xử lý thêm người dùng mới
   const handleAddUser = async (e) => {
     e.preventDefault();
-    
+
     if (!newUser.email || !newUser.password) {
       toast.error("Vui lòng điền đầy đủ thông tin bắt buộc");
       return;
@@ -441,7 +441,7 @@ export default function UsersPage() {
 
     setIsSubmitting(true);
     let toastId = toast.loading("Đang tạo người dùng mới...");
-    
+
     try {
       await axios.post(`/api/admin/users`, newUser);
 
@@ -453,7 +453,7 @@ export default function UsersPage() {
         lastName: "",
         role: "user", // Luôn reset về user
       });
-      
+
       // Đóng dialog
       setIsAddUserOpen(false);
 
@@ -461,7 +461,7 @@ export default function UsersPage() {
       toast.dismiss(toastId);
 
       // Hiển thị thông báo thành công
-        toast.success("Tạo người dùng mới thành công");
+      toast.success("Tạo người dùng mới thành công");
 
       // Đặt timeout nhỏ trước khi cập nhật danh sách để tránh đơ UI
       createManagedTimeout(() => {
@@ -482,10 +482,10 @@ export default function UsersPage() {
 
   // Lấy màu sắc badge dựa trên role
   const getRoleBadge = (role) => {
-    console.log("Hiển thị badge cho role:", role);
+    // console.log("Hiển thị badge cho role:", role);
     // Tìm thông tin vai trò từ danh sách đã định nghĩa
     const roleInfo = userRoles.find((r) => r.value === role);
-    
+
     // Nếu không tìm thấy, hiển thị vai trò gốc trong database
     if (!roleInfo) {
       return (
@@ -494,7 +494,7 @@ export default function UsersPage() {
         </Badge>
       );
     }
-    
+
     // Sử dụng các variants khác nhau của Badge component
     if (role === "admin") {
       return (
@@ -503,7 +503,7 @@ export default function UsersPage() {
         </Badge>
       );
     }
-    
+
     if (role === "instructor") {
       return (
         <Badge className="bg-blue-500 font-medium hover:bg-blue-600">
@@ -519,7 +519,7 @@ export default function UsersPage() {
         </Badge>
       );
     }
-    
+
     return (
       <Badge variant="outline" className="font-medium">
         {roleInfo.label}
@@ -530,21 +530,21 @@ export default function UsersPage() {
   // Tối ưu render cho TableRow bằng cách tạo một component con
   const UserTableRow = useCallback(
     ({ user, index }) => {
-                    const userId = getUserId(user);
-                    
-                    return (
-                      <TableRow 
-                        key={userId || `user-${index}`} 
+      const userId = getUserId(user);
+
+      return (
+        <TableRow
+          key={userId || `user-${index}`}
           className="group cursor-pointer transition-colors hover:bg-muted/30"
-                      >
+        >
           <TableCell className="py-2.5 pl-3">
-                          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full">
                 <Avatar className="h-9 w-9">
-                              {user.profilePicture ? (
+                  {user.profilePicture ? (
                     <AvatarImage
-                                  src={user.profilePicture} 
-                                  alt={`${user.firstName} ${user.lastName}`}
+                      src={user.profilePicture}
+                      alt={`${user.firstName} ${user.lastName}`}
                     />
                   ) : null}
                   <AvatarFallback className="bg-gray-200 font-bold uppercase text-colors-navy">
@@ -555,122 +555,122 @@ export default function UsersPage() {
                     ).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                            </div>
-                            <div>
+              </div>
+              <div>
                 <div className="text-sm font-medium">
-                                {user.firstName && user.lastName 
-                                  ? `${user.firstName} ${user.lastName}`
+                  {user.firstName && user.lastName
+                    ? `${user.firstName} ${user.lastName}`
                     : "Chưa cập nhật"}
-                              </div>
-                              <div className="text-xs text-muted-foreground">
+                </div>
+                <div className="text-xs text-muted-foreground">
                   {user.designation || "Người dùng thường"}
-                              </div>
-                            </div>
-                          </div>
-                        </TableCell>
+                </div>
+              </div>
+            </div>
+          </TableCell>
           <TableCell className="py-2.5 text-sm font-medium">
             {user.email}
           </TableCell>
           <TableCell className="py-2.5 text-sm text-muted-foreground">
-                          {user.createdAt 
-                            ? format(new Date(user.createdAt), "dd/MM/yyyy")
+            {user.createdAt
+              ? format(new Date(user.createdAt), "dd/MM/yyyy")
               : "Chưa có dữ liệu"}
-                        </TableCell>
-                        <TableCell>
-                          <Select
-                            value={user.role}
-                            onValueChange={(value) => {
-                              // Lấy userId từ hàm tiện ích
-                              const userId = getUserId(user);
-                              
-                              // Kiểm tra chi tiết về user và userId
-                              if (!user) {
-                                console.error("Lỗi: user là null hoặc undefined");
-                              } else if (!userId) {
-                                console.error("Lỗi: userId là null hoặc undefined", user);
-                              } else {
-                                handleRoleChangeCallback(String(userId), value);
-                              }
-                            }}
-                          >
-                            <SelectTrigger
-                              className={cn(
+          </TableCell>
+          <TableCell>
+            <Select
+              value={user.role}
+              onValueChange={(value) => {
+                // Lấy userId từ hàm tiện ích
+                const userId = getUserId(user);
+
+                // Kiểm tra chi tiết về user và userId
+                if (!user) {
+                  console.error("Lỗi: user là null hoặc undefined");
+                } else if (!userId) {
+                  console.error("Lỗi: userId là null hoặc undefined", user);
+                } else {
+                  handleRoleChangeCallback(String(userId), value);
+                }
+              }}
+            >
+              <SelectTrigger
+                className={cn(
                   "h-8 w-[120px] text-sm font-medium transition-colors",
-                                user.role === "admin"
+                  user.role === "admin"
                     ? "border-destructive/20 bg-destructive/10 text-destructive hover:bg-destructive/20"
-                                  : user.role === "instructor"
+                    : user.role === "instructor"
                       ? "border-blue-200 bg-blue-100 text-blue-600 hover:bg-blue-200"
                       : user.role === "student"
                         ? "border-green-200 bg-green-100 text-green-600 hover:bg-green-200"
                         : "border-muted-foreground/20 bg-muted text-muted-foreground hover:bg-muted/70",
-                              )}
-                            >
-                              <SelectValue>
-                                {(() => {
+                )}
+              >
+                <SelectValue>
+                  {(() => {
                     const roleInfo = userRoles.find(
                       (r) => r.value === user.role,
                     ) || {
                       label: user.role || "Không xác định",
                     };
-                                  return (
+                    return (
                       <div className="flex items-center">{roleInfo.label}</div>
-                                  );
-                                })()}
-                              </SelectValue>
-                            </SelectTrigger>
-                            <SelectContent align="center">
-                              {userRoles.map((role) => (
-                                <SelectItem
-                                  key={role.value}
-                                  value={role.value}
-                                  className="font-medium"
-                                >
+                    );
+                  })()}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent align="center">
+                {userRoles.map((role) => (
+                  <SelectItem
+                    key={role.value}
+                    value={role.value}
+                    className="font-medium"
+                  >
                     <div className="flex items-center">{role.label}</div>
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </TableCell>
-                        <TableCell className="pr-3 text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button 
-                                variant="ghost" 
-                                size="icon" 
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </TableCell>
+          <TableCell className="pr-3 text-right">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   className="h-8 w-8 rounded-full opacity-70 transition-opacity hover:bg-muted group-hover:opacity-100"
-                              >
-                                <span className="sr-only">Thao tác</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-48">
+                >
+                  <span className="sr-only">Thao tác</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem
                   onClick={() => handleViewUser(user)}
                   className="cursor-pointer"
                 >
-                                <Eye className="mr-2 h-4 w-4" />
-                                <span>Xem chi tiết</span>
-                              </DropdownMenuItem>
+                  <Eye className="mr-2 h-4 w-4" />
+                  <span>Xem chi tiết</span>
+                </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => handleEditUser(user)}
                   className="cursor-pointer"
                 >
-                                <Pencil className="mr-2 h-4 w-4" />
-                                <span>Chỉnh sửa</span>
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem 
+                  <Pencil className="mr-2 h-4 w-4" />
+                  <span>Chỉnh sửa</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
                   className="cursor-pointer text-destructive focus:text-destructive"
-                                onClick={() => handleDeleteDialog(user)}
-                              >
-                                <Trash2 className="mr-2 h-4 w-4" />
-                                <span>Xóa</span>
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    );
+                  onClick={() => handleDeleteDialog(user)}
+                >
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  <span>Xóa</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </TableCell>
+        </TableRow>
+      );
     },
     [
       handleRoleChangeCallback,
@@ -882,7 +882,7 @@ export default function UsersPage() {
                       )}
                     />
                   </PaginationItem>
-                  
+
                   {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                     const pageNumber = i + 1;
                     return (
@@ -897,7 +897,7 @@ export default function UsersPage() {
                       </PaginationItem>
                     );
                   })}
-                  
+
                   {totalPages > 5 && (
                     <React.Fragment key="pagination-ellipsis">
                       <PaginationItem>
@@ -916,7 +916,7 @@ export default function UsersPage() {
                       </PaginationItem>
                     </React.Fragment>
                   )}
-                  
+
                   <PaginationItem>
                     <PaginationNext
                       onClick={() => handlePageChange(page + 1)}
@@ -955,10 +955,10 @@ export default function UsersPage() {
               <div className="flex flex-col items-center gap-3 border-b pb-6">
                 <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full">
                   <Avatar className="h-24 w-24">
-                  {currentUser.profilePicture ? (
+                    {currentUser.profilePicture ? (
                       <AvatarImage
-                      src={currentUser.profilePicture} 
-                      alt={`${currentUser.firstName} ${currentUser.lastName}`}
+                        src={currentUser.profilePicture}
+                        alt={`${currentUser.firstName} ${currentUser.lastName}`}
                       />
                     ) : null}
                     <AvatarFallback className="bg-gray-200 text-3xl font-bold uppercase text-black">
@@ -979,14 +979,14 @@ export default function UsersPage() {
                   <div className="mt-1">{getRoleBadge(currentUser.role)}</div>
                 </div>
               </div>
-              
+
               {/* Thông tin chi tiết */}
               <div className="space-y-4">
                 <div className="rounded-lg bg-muted/40 p-4">
                   <h4 className="mb-3 text-sm font-medium text-muted-foreground">
                     Thông tin cơ bản
                   </h4>
-                  
+
                   <div className="space-y-3">
                     <div className="grid grid-cols-3 items-center gap-4">
                       <span className="text-sm font-medium text-muted-foreground">
@@ -996,7 +996,7 @@ export default function UsersPage() {
                         {currentUser._id}
                       </span>
                     </div>
-                    
+
                     <div className="grid grid-cols-3 items-center gap-4">
                       <span className="text-sm font-medium text-muted-foreground">
                         Email:
@@ -1005,7 +1005,7 @@ export default function UsersPage() {
                         {currentUser.email}
                       </span>
                     </div>
-                    
+
                     <div className="grid grid-cols-3 items-center gap-4">
                       <span className="text-sm font-medium text-muted-foreground">
                         Chức danh:
@@ -1014,7 +1014,7 @@ export default function UsersPage() {
                         {currentUser.designation || "Chưa cập nhật"}
                       </span>
                     </div>
-                    
+
                     {currentUser.phone && (
                       <div className="grid grid-cols-3 items-center gap-4">
                         <span className="text-sm font-medium text-muted-foreground">
@@ -1025,13 +1025,13 @@ export default function UsersPage() {
                         </span>
                       </div>
                     )}
-                    
+
                     <div className="grid grid-cols-3 items-center gap-4">
                       <span className="text-sm font-medium text-muted-foreground">
                         Ngày tạo:
                       </span>
                       <span className="col-span-2 text-sm">
-                        {currentUser.createdAt 
+                        {currentUser.createdAt
                           ? format(
                               new Date(currentUser.createdAt),
                               "dd/MM/yyyy HH:mm:ss",
@@ -1041,7 +1041,7 @@ export default function UsersPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 {currentUser.bio && (
                   <div className="rounded-lg bg-muted/40 p-4">
                     <h4 className="mb-3 text-sm font-medium text-muted-foreground">
@@ -1055,9 +1055,9 @@ export default function UsersPage() {
               </div>
             </div>
             <DialogFooter className="flex justify-between gap-2 border-t px-2 pt-4">
-              <Button 
-                onClick={() => handleEditUser(currentUser)} 
-                variant="outline" 
+              <Button
+                onClick={() => handleEditUser(currentUser)}
+                variant="outline"
                 className="gap-1.5"
               >
                 <Pencil className="h-4 w-4" />
@@ -1110,7 +1110,7 @@ export default function UsersPage() {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label
                     htmlFor="edit-firstName"
@@ -1131,7 +1131,7 @@ export default function UsersPage() {
                     placeholder="Nguyễn"
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="edit-lastName" className="text-right text-sm">
                     Tên
@@ -1150,19 +1150,19 @@ export default function UsersPage() {
                   />
                 </div>
               </div>
-              
+
               <DialogFooter className="flex justify-between border-t px-2 pt-4">
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={() => setIsEditDialogOpen(false)}
                   className="relative px-4"
                 >
                   Hủy
                 </Button>
-                <Button 
-                  type="submit" 
-                  disabled={isSubmitting} 
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
                   className="relative gap-2 px-4"
                 >
                   {isSubmitting ? (
@@ -1267,7 +1267,7 @@ export default function UsersPage() {
                   </p>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="password" className="text-right text-sm">
                   Mật khẩu <span className="text-destructive">*</span>
@@ -1289,7 +1289,7 @@ export default function UsersPage() {
                   </p>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="role" className="text-right text-sm">
                   Vai trò <span className="text-destructive">*</span>
@@ -1318,7 +1318,7 @@ export default function UsersPage() {
                   </Select>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-4 items-start gap-4 pt-2">
                 <Label htmlFor="name" className="pt-2 text-right text-sm">
                   Họ và tên
@@ -1345,7 +1345,7 @@ export default function UsersPage() {
                 </div>
               </div>
             </div>
-            
+
             <DialogFooter className="flex justify-between border-t px-2 pt-4">
               <Button
                 type="button"
@@ -1373,4 +1373,4 @@ export default function UsersPage() {
       </Dialog>
     </div>
   );
-} 
+}

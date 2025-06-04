@@ -10,7 +10,7 @@ import axiosInstance from "@/lib/axios";
 
 // Tạo custom event để thông báo khi hoàn thành bài học
 const createLessonCompletedEvent = (courseId, lessonId, moduleSlug) => {
-  console.log("Phát sự kiện lessonCompleted cho khóa học:", courseId);
+  // console.log("Phát sự kiện lessonCompleted cho khóa học:", courseId);
 
   // Tạo sự kiện với chi tiết tối thiểu và cần thiết
   const event = new CustomEvent("lessonCompleted", {
@@ -25,7 +25,7 @@ const createLessonCompletedEvent = (courseId, lessonId, moduleSlug) => {
 
   // Dispatch sự kiện vào window object để có thể bắt được ở mọi nơi
   window.dispatchEvent(event);
-  console.log("Đã phát ra sự kiện lessonCompleted thành công");
+  // console.log("Đã phát ra sự kiện lessonCompleted thành công");
 };
 
 export const CompleteLessonButton = ({

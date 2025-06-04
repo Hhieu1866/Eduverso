@@ -91,7 +91,7 @@ export async function doCreateQuizSet(data) {
 
 export async function addQuizAssessment(courseId, quizSetId, answers) {
   try {
-    console.log(quizSetId, answers);
+    // console.log(quizSetId, answers);
     const quizSet = await getQuizSetById(quizSetId);
     const quizzes = replaceMongoIdInArray(quizSet.quizIds);
 
