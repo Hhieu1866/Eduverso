@@ -14,26 +14,26 @@ export async function GET(request) {
       );
     }
 
-    console.log("Đang lấy thống kê người dùng...");
+    // console.log("Đang lấy thống kê người dùng...");
 
     // Kết nối đến MongoDB
     await dbConnect();
-    console.log("Đã kết nối MongoDB");
+    // console.log("Đã kết nối MongoDB");
 
     // Kiểm tra role của người dùng (bỏ qua bước này trong môi trường phát triển)
     let isAdmin = true;
     try {
       const user = await User.findOne({ email: session.user.email });
-      console.log(
-        "Thông tin user:",
-        user
-          ? {
-              id: user._id,
-              email: user.email,
-              role: user.role,
-            }
-          : "Không tìm thấy",
-      );
+      // console.log(
+      //   "Thông tin user:",
+      //   user
+      //     ? {
+      //         id: user._id,
+      //         email: user.email,
+      //         role: user.role,
+      //       }
+      //     : "Không tìm thấy",
+      // );
 
       isAdmin = user?.role === "admin";
     } catch (error) {
@@ -79,7 +79,7 @@ export async function GET(request) {
         },
       ]);
 
-      console.log("Kết quả thống kê theo tháng:", usersByMonth);
+      // console.log("Kết quả thống kê theo tháng:", usersByMonth);
 
       // Nếu không có dữ liệu theo createdAt, thử với createdOn
       if (usersByMonth.length === 0) {
@@ -104,10 +104,10 @@ export async function GET(request) {
         ]);
 
         if (usersByMonthFallback.length > 0) {
-          console.log(
-            "Kết quả thống kê theo tháng (createdOn):",
-            usersByMonthFallback,
-          );
+          // console.log(
+          //   "Kết quả thống kê theo tháng (createdOn):",
+          //   usersByMonthFallback,
+          // );
 
           // Chuyển đổi dữ liệu thống kê theo tháng
           for (let i = 1; i <= 12; i++) {
@@ -122,10 +122,9 @@ export async function GET(request) {
             });
           }
         } else {
-          // Không có dữ liệu thực, sử dụng dữ liệu mẫu cho thống kê theo tháng
-          console.log(
-            "Không tìm thấy dữ liệu người dùng theo tháng, sử dụng dữ liệu mẫu",
-          );
+          // console.log(
+          //   "Không tìm thấy dữ liệu người dùng theo tháng, sử dụng dữ liệu mẫu",
+          // );
           useRandomMonthlyData(monthlyData);
         }
       } else {
@@ -170,7 +169,7 @@ export async function GET(request) {
         },
       ]);
 
-      console.log("Kết quả thống kê theo ngày trong tháng:", usersByDay);
+      // console.log("Kết quả thống kê theo ngày trong tháng:", usersByDay);
 
       // Nếu không có dữ liệu theo createdAt, thử với createdOn
       if (usersByDay.length === 0) {
@@ -195,10 +194,10 @@ export async function GET(request) {
         ]);
 
         if (usersByDayFallback.length > 0) {
-          console.log(
-            "Kết quả thống kê theo ngày (createdOn):",
-            usersByDayFallback,
-          );
+          // console.log(
+          //   "Kết quả thống kê theo ngày (createdOn):",
+          //   usersByDayFallback,
+          // );
 
           // Chuyển đổi dữ liệu thống kê theo ngày
           for (let i = 1; i <= daysInMonth; i++) {
@@ -211,10 +210,9 @@ export async function GET(request) {
             });
           }
         } else {
-          // Không có dữ liệu thực, sử dụng dữ liệu mẫu cho thống kê theo ngày
-          console.log(
-            "Không tìm thấy dữ liệu người dùng theo ngày, sử dụng dữ liệu mẫu",
-          );
+          // console.log(
+          //   "Không tìm thấy dữ liệu người dùng theo ngày, sử dụng dữ liệu mẫu",
+          // );
           useRandomDailyData(dailyData, daysInMonth);
         }
       } else {

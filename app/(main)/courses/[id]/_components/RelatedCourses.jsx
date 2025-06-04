@@ -26,10 +26,10 @@ const RelatedCourses = ({ relatedCourses }) => {
           <CarouselNext />
           <CarouselContent>
             {relatedCourses.map((course) => {
-              console.log("Related course data:", course?._id, {
-                thumbnailUrl: course?.thumbnailUrl,
-                thumbnail: course?.thumbnail,
-              });
+              // console.log("Related course data:", course?._id, {
+              //   thumbnailUrl: course?.thumbnailUrl,
+              //   thumbnail: course?.thumbnail,
+              // });
 
               let imageSrc;
 
@@ -45,12 +45,12 @@ const RelatedCourses = ({ relatedCourses }) => {
 
               const showImage = shouldDisplayImage(imageSrc);
 
-              console.log(
-                "Related image source:",
-                imageSrc,
-                "Should show:",
-                showImage,
-              );
+              // console.log(
+              //   "Related image source:",
+              //   imageSrc,
+              //   "Should show:",
+              //   showImage,
+              // );
 
               return (
                 <CarouselItem

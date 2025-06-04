@@ -46,7 +46,7 @@ function QuizModal({ quizzes, courseId, quizSetId, open, setOpen }) {
       options: [obj],
     };
 
-    console.log(answer);
+    // console.log(answer);
 
     const found = answers.filter((a) => a.quizId === answer.quizId);
 

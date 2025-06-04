@@ -41,12 +41,12 @@ const CourseCard = async ({ course }) => {
       ? `${course.instructor.firstName ?? ""} ${course.instructor.lastName ?? ""}`.trim()
       : "Giảng viên";
 
-  console.log(
-    "CourseCard instructorName:",
-    instructorName,
-    "course.instructor:",
-    course?.instructor,
-  );
+  // console.log(
+  //   "CourseCard instructorName:",
+  //   instructorName,
+  //   "course.instructor:",
+  //   course?.instructor,
+  // );
 
   // Tính điểm trung bình và số lượng đánh giá thực tế
   const testimonials = Array.isArray(course?.testimonials)

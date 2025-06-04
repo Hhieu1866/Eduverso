@@ -59,7 +59,8 @@ export async function ceredntialLogin(formData) {
     }
 
     // Lưu lại thời gian đăng nhập
-    cookies().set("last_login", new Date().toISOString());
+    const cookieStore = await cookies();
+    cookieStore.set("last_login", new Date().toISOString());
 
     // Lấy thông tin user để trả về role
     const user = await User.findOne({ email }).lean();

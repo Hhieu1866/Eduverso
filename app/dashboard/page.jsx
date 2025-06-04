@@ -44,7 +44,9 @@ const fetchDashboardData = async () => {
 
     return {
       stats: generalStats || null,
-      recentReviews: (reviewData || []).slice(0, 3),
+      recentReviews: (reviewData || [])
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 3),
       allEnrollments: enrollmentData || [],
     };
   } catch (error) {

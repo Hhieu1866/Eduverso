@@ -140,9 +140,9 @@ export async function GET(request) {
       try {
         await dbConnect();
 
-        console.log(
-          `Đang tìm assessment cho user ${loggedInUser.id} với quizSet ${quizSetId}`,
-        );
+        // console.log(
+        //   `Đang tìm assessment cho user ${loggedInUser.id} với quizSet ${quizSetId}`,
+        // );
 
         // Tìm assessment mới nhất của người dùng cho quizSet này
         const assessment = await Assessment.findOne({
@@ -153,9 +153,9 @@ export async function GET(request) {
           .lean();
 
         if (assessment) {
-          console.log(
-            `Đã tìm thấy assessment với ID: ${assessment._id} cho user: ${loggedInUser.id}`,
-          );
+          // console.log(
+          //   `Đã tìm thấy assessment với ID: ${assessment._id} cho user: ${loggedInUser.id}`,
+          // );
           return NextResponse.json({
             assessment: {
               score: assessment.score,
@@ -166,9 +166,9 @@ export async function GET(request) {
             },
           });
         } else {
-          console.log(
-            `Không tìm thấy assessment cho user ${loggedInUser.id} với quizSet ${quizSetId}`,
-          );
+          // console.log(
+          //   `Không tìm thấy assessment cho user ${loggedInUser.id} với quizSet ${quizSetId}`,
+          // );
           return NextResponse.json({
             message: "Không tìm thấy kết quả assessment",
           });
@@ -239,11 +239,11 @@ export async function POST(request) {
       results,
     } = await request.json();
 
-    console.log("API lesson-watch nhận được:", {
-      courseId,
-      quizSetId,
-      resultsData: results,
-    });
+    // console.log("API lesson-watch nhận được:", {
+    //   courseId,
+    //   quizSetId,
+    //   resultsData: results,
+    // });
 
     const loggedinUser = await getLoggedInUser();
 
@@ -257,11 +257,11 @@ export async function POST(request) {
     // Xử lý kết quả quiz (nếu có)
     if (quizSetId && results) {
       try {
-        console.log("Bắt đầu lưu kết quả quiz...");
+        // console.log("Bắt đầu lưu kết quả quiz...");
 
         // Kiểm tra kết nối database
         await dbConnect();
-        console.log("Kết nối database thành công");
+        // console.log("Kết nối database thành công");
 
         // Kiểm tra dữ liệu đầu vào
         if (!results.score && results.score !== 0) {
@@ -305,14 +305,14 @@ export async function POST(request) {
           ? null
           : new Date(Date.now() + 15 * 60 * 1000); // 15 phút
 
-        console.log("Chuẩn bị tạo bản ghi assessment với dữ liệu:", {
-          quizSet: quizSetId,
-          user: loggedinUser.id,
-          score: results.score,
-          totalQuestions: results.totalQuestions,
-          isPassed,
-          percentage,
-        });
+        // console.log("Chuẩn bị tạo bản ghi assessment với dữ liệu:", {
+        //   quizSet: quizSetId,
+        //   user: loggedinUser.id,
+        //   score: results.score,
+        //   totalQuestions: results.totalQuestions,
+        //   isPassed,
+        //   percentage,
+        // });
 
         // Tạo bản ghi đánh giá cho quiz
         const assessment = await Assessment.create({
@@ -327,7 +327,7 @@ export async function POST(request) {
           nextAttemptAllowed: nextAttemptAllowed,
         });
 
-        console.log("Đã tạo bản ghi assessment:", assessment._id.toString());
+        // console.log("Đã tạo bản ghi assessment:", assessment._id.toString());
 
         // Cập nhật báo cáo
         if (courseId) {
@@ -337,7 +337,7 @@ export async function POST(request) {
               userId: loggedinUser.id,
               quizAssessment: assessment._id,
             });
-            console.log("Đã cập nhật báo cáo đánh giá");
+            // console.log("Đã cập nhật báo cáo đánh giá");
           } catch (reportError) {
             console.error("Lỗi khi cập nhật báo cáo đánh giá:", reportError);
             // Không ảnh hưởng đến luồng xử lý chính
@@ -350,7 +350,7 @@ export async function POST(request) {
             createCacheKey("hasStartedLearning", courseId, loggedinUser.id),
           );
           deleteCache(createCacheKey("report", courseId, loggedinUser.id));
-          console.log("Đã xóa cache liên quan");
+          // console.log("Đã xóa cache liên quan");
         } catch (cacheError) {
           console.error("Lỗi khi xóa cache:", cacheError);
           // Không ảnh hưởng đến luồng xử lý chính

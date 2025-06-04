@@ -39,11 +39,11 @@ export const LessonVideo = ({
   // Xử lý URL video khi lesson thay đổi
   useEffect(() => {
     if (lesson?.video_url) {
-      console.log("Original video URL:", lesson.video_url);
+      // console.log("Original video URL:", lesson.video_url);
 
       // Xử lý URL video
-      const validUrl = getYoutubeWatchUrl(lesson.video_url);
-      console.log("Processed video URL:", validUrl);
+      // const validUrl = getYoutubeWatchUrl(lesson.video_url);
+      // console.log("Processed video URL:", validUrl);
       setVideoUrl(validUrl);
 
       // Đánh dấu component đã khởi tạo
@@ -51,7 +51,7 @@ export const LessonVideo = ({
         hasInitialized.current = true;
       }
     } else {
-      console.log("Không có URL video:", lesson);
+      // console.log("Không có URL video:", lesson);
     }
   }, [lesson]);
 
@@ -73,7 +73,7 @@ export const LessonVideo = ({
       });
       if (response.status === 200) {
         const result = await response.text();
-        console.log(result);
+        // console.log(result);
         setStarted(false);
       }
       setLoading(false);
@@ -135,21 +135,16 @@ export const LessonVideo = ({
   }, [lesson.content_type, hasWindow]);
 
   function handleOnStart() {
-    console.log("handleOnStart");
+    // console.log("handleOnStart");
     setStarted(true);
   }
 
   function handleOnEnded() {
-    console.log("handleOnEnded");
+    // console.log("handleOnEnded");
     setEnded(true);
-
-    // Thêm revalidation paths để đảm bảo sidebar được cập nhật
     try {
-      // Revalidate course page
       fetch(`/api/revalidate?path=/courses/${courseId}`);
-      // Revalidate course details
       fetch(`/api/revalidate?path=/courses/${courseId}/details`);
-      // Revalidate dashboard
       fetch(`/api/revalidate?path=/dashboard`);
     } catch (error) {
       console.error("Revalidation error:", error);
@@ -157,7 +152,7 @@ export const LessonVideo = ({
   }
 
   function handleOnDuration(value) {
-    console.log("handleOnDuration", value);
+    // console.log("handleOnDuration", value);
     setDuration(value);
   }
 
@@ -214,7 +209,7 @@ export const LessonVideo = ({
   // Xử lý khi thumbnail gặp lỗi
   const handleThumbnailError = () => {
     if (!thumbnailError) {
-      console.log("Thumbnail lỗi, thử với chất lượng thấp hơn");
+      // console.log("Thumbnail lỗi, thử với chất lượng thấp hơn");
       setThumbnailError(true);
     }
   };
@@ -372,8 +367,7 @@ export const LessonVideo = ({
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
                   onLoad={() => {
-                    console.log("Iframe loaded");
-                    // Đặt timeout để đảm bảo video đã bắt đầu phát
+                    // console.log("Iframe loaded");
                     setTimeout(() => {
                       handleOnStart();
                     }, 1000);

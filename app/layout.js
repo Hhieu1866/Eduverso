@@ -1,9 +1,13 @@
+"use client";
+
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { dbConnect } from "@/service/mongo";
+import { useEffect } from "react";
+import { useUserStore } from "../hooks/useUserStore";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,16 +20,17 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata = {
-  title: "Easy Learning Academy - Best Online Professional Courses",
-  description: "Best Online Professional Courses",
-};
-
 const poppins = Inter({ subsets: ["latin"], variable: "--font-poppins" });
 
-export default async function RootLayout({ children }) {
-  const conn = await dbConnect();
-  //console.log(conn)
+export default function RootLayout({ children }) {
+  const setUser = useUserStore((s) => s.setUser);
+
+  useEffect(() => {
+    fetch("/api/me")
+      .then((res) => res.json())
+      .then((data) => setUser(data))
+      .catch(() => setUser(null));
+  }, [setUser]);
 
   return (
     <html lang="vi">

@@ -5,9 +5,9 @@ import { Testimonial } from "@/model/testimonial-model";
 import { revalidatePath } from "next/cache";
 
 export async function createReview(data, loginid, courseId) {
-  console.log("Bắt đầu tạo review với data:", JSON.stringify(data));
-  console.log("loginid:", loginid);
-  console.log("courseId:", courseId);
+  // console.log("Bắt đầu tạo review với data:", JSON.stringify(data));
+  // console.log("loginid:", loginid);
+  // console.log("courseId:", courseId);
 
   try {
     const { review, rating } = data;
@@ -31,13 +31,12 @@ export async function createReview(data, loginid, courseId) {
       return { success: false, message: "Không tìm thấy khóa học" };
     }
 
-    // Tạo testimonial mới
-    console.log("Đang tạo testimonial với:", {
-      content: review,
-      user: loginid,
-      courseId,
-      rating: Number(rating),
-    });
+    // console.log("Đang tạo testimonial với:", {
+    //   content: review,
+    //   user: loginid,
+    //   courseId,
+    //   rating: Number(rating),
+    // });
 
     const newTestimonial = await Testimonial.create({
       content: review,
@@ -51,7 +50,7 @@ export async function createReview(data, loginid, courseId) {
       return { success: false, message: "Không thể tạo đánh giá" };
     }
 
-    console.log("Đã tạo testimonial:", newTestimonial);
+    // console.log("Đã tạo testimonial:", newTestimonial);
 
     // Cập nhật khóa học
     const updateCourse = await Course.findByIdAndUpdate(
@@ -68,7 +67,7 @@ export async function createReview(data, loginid, courseId) {
       };
     }
 
-    console.log("Đã cập nhật khóa học với testimonial mới");
+    // console.log("Đã cập nhật khóa học với testimonial mới");
 
     // Revalidate các trang có thể hiển thị đánh giá
     revalidatePath(`/courses/${courseId}`);
