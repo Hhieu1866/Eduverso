@@ -15,6 +15,32 @@ import { GraduationCap, Clock, Users, Calendar, File } from "lucide-react";
 import { formatMyDate } from "@/lib/date";
 
 const CourseDetailsIntro = async ({ course }) => {
+  // Nếu chưa có dữ liệu course, render skeleton
+  if (!course) {
+    return (
+      <div className="animate-pulse bg-gradient-to-b from-cyan-50 to-white">
+        <section className="pb-16 pt-8">
+          <div className="container">
+            <div className="flex flex-col gap-8 lg:flex-row">
+              <div className="flex-1 space-y-4">
+                <div className="h-6 w-32 rounded bg-gray-200" />
+                <div className="h-10 w-2/3 rounded bg-gray-200" />
+                <div className="h-6 w-1/2 rounded bg-gray-200" />
+                <div className="h-5 w-1/3 rounded bg-gray-200" />
+                <div className="h-8 w-1/4 rounded bg-gray-200" />
+                <div className="h-12 w-1/2 rounded bg-gray-200" />
+              </div>
+              <div className="mx-auto w-full max-w-[422px] lg:w-[450px]">
+                <div className="aspect-[16/9] w-full rounded-lg bg-gray-200" />
+                <div className="mt-4 h-10 w-full rounded bg-gray-200" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   const session = await auth();
   const loogedInUser = await getUserByEmail(session?.user?.email);
   const hasEnrollment = await hasEnrollmentForCourse(
@@ -95,10 +121,11 @@ const CourseDetailsIntro = async ({ course }) => {
                       course?.instructor?.profilePicture ||
                       "/placeholder-avatar.jpg"
                     }
-                    alt={`${course?.instructor?.firstName} ${course?.instructor?.lastName}`}
+                    alt={`Ảnh đại diện giảng viên: ${course?.instructor?.firstName || ""} ${course?.instructor?.lastName || ""}`}
                     width={48}
                     height={48}
                     className="rounded-full"
+                    loading="lazy"
                   />
                 </div>
                 <div>
@@ -124,6 +151,8 @@ const CourseDetailsIntro = async ({ course }) => {
                       fill
                       className="object-cover"
                       priority
+                      placeholder="blur"
+                      blurDataURL="/placeholder-image.png"
                     />
                   </div>
                 )}

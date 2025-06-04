@@ -86,45 +86,82 @@ export async function getCourseList(filters = {}) {
 
 export async function getCourseDetails(id) {
   await dbConnect();
+  // Chỉ select các trường cần thiết để tối ưu hiệu năng
   const course = await Course.findById(id)
+    .select([
+      "title",
+      "subtitle",
+      "description",
+      "thumbnail",
+      "thumbnailUrl",
+      "modules",
+      "price",
+      "category",
+      "instructor",
+      "testimonials",
+      "quizSet",
+      "essayIds",
+      "createdOn",
+      "modifiedOn",
+      "active",
+      "status",
+    ])
     .populate({
       path: "category",
       model: Category,
+      select: "title thumbnail",
+      options: { lean: true },
     })
     .populate({
       path: "instructor",
       model: User,
+      select: "firstName lastName profilePicture designation",
+      options: { lean: true },
     })
     .populate({
       path: "testimonials",
       model: Testimonial,
+      select: "content rating user createdAt",
       populate: {
         path: "user",
         model: User,
+        select: "firstName lastName profilePicture",
+        options: { lean: true },
       },
+      options: { lean: true },
     })
     .populate({
       path: "modules",
       model: Module,
       match: { active: true },
+      select: "title description lessonIds order active",
       populate: {
         path: "lessonIds",
         model: Lesson,
         match: { active: true },
+        select: "title duration content_type order active",
+        options: { lean: true },
       },
+      options: { lean: true },
     })
     .populate({
       path: "quizSet",
       model: Quizset,
       match: { active: true },
+      select: "title quizIds",
       populate: {
         path: "quizIds",
         model: Quiz,
+        select: "title",
+        options: { lean: true },
       },
+      options: { lean: true },
     })
     .populate({
       path: "essayIds",
       model: "Essay",
+      select: "title createdOn",
+      options: { lean: true },
     })
     .lean();
 
@@ -332,15 +369,26 @@ export async function getRelatedCourses(currentCourseId, categoryId) {
   try {
     const currentCourseObjectId = new mongoose.Types.ObjectId(currentCourseId);
     const categoryObjectId = new mongoose.Types.ObjectId(categoryId);
-    // console.log("course id", currentCourseObjectId);
-    // console.log("category id",categoryObjectId );
+    // Tối ưu: chỉ lấy các trường cần thiết, populate instructor & category
     const relatedCourses = await Course.find({
       category: categoryObjectId,
       _id: { $ne: currentCourseObjectId }, // Exclude current course
       active: true,
       status: "approved",
     })
-      .select("title thumbnail thumbnailUrl price")
+      .select("title thumbnail thumbnailUrl price instructor category")
+      .populate({
+        path: "instructor",
+        model: User,
+        select: "firstName lastName profilePicture designation",
+        options: { lean: true },
+      })
+      .populate({
+        path: "category",
+        model: Category,
+        select: "title thumbnail",
+        options: { lean: true },
+      })
       .lean();
     return relatedCourses;
   } catch (error) {
