@@ -10,7 +10,10 @@ import StarRating from "@/components/start-rating";
 import { Quote } from "lucide-react";
 
 const Testimonials = ({ testimonials }) => {
-  // console.log(testimonials);
+  // Sắp xếp đánh giá mới nhất lên đầu
+  const sortedTestimonials = [...testimonials].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+  );
 
   return (
     <section className="pb-8 md:pb-12 lg:pb-24">
@@ -25,13 +28,13 @@ const Testimonials = ({ testimonials }) => {
           <CarouselPrevious />
           <CarouselNext />
           <CarouselContent className="py-4">
-            {testimonials.map((testimonial) => (
+            {sortedTestimonials.map((testimonial) => (
               <CarouselItem
                 key={testimonial.id}
                 className="md:basis-1/2 lg:basis-1/3"
               >
                 <div className="sm:break-inside-avoid">
-                  <blockquote className="relative rounded-2xl border border-primary/20 bg-gray-50 p-5 drop-shadow">
+                  <blockquote className="relative rounded-2xl border border-gray-300 bg-gray-50 p-5">
                     <Quote className="absolute right-6 top-6 h-6 w-6 text-primary/30" />
                     <div className="mb-4 flex items-center gap-4">
                       <Image
@@ -39,7 +42,7 @@ const Testimonials = ({ testimonials }) => {
                         src={testimonial?.user?.profilePicture}
                         width="56"
                         height="56"
-                        className="size-14 rounded-full border-2 border-primary/30 object-cover shadow"
+                        className="size-14 rounded-full border-2 border-gray-300 object-cover"
                       />
                       <div>
                         <p className="mt-0.5 text-lg font-bold text-colors-navy">

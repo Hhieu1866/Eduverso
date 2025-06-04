@@ -8,14 +8,15 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/formatPrice";
-import { SectionTitle } from "@/components/section-title";
 import { getImageUrl, shouldDisplayImage } from "@/lib/imageUtils";
 
 const RelatedCourses = ({ relatedCourses }) => {
   return (
     <section className="">
       <div className="container">
-        <SectionTitle className="mb-6">Related Courses</SectionTitle>
+        <p className="mb-6 text-2xl font-bold">
+          Các lộ trình có thể bạn quan tâm
+        </p>
         <Carousel
           opts={{
             align: "start",
