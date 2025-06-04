@@ -35,6 +35,7 @@ export function LoginForm() {
       // Kiểm tra cơ bản ở client side trước khi gửi request
       if (!email || !password) {
         toast.error("Vui lòng nhập đầy đủ email và mật khẩu");
+        setIsLoading(false);
         return;
       }
 
@@ -42,6 +43,7 @@ export function LoginForm() {
 
       if (response?.error) {
         toast.error(response.error);
+        setIsLoading(false);
       } else {
         toast.success("Đăng nhập thành công!");
 
@@ -65,7 +67,6 @@ export function LoginForm() {
     } catch (error) {
       console.error("Login error:", error);
       toast.error("Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại sau.");
-    } finally {
       setIsLoading(false);
     }
   }
