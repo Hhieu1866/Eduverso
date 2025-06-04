@@ -6,8 +6,6 @@ import { getCourseDetails, getRelatedCourses } from "@/queries/courses";
 import { replaceMongoIdInArray } from "@/lib/convertData";
 import MoneyBack from "@/components/money-back";
 
-export const revalidate = 60; // ISR cache mỗi 60s, tăng tốc độ load
-
 const SingleCoursePage = async ({ params: { id } }) => {
   const course = await getCourseDetails(id);
   //console.log(course);
