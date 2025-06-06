@@ -21,7 +21,7 @@ export const LessonActions = ({ lesson, moduleId, onDelete }) => {
         case "change-active": {
           const activeState = await changeLessonPublishState(lesson.id);
           setPublished(!activeState);
-          toast.success("The lesson has been updated");
+          toast.success("Nội dung đã được cập nhật");
           router.refresh();
           break;
         }

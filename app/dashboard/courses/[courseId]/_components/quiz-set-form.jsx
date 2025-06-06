@@ -57,11 +57,11 @@ export const QuizSetForm = ({
   const onSubmit = async (values) => {
     try {
       await updateQuizSetForCourse(courseId, values);
-      toast.success("Course updated");
+      toast.success("Khóa học đã được cập nhật");
       toggleEdit();
       router.refresh();
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Đã có lỗi xảy ra");
     }
   };
 

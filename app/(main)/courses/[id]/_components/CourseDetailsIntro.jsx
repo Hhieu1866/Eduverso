@@ -41,7 +41,6 @@ const CourseDetailsIntro = async ({ course }) => {
       <section className="pb-16 pt-8">
         <div className="container">
           <div className="flex flex-col gap-8 lg:flex-row">
-            {/* Cột thông tin khóa học */}
             <div className="flex-1">
               <div className="mb-4">
                 <span className="rounded-full bg-primary px-3 py-1 text-xs font-medium text-white">

@@ -438,10 +438,7 @@ export const LessonVideo = ({
             </>
           )}
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 transform">
-            {/* Đã di chuyển nút hoàn thành bài học sang phần mô tả */}
-            {/* Chú thích: Nút hoàn thành bài học đã được di chuyển xuống phần mô tả bài học */}
-          </div>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 transform"></div>
         </div>
       )}
     </>

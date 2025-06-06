@@ -53,7 +53,7 @@ export const QuizSetAction = ({ quizSetId, quiz, quizId }) => {
           size="sm"
           onClick={() => setAction("change-active")}
         >
-          {published ? "Hủy xuất bản" : "Xuất bản"}
+          {published ? "Ẩn" : "Công khai"}
         </Button>
 
         <Button

@@ -200,7 +200,7 @@ const LessonPage = async ({ params, searchParams }) => {
   return (
     <div className="mx-auto max-w-4xl">
       {/* Video Player */}
-      <div className="mb-6 overflow-hidden rounded-xl bg-black">
+      <div className="border-1 mb-6 overflow-hidden rounded-xl bg-black">
         <LessonVideo
           courseId={id}
           lesson={lessonToPay}
@@ -224,12 +224,12 @@ const LessonPage = async ({ params, searchParams }) => {
                 ).toLocaleDateString("vi-VN")}
               </span>
             </div>
-            {lessonToPay.duration && (
+            {/* {lessonToPay.duration && (
               <div className="flex items-center gap-1.5">
                 <Clock className="h-4 w-4" />
                 <span>{formatDuration(lessonToPay.duration)}</span>
               </div>
-            )}
+            )} */}
             <div className="flex items-center gap-1.5">
               <FileText className="h-4 w-4" />
               <span>{currentModule?.title}</span>

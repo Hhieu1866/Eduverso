@@ -313,25 +313,51 @@ export async function checkEssayApprovalStatus(courseId) {
     const session = await auth();
 
     if (!session?.user?.id) {
-      return false;
+      return false; // Học viên chưa đăng nhập
     }
 
-    // Lấy tất cả bài tự luận của khóa học này mà học viên đã nộp
+    // 1. Lấy danh sách các bài tự luận được yêu cầu cho khóa học
+    const course = await require("@/model/course-model")
+      .Course.findById(courseId)
+      .select("essayIds")
+      .lean();
+
+    if (!course) {
+      console.warn(`Khóa học với ID ${courseId} không tồn tại.`);
+      return false; // Khóa học không tồn tại
+    }
+
+    const requiredEssayIds = course.essayIds || [];
+
+    if (requiredEssayIds.length === 0) {
+      return true; // Khóa học không yêu cầu bài tự luận nào
+    }
+
+    // 2. Tìm tất cả bài nộp của học viên cho các bài tự luận được yêu cầu
+    const studentId = session.user.id;
     const submissions = await EssaySubmission.find({
-      courseId,
-      studentId: session.user.id,
+      essayId: { $in: requiredEssayIds },
+      studentId: studentId,
     }).lean();
 
-    if (!submissions || submissions.length === 0) {
-      // Nếu không có bài nộp nào, coi như không có essay bắt buộc phải nộp
-      return true;
+    // 3. Kiểm tra số lượng bài nộp có khớp với số lượng bài được yêu cầu không
+    if (submissions.length !== requiredEssayIds.length) {
+      return false; // Chưa nộp đủ tất cả các bài tự luận được yêu cầu
     }
 
-    // Kiểm tra tất cả bài nộp đều có grade >= 6
-    const allPassed = submissions.every(
-      (sub) => typeof sub.grade === "number" && sub.grade >= 6,
-    );
-    return allPassed;
+    // 4. Kiểm tra tất cả bài nộp đều có trạng thái là "approved"
+    //    Hoặc trạng thái là "graded" và điểm số đạt yêu cầu (ví dụ >= 6)
+    const passingGrade = 6; // Ngưỡng điểm tối thiểu để coi là 'pass' cho bài tự luận đã chấm
+    const allApprovedOrPassedGraded = submissions.every((submission) => {
+      return (
+        submission.status === "approved" ||
+        (submission.status === "graded" &&
+          typeof submission.grade === "number" &&
+          submission.grade >= passingGrade)
+      );
+    });
+
+    return allApprovedOrPassedGraded;
   } catch (error) {
     console.error("Lỗi khi kiểm tra trạng thái duyệt bài tự luận:", error);
     return false;
