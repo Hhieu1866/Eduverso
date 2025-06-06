@@ -40,7 +40,7 @@ export const Navbar = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="mt-4 w-56">
             <DropdownMenuItem className="cursor-pointer">
-              <Link href="/account">Profile</Link>
+              <Link href="/account">Hồ sơ cá nhân</Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem className="cursor-pointer">
@@ -52,7 +52,7 @@ export const Navbar = () => {
                   });
                 }}
               >
-                Logout
+                Đăng xuất
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>

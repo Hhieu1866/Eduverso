@@ -394,27 +394,18 @@ export const EssayList = ({ courseId, essays = [] }) => {
                       </div>
                     )}
 
-                    <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-end">
+                    <div className="flex justify-end gap-2">
                       <Button
                         variant="outline"
-                        onClick={() => setShowUploadSection(null)}
-                        disabled={isSubmittingEssay}
+                        onClick={() => {
+                          setShowUploadSection(null);
+                          setFilesForServerSubmit((prev) => ({
+                            ...prev,
+                            [essay._id]: [],
+                          }));
+                        }}
                       >
                         Hủy
-                      </Button>
-                      <Button
-                        onClick={() => handleConfirmSubmitEssay(essay._id)}
-                        disabled={
-                          isSubmittingEssay || filesReadyForServer.length === 0
-                        }
-                        className="min-w-[120px]"
-                      >
-                        {isSubmittingEssay ? (
-                          <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                        ) : (
-                          <CheckCircle className="mr-2 h-4 w-4" />
-                        )}
-                        Xác nhận nộp
                       </Button>
                     </div>
                   </div>
