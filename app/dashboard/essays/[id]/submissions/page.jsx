@@ -1,3 +1,4 @@
+import "@/model/course-model";
 import { getEssaySubmissions } from "@/app/actions/essaySubmission";
 import { dbConnect } from "@/service/mongo";
 import Essay from "@/model/essay";
