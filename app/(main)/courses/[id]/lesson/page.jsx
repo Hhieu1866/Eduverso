@@ -176,7 +176,6 @@ const LessonPage = async ({ params, searchParams }) => {
     }
   }
 
-  // Debug thông tin bài học
   // console.log("Lesson data:", {
   //   id: lessonToPay?.id,
   //   title: lessonToPay?.title,
@@ -201,7 +200,7 @@ const LessonPage = async ({ params, searchParams }) => {
   return (
     <div className="mx-auto max-w-4xl">
       {/* Video Player */}
-      <div className="mb-6 overflow-hidden rounded-xl border">
+      <div className="mb-6 overflow-hidden rounded-xl bg-black">
         <LessonVideo
           courseId={id}
           lesson={lessonToPay}
@@ -225,12 +224,12 @@ const LessonPage = async ({ params, searchParams }) => {
                 ).toLocaleDateString("vi-VN")}
               </span>
             </div>
-            {/* {lessonToPay.duration && (
+            {lessonToPay.duration && (
               <div className="flex items-center gap-1.5">
                 <Clock className="h-4 w-4" />
                 <span>{formatDuration(lessonToPay.duration)}</span>
               </div>
-            )} */}
+            )}
             <div className="flex items-center gap-1.5">
               <FileText className="h-4 w-4" />
               <span>{currentModule?.title}</span>
@@ -293,7 +292,7 @@ const LessonPage = async ({ params, searchParams }) => {
           </div>
 
           {/* Nút đánh dấu hoàn thành bài học */}
-          <div className="mt-10 flex justify-center">
+          <div className="mt-8 flex justify-center">
             <CompleteLessonButton
               courseId={id}
               lessonId={lessonToPay.id}
