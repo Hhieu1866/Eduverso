@@ -166,12 +166,13 @@ export default async function GradeSubmissionPage({ params }) {
                 Ngày chấm
               </h3>
               <p className="text-base font-medium">
-                {new Date(submission.gradedAt).toLocaleDateString("vi-VN", {
+                {new Date(submission.gradedAt).toLocaleString("vi-VN", {
                   day: "2-digit",
                   month: "2-digit",
                   year: "numeric",
                   hour: "2-digit",
                   minute: "2-digit",
+                  timeZone: "Asia/Ho_Chi_Minh",
                 })}
               </p>
             </div>
