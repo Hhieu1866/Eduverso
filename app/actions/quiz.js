@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import { Assessment } from "@/model/assessment-model";
 import { getLoggedInUser } from "@/lib/loggedin-user";
 import { createAssessmentReport } from "@/queries/reports";
+import { revalidatePath } from "next/cache";
 
 export async function updateQuizSet(quizset, dataToUpdate) {
   try {
@@ -136,6 +137,27 @@ export async function addQuizAssessment(courseId, quizSetId, answers) {
       userId: loggedInUser.id,
       quizAssessment: assessment?._id,
     });
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function deleteQuizSet(quizSetId) {
+  try {
+    const quizSet = await Quizset.findById(quizSetId);
+
+    if (!quizSet) {
+      throw new Error("Không tìm thấy bộ câu hỏi.");
+    }
+
+    // Xóa tất cả các câu hỏi liên quan đến bộ quiz này
+    if (quizSet.quizIds && quizSet.quizIds.length > 0) {
+      await Quiz.deleteMany({ _id: { $in: quizSet.quizIds } });
+    }
+
+    // Xóa bộ quiz
+    await Quizset.findByIdAndDelete(quizSetId);
+    revalidatePath("/dashboard/quiz-sets");
   } catch (error) {
     throw new Error(error);
   }

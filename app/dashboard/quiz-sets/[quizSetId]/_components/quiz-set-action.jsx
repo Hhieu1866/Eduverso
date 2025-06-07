@@ -5,7 +5,7 @@ import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { changeQuizPublishState, deleteQuiz } from "@/app/actions/quiz";
+import { changeQuizPublishState, deleteQuizSet } from "@/app/actions/quiz";
 import { toast } from "sonner";
 
 export const QuizSetAction = ({ quizSetId, quiz, quizId }) => {
@@ -30,7 +30,7 @@ export const QuizSetAction = ({ quizSetId, quiz, quizId }) => {
               "Bài kiểm tra đã xuất bản không thể xóa. Hãy hủy xuất bản trước, sau đó mới xóa",
             );
           } else {
-            await deleteQuiz(quizSetId, quizId);
+            await deleteQuizSet(quizSetId);
             toast.success("Đã xóa bài kiểm tra");
             router.push(`/dashboard/quiz-sets`);
           }
